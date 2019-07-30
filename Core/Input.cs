@@ -1,6 +1,7 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-enum {
+enum F3KEY
+    {
     F3KEY_EXIT,
     F3KEY_PAUSE,
     F3KEY_UP,

@@ -1,12 +1,9 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-enum {
-    REPLAYBUFFER = 4096,
-};
-
 class Cf3Replay
 {
     protected:
+            const int REPLAYBUFFER = 4096;
 	class CKeyState
     {
         public:

@@ -29,14 +29,16 @@ static set<Cf3MapObjectNeedle*> m_EnemyList;
 
 float m_StartY;
 float m_Speed;
-enum {
+enum NDT
+    {
     NDT_UNDEFINED,
     NDT_HORIZONTAL,
     NDT_VERTICAL,
     NDT_DEAD,
 }
 m_Type;
-	enum {
+	enum NDS
+    {
     NDS_WAIT,
     NDS_STOP,
     NDS_LEFT,

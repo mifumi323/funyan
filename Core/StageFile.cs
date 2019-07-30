@@ -7,7 +7,8 @@ struct tagf3StageHeader
     long packsize;		// 圧縮サイズ(datasizeと同じ場合無圧縮)
 };
 
-enum {
+enum CT
+    {
     CT_TITL = 0x4C544954,
     CT_AUTH = 0x48545541,
     CT_DESC = 0x43534544,
