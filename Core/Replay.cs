@@ -120,15 +120,15 @@ class Cf3Replay
 			data.SetStageData(chunk,size,ptr);
 		if (ptr=stage->GetStageData(chunk=CT_MCD0|(0<<24),&size))
 			data.SetStageData(chunk,size,ptr);
-		ef (ptr=stage->GetStageData(chunk=CT_MCF0|(0<<24),&size))
+                else if (ptr=stage->GetStageData(chunk=CT_MCF0|(0<<24),&size))
 			data.SetStageData(chunk,size,ptr);
 		if (ptr=stage->GetStageData(chunk=CT_MCD0|(1<<24),&size))
 			data.SetStageData(chunk,size,ptr);
-		ef (ptr=stage->GetStageData(chunk=CT_MCF0|(1<<24),&size))
+                else if (ptr=stage->GetStageData(chunk=CT_MCF0|(1<<24),&size))
 			data.SetStageData(chunk,size,ptr);
 		if (ptr=stage->GetStageData(chunk=CT_MCD0|(2<<24),&size))
 			data.SetStageData(chunk,size,ptr);
-		ef (ptr=stage->GetStageData(chunk=CT_MCF0|(2<<24),&size))
+                else if (ptr=stage->GetStageData(chunk=CT_MCF0|(2<<24),&size))
 			data.SetStageData(chunk,size,ptr);
 		// 追加の情報
 		data.SetStageData(CT_STGN, 4, &map);

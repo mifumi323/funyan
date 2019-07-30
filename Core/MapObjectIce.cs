@@ -85,7 +85,8 @@ void OnMove()
 				m_Life--;
 			}
 		}
-	}ef(m_DX<0) {
+	}
+        else if (m_DX<0) {
 		// 左側当たり判定
 		if (m_pParent->GetHit(floor((m_X-s)/32),floor(m_Y/32),HIT_RIGHT)) {
 			if (floor((m_X-s)/32)!=floor((m_X-s-m_DX)/32)) {
@@ -105,7 +106,8 @@ void OnMove()
 				m_Life--;
 			}
 		}
-	}ef(m_DY<0) {
+	}
+        else if (m_DY<0) {
 		// 上側当たり判定
 		if (m_pParent->GetHit(floor(m_X/32),floor((m_Y-s)/32),HIT_BOTTOM)) {
 			if (floor((m_Y-s)/32)!=floor((m_Y-s-m_DY)/32)) {

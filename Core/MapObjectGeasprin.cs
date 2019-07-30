@@ -138,14 +138,16 @@ void Reaction(Cf3MapObjectBase* obj)
 				m_Spring[DIR_FRONT] = 32;
 				if (!m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32),HIT_TOP)) m_GY++;
 			}
-		}ef(TL.IsIn(m_X+16,objX,m_X+29)) {
+		}
+                    else if (TL.IsIn(m_X+16,objX,m_X+29)) {
 			if (TL.IsIn(m_Y-16,objY,m_Y+16)) {
 				// 右から来た！
 				if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32),HIT_TOP)) Back(DIR_RIGHT);
 				else Laugh();
 				m_Spring[DIR_RIGHT] = 32;
 			}
-		}ef(TL.IsIn(m_X-29,objX,m_X-16)) {
+		}
+                    else if (TL.IsIn(m_X-29,objX,m_X-16)) {
 			if (TL.IsIn(m_Y-16,objY,m_Y+16)) {
 				// 左から来た！
 				if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32),HIT_TOP)) Back(DIR_LEFT);
@@ -194,7 +196,8 @@ void Synergy()
 						// 踏まれた！
 						Laugh();
 						m_Spring[DIR_FRONT] = 32;
-					}ef(TL.IsIn(m_Y,objY,m_Y+32)) {
+					}
+                        else if (TL.IsIn(m_Y,objY,m_Y+32)) {
 						// 踏んだ！
 						if (((Cf3MapObjectGeasprin*)(*it))->m_State!=FROZEN) {
 							Jump();
@@ -204,7 +207,8 @@ void Synergy()
 							Freeze();
 						}
 					}
-				}ef(TL.IsIn(m_X+16,objX,m_X+29)) {
+				}
+                    else if (TL.IsIn(m_X+16,objX,m_X+29)) {
 					if (TL.IsIn(m_Y-16,objY,m_Y+16)) {
 						// 右から来た！
 						if (((Cf3MapObjectGeasprin*)(*it))->m_State!=FROZEN) {
@@ -216,7 +220,8 @@ void Synergy()
 							Freeze();
 						}
 					}
-				}ef(TL.IsIn(m_X-29,objX,m_X-16)) {
+				}
+                    else if (TL.IsIn(m_X-29,objX,m_X-16)) {
 					if (TL.IsIn(m_Y-16,objY,m_Y+16)) {
 						// 左から来た！
 						if (((Cf3MapObjectGeasprin*)(*it))->m_State!=FROZEN) {
@@ -256,9 +261,11 @@ void OnMove()
 	if (m_State==WALKING) {
 		if (m_Direction==DIR_LEFT&&m_pParent->GetHit(floor((m_X-17)/32),floor(m_Y/32),HIT_RIGHT)){
 			Blow();
-		}ef (m_Direction==DIR_RIGHT&&m_pParent->GetHit(floor((m_X+17)/32),floor(m_Y/32),HIT_LEFT)){
+		}
+            else if (m_Direction==DIR_RIGHT&&m_pParent->GetHit(floor((m_X+17)/32),floor(m_Y/32),HIT_LEFT)){
 			Blow();
-		}ef(!m_pParent->GetHit(floor((m_X+17*(m_Direction==DIR_LEFT?-1:1))/32),floor((m_Y+17)/32),HIT_TOP)){
+		}
+            else if (!m_pParent->GetHit(floor((m_X+17*(m_Direction==DIR_LEFT?-1:1))/32),floor((m_Y+17)/32),HIT_TOP)){
 			Stop();
 		}else {
 			if (m_Delay==0) {
@@ -266,7 +273,8 @@ void OnMove()
 				m_GX += (m_Direction==DIR_LEFT?-1:1);
 			}
 		}
-	}ef (m_State==STANDING) {
+	}
+        else if (m_State==STANDING) {
 		if (!m_pParent->GetHit(floor(m_X/32),floor((m_Y+17)/32),HIT_TOP)){
 			Stop();
 		}else {
@@ -274,7 +282,8 @@ void OnMove()
 				Walk();
 			}
 		}
-	}ef (m_State==FALLING) {
+	}
+        else if (m_State==FALLING) {
 		if (m_Delay==0) {
 			m_DY += 2;
                 TL.Saturate(-60,ref m_DY,60);
@@ -284,38 +293,47 @@ void OnMove()
 		if (m_DY>0&&m_pParent->GetHit(floor(m_X/32),floor((m_Y+17)/32),HIT_TOP)){
 			m_GY=((floor((m_Y+17)/32)-1)*32+16)*8;
 			Laugh();
-		}ef(m_DY<0&&m_pParent->GetHit(floor(m_X/32),floor((m_Y-15)/32),HIT_BOTTOM)){
+		}
+            else if (m_DY<0&&m_pParent->GetHit(floor(m_X/32),floor((m_Y-15)/32),HIT_BOTTOM)){
 			m_GY=(m_GY+127)&~127;
 			m_DY=0;
 		}
-	}ef (m_State==LAUGHING) {
+	}
+        else if (m_State==LAUGHING) {
 		if (m_Delay==0) {
 			Stop();
 		}
-	}ef (m_State==BLOWN) {
+	}
+        else if (m_State==BLOWN) {
 		if (m_Direction==DIR_LEFT&&!m_pParent->GetHit(floor((m_X+17)/32),floor(m_Y/32),HIT_LEFT)){
 			m_GX++;
-		}ef (m_Direction==DIR_RIGHT&&!m_pParent->GetHit(floor((m_X-17)/32),floor(m_Y/32),HIT_RIGHT)){
+		}
+            else if (m_Direction==DIR_RIGHT&&!m_pParent->GetHit(floor((m_X-17)/32),floor(m_Y/32),HIT_RIGHT)){
 			m_GX--;
 		}
 		if (m_Delay==0) {
 			Stop();
 		}
-	}ef (m_State==BACK) {
+	}
+        else if (m_State==BACK) {
 		if (!m_pParent->GetHit(floor((m_X+17*(m_Direction!=DIR_LEFT?-1:1))/32),floor((m_Y+17)/32),HIT_TOP)){
-		}ef(m_Direction==DIR_LEFT&&!m_pParent->GetHit(floor((m_X+17)/32),floor(m_Y/32),HIT_LEFT)){
+		}
+            else if (m_Direction==DIR_LEFT&&!m_pParent->GetHit(floor((m_X+17)/32),floor(m_Y/32),HIT_LEFT)){
 			m_GX++;
-		}ef(m_Direction==DIR_RIGHT&&!m_pParent->GetHit(floor((m_X-17)/32),floor(m_Y/32),HIT_RIGHT)){
+		}
+            else if (m_Direction==DIR_RIGHT&&!m_pParent->GetHit(floor((m_X-17)/32),floor(m_Y/32),HIT_RIGHT)){
 			m_GX--;
 		}
 		if (m_Delay==0) {
 			Laugh();
 		}
-	}ef (m_State==FROZEN) {
+	}
+        else if (m_State==FROZEN) {
 		if (m_Delay==0) {
 			Stop();
 		}
-	}ef (m_State==DEAD) {
+	}
+        else if (m_State==DEAD) {
 		Kill();
 	}
 	if (m_Spring[DIR_FRONT]) m_Spring2[DIR_FRONT] = CApp::random(m_Spring[DIR_FRONT]);
@@ -350,19 +368,25 @@ void OnDraw(CDIB32* lp)
 	// 本体
 	int CX=0, CY=(m_Direction==DIR_LEFT?0:1);
 	if (m_State==STANDING) {
-	}ef(m_State==WALKING) {
+	}
+        else if (m_State==WALKING) {
 		CX = 1+(m_GX&1);
-	}ef(m_State==FALLING) {
+	}
+        else if (m_State==FALLING) {
 		CX = 5;
-	}ef(m_State==LAUGHING) {
+	}
+        else if (m_State==LAUGHING) {
 		if (TL.IsIn(20,m_Delay,40)) {
 			CX = 3+(m_Delay/4&1);
-		}ef(TL.IsIn(0,m_Delay,20)) {
+		}
+            else if (TL.IsIn(0,m_Delay,20)) {
 			CX = 4;
 		}
-	}ef(m_State==BLOWN) {
+	}
+        else if (m_State==BLOWN) {
 		CX = 6;
-	}ef(m_State==FROZEN) {
+	}
+        else if (m_State==FROZEN) {
 		CX = ((m_Delay<40&&(m_Delay>>1)&1)?6:7);
 	}
 	RECT rc = {CX*32, CY*32, CX*32+32, CY*32+32,};

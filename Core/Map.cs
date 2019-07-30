@@ -185,13 +185,16 @@ class Cf3Map
                 if (power>1.0f/256.0f) {
                     // 凍りつくゾーン
                     *pixel = 0x008080;
-                }ef(power>1.0f/4096.0f) {
+                }
+                    else if (power>1.0f/4096.0f) {
                     // パワーアップゾーン
                     *pixel = 0x00ffff;
-                }ef(power<-1.0f/256.0f) {
+                }
+                    else if (power<-1.0f/256.0f) {
                     // 致死ゾーン
                     *pixel = 0x800000;
-                }ef(power<-1.0f/4096.0f) {
+                }
+                    else if (power<-1.0f/4096.0f) {
                     // 制限ゾーン
                     *pixel = 0xff0000;
                 }else{
@@ -524,46 +527,60 @@ class Cf3Map
                         if (n==0xf0){	// 主人公
                             if (m_MainChara==NULL) m_MainChara = Cf3MapObjectMain::Create(x,y);
                             bgm[BGMN_GAMEFUNYA]+=99;
-                        }ef(n==0xf1){	// バナナ
+                        }
+                            else if (n==0xf1){	// バナナ
                             new Cf3MapObjectBanana(x,y);
                             bgm[BGMN_GAMEBANANA]+=1;
                             m_nTotalBanana++;
-                        }ef(n==0xf2){	// とげとげ
+                        }
+                            else if (n==0xf2){	// とげとげ
                             new Cf3MapObjectNeedle(x,y);
                             bgm[BGMN_GAMENEEDLE]+=4;
-                        }ef(n==0xf3){	// ギヤバネ左向き
+                        }
+                            else if (n==0xf3){	// ギヤバネ左向き
                             new Cf3MapObjectGeasprin(x,y,DIR_LEFT);
                             bgm[BGMN_GAMEGEASPRIN]+=10;
-                        }ef(n==0xf4){	// ギヤバネ右向き
+                        }
+                            else if (n==0xf4){	// ギヤバネ右向き
                             new Cf3MapObjectGeasprin(x,y,DIR_RIGHT);
                             bgm[BGMN_GAMEGEASPRIN]+=10;
-                        }ef(n==0xf5){	// 風ストップ
+                        }
+                            else if (n==0xf5){	// 風ストップ
                             windmap[z]=0xC;
-                        }ef(n==0xf6){	// 風左向き
+                        }
+                            else if (n==0xf6){	// 風左向き
                             windmap[z]=0x1;
                             bgm[BGMN_GAMEWIND]+=1;
-                        }ef(n==0xf7){	// 風右向き
+                        }
+                            else if (n==0xf7){	// 風右向き
                             windmap[z]=0x2;
                             bgm[BGMN_GAMEWIND]+=1;
-                        }ef(n==0xf8){	// ミスター・フレーム
+                        }
+                            else if (n==0xf8){	// ミスター・フレーム
                             new Cf3MapObjectmrframe(x,y);
                             bgm[BGMN_GAMEMRFRAME]+=40;
-                        }ef(n==0xf9){	// ウナギカズラ
+                        }
+                            else if (n==0xf9){	// ウナギカズラ
                             new Cf3MapObjectEelPitcher(x,y);
                             bgm[BGMN_GAMEEELPITCHER]+=5;
-                        }ef(n==0xfa){	// 氷
+                        }
+                            else if (n==0xfa){	// 氷
                             new Cf3MapObjectIceSource(x,y);
                             bgm[BGMN_GAMEICE]+=8;
-                        }ef(n==0xfb){	// 火
+                        }
+                            else if (n==0xfb){	// 火
                             new Cf3MapObjectFire(x,y);
                             bgm[BGMN_GAMEFIRE]+=8;
-                        }ef(n==0xfc){	// とげとげ
+                        }
+                            else if (n==0xfc){	// とげとげ
                             new Cf3MapObjectNeedle(x,y,1);
                             bgm[BGMN_GAMENEEDLE]+=4;
-                        }ef(n==0xfd){	// とげとげ
+                        }
+                            else if (n==0xfd){	// とげとげ
                             new Cf3MapObjectNeedle(x,y,2);
                             bgm[BGMN_GAMENEEDLE]+=4;
-                        }ef(n==0xfe){	// とげとげ
+                        }
+                            else if (n==0xfe){	// とげとげ
                             new Cf3MapObjectNeedle(x,y,3);
                             bgm[BGMN_GAMENEEDLE]+=4;
                         }

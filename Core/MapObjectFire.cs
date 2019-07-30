@@ -41,12 +41,12 @@ void OnPreDraw()
 {
 	if (CApp::random(40)) { m_Phase++; m_Phase%=PHASEMAX; }
 	if (m_Size<GetSize()) { m_Size++; }
-	ef (m_Size>GetSize()) { m_Size--; }
+        else if (m_Size>GetSize()) { m_Size--; }
 }
 void OnMove()
 {
 	if (m_Delay>0) m_Delay--;
-	ef (m_Delay<0) m_Delay++;
+        else if (m_Delay<0) m_Delay++;
 }
 void OnDraw(CDIB32* lp)
 {

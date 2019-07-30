@@ -231,11 +231,11 @@ private:
 			if (k<2 || 4<k) { m_nSeek = nBack; return; }
 			buf[k] = '\0';
 			if (stricmp(buf,"amp"	)==0) c = '&';
-			ef (stricmp(buf,"lt"	)==0) c = '<';
-			ef (stricmp(buf,"gt"	)==0) c = '>';
-			ef (stricmp(buf,"quot"	)==0) c = '"';
-			ef (stricmp(buf,"apos"	)==0) c = '\'';
-			ef (stricmp(buf,"nbsp"	)==0) c = ' ';
+                else if (stricmp(buf,"lt"	)==0) c = '<';
+                else if (stricmp(buf,"gt"	)==0) c = '>';
+                else if (stricmp(buf,"quot"	)==0) c = '"';
+                else if (stricmp(buf,"apos"	)==0) c = '\'';
+                else if (stricmp(buf,"nbsp"	)==0) c = ' ';
 			else m_nSeek = nBack;
 		}
 	}
@@ -322,7 +322,8 @@ public:
 								EntityReference(c);
 								buf[k++]=c;
 							}
-						}ef(c=='\'') {
+						}
+                            else if (c=='\'') {
 							// シングルクォーテーションもありうるよな
 							while (true) {
 								c=Read();
@@ -348,12 +349,13 @@ public:
 						if (pValue) {
 							if (stricmp(pAttribute,"align" )==0) {
 								if (stricmp(pValue,"left"  )==0) m_lpHTML->m_Align=AlignLeft;
-								ef (stricmp(pValue,"center")==0) m_lpHTML->m_Align=AlignCenter;
-								ef (stricmp(pValue,"right" )==0) m_lpHTML->m_Align=AlignRight;
-							}ef(stricmp(pAttribute,"valign")==0) {
+                                        else if (stricmp(pValue,"center")==0) m_lpHTML->m_Align=AlignCenter;
+                                        else if (stricmp(pValue,"right" )==0) m_lpHTML->m_Align=AlignRight;
+							}
+                                    else if (stricmp(pAttribute,"valign")==0) {
 								if (stricmp(pValue,"bottom")==0) m_lpHTML->m_VAlign=AlignBottom;
-								ef (stricmp(pValue,"middle")==0) m_lpHTML->m_VAlign=AlignMiddle;
-								ef (stricmp(pValue,"top"   )==0) m_lpHTML->m_VAlign=AlignTop;
+                                        else if (stricmp(pValue,"middle")==0) m_lpHTML->m_VAlign=AlignMiddle;
+                                        else if (stricmp(pValue,"top"   )==0) m_lpHTML->m_VAlign=AlignTop;
 							}
 						}
 						break;
@@ -365,7 +367,8 @@ public:
 								case '-': Current().fontSize -= atoi(pValue+1); break;
 								default : Current().fontSize  = atoi(pValue  ); break;
 								}
-							}ef(stricmp(pAttribute,"color")==0) {
+							}
+                                    else if (stricmp(pAttribute,"color")==0) {
 								COLORREF col;
 								if ((col=GetColor(pValue))!=CLR_INVALID)
 									Current().rgbColor = col;
@@ -376,16 +379,19 @@ public:
 						if (pValue) {
 							if (stricmp(pAttribute,"src")==0) {
 								Current().data = pValue;
-							}ef(stricmp(pAttribute,"clip")==0) {
+							}
+                                    else if (stricmp(pAttribute,"clip")==0) {
 								sscanf(pValue, "%d,%d,%d,%d"
 									,&Current().rcClip.left
 									,&Current().rcClip.top
 									,&Current().rcClip.right
 									,&Current().rcClip.bottom
 									);
-							}ef(stricmp(pAttribute,"width")==0) {
+							}
+                                    else if (stricmp(pAttribute,"width")==0) {
 								Current().szImage.cx = atoi(pValue);
-							}ef(stricmp(pAttribute,"height")==0) {
+							}
+                                    else if (stricmp(pAttribute,"height")==0) {
 								Current().szImage.cy = atoi(pValue);
 							}
 						}

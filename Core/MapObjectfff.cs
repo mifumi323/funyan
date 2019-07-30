@@ -78,7 +78,8 @@ void HitCheck()
 				m_DY = 0;
 			}
 		}
-	}ef(m_DY<0){	// 飛ぶとき
+	}
+        else if (m_DY<0){	// 飛ぶとき
 		if (CT!=CY) {
 			if (m_pParent->GetHit(CX,CT,HIT_BOTTOM)) {
 				m_Y = 14+32*CY;
@@ -133,12 +134,14 @@ void Synergy()
 						theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_DY=-10;
 					}
-				}ef(TL.IsIn(objX+16,m_X,objX+29)) {
+				}
+                    else if (TL.IsIn(objX+16,m_X,objX+29)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_DX=10;
 					}
-				}ef(TL.IsIn(objX-29,m_X,objX-16)) {
+				}
+                    else if (TL.IsIn(objX-29,m_X,objX-16)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_DX=-10;
@@ -150,12 +153,14 @@ void Synergy()
 						m_Y = objY-30;
 						m_DY=0;
 					}
-				}ef(TL.IsIn(objX+16,m_X,objX+29)) {
+				}
+                    else if (TL.IsIn(objX+16,m_X,objX+29)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						m_X = objX+30;
 						m_DX=0;
 					}
-				}ef(TL.IsIn(objX-29,m_X,objX-16)) {
+				}
+                    else if (TL.IsIn(objX-29,m_X,objX-16)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						m_X = objX-30;
 						m_DX=-0;
@@ -228,12 +233,15 @@ void Synergy()
 		}
 		if (m_Power>1.0f/256.0f) {
 			Freeze();
-		}ef(m_Power>1.0f/4096.0f) {
+		}
+            else if (m_Power>1.0f/4096.0f) {
 			m_nPower=4;
 			m_PowerX = m_PowerY = 0.0f;
-		}ef(m_Power<-1.0f/256.0f) {
+		}
+            else if (m_Power<-1.0f/256.0f) {
 			Die();
-		}ef(m_Power<-1.0f/4096.0f) {
+		}
+            else if (m_Power<-1.0f/4096.0f) {
 		}else{
 			m_PowerX = m_PowerY = 0.0f;
 		}
@@ -289,7 +297,8 @@ void OnMove()
 			m_DY += ddy;
 		}
 		if (m_pInput->GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
-	}ef(m_State==BREATHEIN) {
+	}
+        else if (m_State==BREATHEIN) {
 		// 冷気充填中
 		m_ChargePower+=2.0f;
 		float ddx=0, ddy=0;
@@ -306,7 +315,8 @@ void OnMove()
 		m_DY -= m_DY*FLYFRICTION;
 		m_DY += ddy;
 		if (!m_pInput->GetKeyPressed(F3KEY_ATTACK)) BreatheOut();
-	}ef(m_State==BREATHEOUT) {
+	}
+        else if (m_State==BREATHEOUT) {
 		// 冷気放出！！
 		m_ChargePower-=1.0f;
 		m_DX -= (m_DX-Wind)*FLYFRICTION;
@@ -318,13 +328,15 @@ void OnMove()
 				Tire();
 			}
 		}
-	}ef(m_State==TIRED) {
+	}
+        else if (m_State==TIRED) {
 		// ちかれたー！
 		m_PoseCounter--;
 		m_DX -= (m_DX-Wind)*FLYFRICTION;
 		m_DY -= m_DY*FLYFRICTION;
 		if (m_PoseCounter==0) m_State=NORMAL;
-	}ef(m_State==FROZEN) {
+	}
+        else if (m_State==FROZEN) {
 		// 凍っちゃった…
 		m_PoseCounter--;
 		m_DX -= (m_DX-Wind)*FLYFRICTION/5;

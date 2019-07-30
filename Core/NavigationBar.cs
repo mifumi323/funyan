@@ -66,7 +66,7 @@ class Cf3NavigationBar
 		if (m_ScrollTo>t) m_ScrollTo-=t;
 		if (m_ScrollTo<0) m_ScrollTo+=t;
 		if (m_Scroll-m_ScrollTo>t/2) m_Scroll = (m_Scroll+m_ScrollTo-t)/2;
-		ef (m_ScrollTo-m_Scroll>t/2) m_Scroll = (m_Scroll+m_ScrollTo+t)/2;
+            else if (m_ScrollTo-m_Scroll>t/2) m_Scroll = (m_Scroll+m_ScrollTo+t)/2;
 		else m_Scroll = (m_Scroll+m_ScrollTo)/2;
 	}else{
 		m_ScrollTo = m_Scroll = 0;

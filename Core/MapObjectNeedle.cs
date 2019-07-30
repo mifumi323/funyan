@@ -131,14 +131,16 @@ virtual void OnMove()
 					m_State=NDS_RIGHT;
 				}
 			}
-		}ef(m_State==NDS_LEFT) {
+		}
+            else if (m_State==NDS_LEFT) {
 			m_X-=1;
 			if (!m_pParent->GetHit(floor((m_X-16)/32),floor((m_Y+16)/32),HIT_TOP)||
 				m_pParent->GetHit(floor((m_X-16)/32),floor((m_Y)/32),HIT_RIGHT)) {
 				m_State=NDS_STOP;
 				m_Speed=20;
 			}
-		}ef(m_State==NDS_RIGHT) {
+		}
+            else if (m_State==NDS_RIGHT) {
 			m_X+=1;
 			if (!m_pParent->GetHit(floor((m_X+15)/32),floor((m_Y+16)/32),HIT_TOP)||
 				m_pParent->GetHit(floor((m_X+15)/32),floor((m_Y)/32),HIT_LEFT)) {
@@ -146,7 +148,8 @@ virtual void OnMove()
 				m_Speed=20;
 			}
 		}
-	}ef(m_Type==NDT_VERTICAL) {
+	}
+        else if (m_Type==NDT_VERTICAL) {
 		if (m_State==NDS_STOP) {
 			if (m_Speed!=0) {
                     TL.BringClose(ref m_Speed,0.0f,1.0f);
@@ -154,12 +157,14 @@ virtual void OnMove()
 					m_State=NDS_UP;
 				}
 			}
-		}ef(m_State==NDS_UP) {
+		}
+            else if (m_State==NDS_UP) {
                 TL.BringClose(ref m_Y,m_StartY,1.0f);
 			if (m_Y==m_StartY) {
 				m_State=NDS_STOP;
 			}
-		}ef(m_State==NDS_DOWN) {
+		}
+            else if (m_State==NDS_DOWN) {
 			m_Speed+=0.2f;
                 TL.Saturate(0.0f,ref m_Speed,10.0f);
 			m_Y += m_Speed;
@@ -167,12 +172,13 @@ virtual void OnMove()
 				m_Y = floor((m_Y+16)/32)*32-15;
 				m_Speed = 20;
 				m_State=NDS_STOP;
-			}ef(m_Y>m_pParent->GetHeight()*32+16) {
+			}
+                else if (m_Y>m_pParent->GetHeight()*32+16) {
 				m_Type = NDT_DEAD;
 				new Cf3MapObjectEffect(m_X, m_Y, 1);
 			}
 		}
-	}ef(m_Type==NDT_DEAD) {
+	}else if (m_Type==NDT_DEAD) {
 		Kill();
 	}
 }

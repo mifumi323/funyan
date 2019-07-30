@@ -131,7 +131,8 @@ void Synergy()
 						}
 					}
 				}
-			}ef(m_State==EELSEED) {
+			}
+                else if (m_State==EELSEED) {
 				if (TL.IsIn(objX-16,m_X,objX+16)) {
 					if (TL.IsIn(objY,m_Y,objY+16)) {
 						if (((Cf3MapObjectEelPitcher*)(*it))->m_State!=EELDEAD) {
@@ -163,18 +164,21 @@ void OnMove()
 		if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32),HIT_RIGHT)) {
 			m_DX = 0;
 			m_X = floor(m_X/32)*32+16;
-		}ef(m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32),HIT_LEFT)) {
+		}
+            else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32),HIT_LEFT)) {
 			m_DX = 0;
 			m_X = floor(m_X/32)*32+16;
 		}
-	}ef(m_State==EELFROZEN) {
+	}
+        else if (m_State==EELFROZEN) {
 		if (--m_Delay==0) {
 			m_Y += 16;
 			m_State = EELSEED;
 			m_Delay=200;
 			new Cf3MapObjectEffect(m_X, m_Y, 0);
 		}
-	}ef(m_State==EELSEED) {
+	}
+        else if (m_State==EELSEED) {
             TL.BringClose(ref m_DY,8.0f,1.0f);
 		m_DX = m_DX + (m_pParent->GetWind(floor(m_X/32),floor(m_Y/32))-m_DX)*0.2;
             TL.Saturate(-14.0f,ref m_DX,14.0f);
@@ -182,7 +186,8 @@ void OnMove()
 		if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32),HIT_RIGHT)) {
 			m_DX = 0;
 			m_X = floor(m_X/32)*32+16;
-		}ef(m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32),HIT_LEFT)) {
+		}
+            else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32),HIT_LEFT)) {
 			m_DX = 0;
 			m_X = floor(m_X/32)*32+16;
 		}
@@ -196,15 +201,17 @@ void OnMove()
 				if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32),HIT_RIGHT)) {
 					m_DX = 0;
 					m_X = floor(m_X/32)*32+16;
-				}ef(m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32),HIT_LEFT)) {
+				}
+                    else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32),HIT_LEFT)) {
 					m_DX = 0;
 					m_X = floor(m_X/32)*32+16;
 				}
 			}
 		}
-	}ef(m_State==EELBUD) {
+	}else if (m_State==EELBUD) {
 		if (--m_Delay==0) m_State = EELLEAF;
-	}ef(m_State==EELDEAD) {
+	}
+        else if (m_State==EELDEAD) {
 		Kill();
 	}
 }
@@ -244,7 +251,8 @@ void OnDraw(CDIB32* lp)
 			rc.left=offset1+offset2;	rc.top = 80;
 			rc.right=rc.left+32;		rc.bottom = rc.top+height3;
 			lp->Blt(graphic,m_nVX,m_nVY+32,&rc);
-		}ef(TL.IsIn(33,height,48)) {
+		}
+            else if (TL.IsIn(33,height,48)) {
 			int height2 = height-32;
 			// ふくろ
 			rc.left=offset1+offset2;	rc.top = 64;
@@ -254,7 +262,8 @@ void OnDraw(CDIB32* lp)
 			rc.left=offset1+offset2;	rc.top = 80;
 			rc.right=rc.left+32;		rc.bottom = rc.top+16;
 			lp->Blt(graphic,m_nVX,m_nVY+height,&rc);
-		}ef(height>48) {
+		}
+            else if (height>48) {
 			// ふくろ
 			rc.left=offset1+offset2;	rc.top = 64;
 			rc.right=rc.left+32;		rc.bottom = rc.top+16;
@@ -264,7 +273,8 @@ void OnDraw(CDIB32* lp)
 			rc.right=rc.left+32;		rc.bottom = rc.top+16;
 			lp->Blt(graphic,m_nVX,m_nVY+48,&rc);
 		}
-	}ef(m_State==EELSEED) {
+	}
+        else if (m_State==EELSEED) {
 		rc.left = 0;	rc.top = 0;
 		rc.right = 32;	rc.bottom = 32;
 		lp->Blt(graphic,m_nVX,m_nVY,&rc);

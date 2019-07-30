@@ -92,7 +92,8 @@ Cf3MapObjectEffect(float x, float y, int EffectType)
 			m_Star[i].f =0.9f;
 			m_Star[i].n =40;
 		}
-	}ef(EffectType==1) {
+	}
+        else if (EffectType==1) {
 		m_StarNum = 12;
 		m_Star = new tagStar[m_StarNum];
 		for (int i=0; i<m_StarNum; i++) {

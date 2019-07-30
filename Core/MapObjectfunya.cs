@@ -164,7 +164,8 @@ void HitCheck()
 				m_DX = 0;
 				m_HitLeft = true;
 			}
-		}ef ((double)CL==ceil((m_X-14)/32)) {
+		}
+        else if ((double)CL==ceil((m_X-14)/32)) {
 			// (m_X-14)/32が整数ということは境界値でギリギリ当たっているということ！！
 			if (m_pParent->GetHit(CL-1,CY,HIT_RIGHT)) {
 				m_X = 14+32*CX;
@@ -182,7 +183,8 @@ void HitCheck()
 				m_HitBottom = true;
 			}
 		}
-	}ef(m_DY<0){	// 飛ぶとき
+	}
+    else if (m_DY<0){	// 飛ぶとき
 		if (CT!=CY) {
 			if (m_pParent->GetHit(CX,CT,HIT_BOTTOM)) {
 				m_Y = 14+32*CY;
@@ -306,13 +308,13 @@ void GetViewPos(int &vx, int &vy)
 		if (m_pInput->GetKeyPressed(F3KEY_DOWN)) ty+=1;
 		if (m_pInput->GetKeyPressed(F3KEY_UP)) ty+=2;
 		if (tx==0) { ; }
-		ef (tx==1) { m_VOffsetToX = 100; }
-		ef (tx==2) { m_VOffsetToX = -100; }
-		ef (tx==3) { m_VOffsetToX = 0; }
+        else if (tx==1) { m_VOffsetToX = 100; }
+        else if (tx==2) { m_VOffsetToX = -100; }
+        else if (tx==3) { m_VOffsetToX = 0; }
 		if (ty==0) { ; }
-		ef (ty==1) { m_VOffsetToY = 50; }
-		ef (ty==2) { m_VOffsetToY = -50; }
-		ef (ty==3) { m_VOffsetToY = 0; }
+        else if (ty==1) { m_VOffsetToY = 50; }
+        else if (ty==2) { m_VOffsetToY = -50; }
+        else if (ty==3) { m_VOffsetToY = 0; }
         TL.BringClose(ref m_VOffsetX,m_VOffsetToX,1+(int)(m_DX*m_VOffsetToX<0)+(int)(m_VOffsetX*m_VOffsetToX<0));
         TL.BringClose(ref m_VOffsetY,m_VOffsetToY,1+(int)(m_DY*m_VOffsetToY<0)+(int)(m_VOffsetY*m_VOffsetToY<0));
 		ox = m_VOffsetX;	oy = m_VOffsetY;
@@ -339,12 +341,14 @@ void Synergy()
 						m_Y--;
 						HighJump();
 					}
-				}ef(TL.IsIn(objX+16,m_X,objX+29)) {
+				}
+                else if (TL.IsIn(objX+16,m_X,objX+29)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						if (m_bOriginal) theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_DX=10;
 					}
-				}ef(TL.IsIn(objX-29,m_X,objX-16)) {
+				}
+                else if (TL.IsIn(objX-29,m_X,objX-16)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						if (m_bOriginal) theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_DX=-10;
@@ -357,12 +361,14 @@ void Synergy()
 						m_Y = objY-30;
 						if (m_State==JUMPING) Land();
 					}
-				}ef(TL.IsIn(objX+16,m_X,objX+29)) {
+				}
+                else if (TL.IsIn(objX+16,m_X,objX+29)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						m_X = objX+30;
 						m_DX=0;
 					}
-				}ef(TL.IsIn(objX-29,m_X,objX-16)) {
+				}
+                else if (TL.IsIn(objX-29,m_X,objX-16)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						m_X = objX-30;
 						m_DX=-0;
@@ -442,15 +448,19 @@ void Synergy()
 #if !INVINCITY
 			Freeze();
 #endif
-		}ef(m_Power>1.0f/4096.0f) {
+		}
+        else if (m_Power>1.0f/4096.0f) {
 			m_nPower=4;
 			m_PowerX = m_PowerY = 0.0f;
-		}ef(m_Power<-1.0f/256.0f) {
+		}
+        else if (m_Power<-1.0f/256.0f) {
 #if !INVINCITY
 			Die();
-		}ef(m_Power<-1.0f/4096.0f) {
+		}else if(m_Power<-1.0f/4096.0f) {
 #endif
-		}else{
+        }
+        else
+        {
 			m_PowerX = m_PowerY = 0.0f;
 		}
 	}
@@ -479,22 +489,33 @@ void OnPreDraw()
 	if (!IsValid()) return;
 	// PoseCounterの処理
 	if (m_State==STANDING) {	// 立ってるとき
-	}ef(m_State==RUNNING) {
+	}
+    else if (m_State==RUNNING) {
 		++m_PoseCounter %= 12;
-	}ef(m_State==WALKING) {
-	}ef(m_State==CHARGING) {
-	}ef(m_State==JUMPING) {
-	}ef(m_State==BREATHEIN) {
-	}ef(m_State==BREATHEOUT) {
-	}ef(m_State==TIRED) {
+	}
+    else if (m_State==WALKING) {
+	}
+    else if (m_State==CHARGING) {
+	}
+    else if (m_State==JUMPING) {
+	}
+    else if (m_State==BREATHEIN) {
+	}
+    else if (m_State==BREATHEOUT) {
+	}
+    else if (m_State==TIRED) {
 		m_PoseCounter2 = m_PoseCounter-1;
-	}ef(m_State==DAMAGED) {
-	}ef(m_State==DEAD) {
-	}ef(m_State==SLEEPING) {
+	}
+    else if (m_State==DAMAGED) {
+	}
+    else if (m_State==DEAD) {
+	}
+    else if (m_State==SLEEPING) {
 		++m_PoseCounter %= 40;
 		m_PoseCounter2 = m_PoseCounter-1;
 		theSetting->m_SleepTime++;
-	}ef(m_State==BLINKING) {
+	}
+    else if (m_State==BLINKING) {
 	}
 	if (m_Power<-1.0f/4096.0f) { ++m_PoseCounter2 %= 40; }
 }
@@ -525,7 +546,8 @@ void OnMove()
 		if (!m_HitBottom) {
 			Fall();
 		}
-	}ef(m_State==RUNNING) {
+	}
+    else if (m_State==RUNNING) {
 		// 走ってるとき
 		int AXL = 0, AXR = 0;
 		if (m_PowerX<=0 && m_pInput->GetKeyPressed(F3KEY_LEFT)) AXL = 1;
@@ -541,7 +563,8 @@ void OnMove()
 		if (!m_HitBottom) {
 			Fall();
 		}
-	}ef(m_State==WALKING) {
+	}
+    else if (m_State==WALKING) {
 		// 歩いてるとき
 		int AXL = 0, AXR = 0;
 		if (m_PowerX<=0 && m_pInput->GetKeyPressed(F3KEY_LEFT)) AXL = 1;
@@ -555,7 +578,8 @@ void OnMove()
 		if (m_PowerY<=0 && m_pInput->GetKeyPushed(F3KEY_JUMP)) StartJump();
 		if (m_pInput->GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
 		if (!m_HitBottom) Fall();
-	}ef(m_State==CHARGING) {
+	}
+    else if (m_State==CHARGING) {
 		// パワー充填中
 		if (m_ChargePower>0) {
 			m_ChargePower -= m_ChargeDec;
@@ -566,7 +590,8 @@ void OnMove()
 		if (m_pInput->GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
 		if (!m_pInput->GetKeyPressed(F3KEY_JUMP)) Jump();
 		if (!m_HitBottom) Fall();
-	}ef(m_State==JUMPING) {
+	}
+    else if (m_State==JUMPING) {
 		// 空中
 		if (m_DY>=0) {
 			int AXL = 0, AXR = 0;
@@ -589,7 +614,8 @@ void OnMove()
 		}
 		if (m_pInput->GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
 		if (m_HitBottom) Land();
-	}ef(m_State==BREATHEIN) {
+	}
+    else if (m_State==BREATHEIN) {
 		// 冷気充填中
 		m_ChargePower+=1.0f;
 		if (m_pInput->GetKeyPushed(F3KEY_LEFT)) m_Direction = DIR_LEFT;
@@ -610,7 +636,8 @@ void OnMove()
 			}
 		}
 		if (!m_pInput->GetKeyPressed(F3KEY_ATTACK)) BreatheOut();
-	}ef(m_State==BREATHEOUT) {
+	}
+    else if (m_State==BREATHEOUT) {
 		// 冷気放出！！
 		m_ChargePower-=1.0f;
 		if (m_HitBottom) {
@@ -632,7 +659,8 @@ void OnMove()
 				Tire();
 			}
 		}
-	}ef(m_State==TIRED) {
+	}
+    else if (m_State==TIRED) {
 		// ちかれたー！
 		m_PoseCounter--;
 		if (m_HitBottom) {
@@ -645,7 +673,8 @@ void OnMove()
 			m_DY -= m_DY*JUMPFRICTIONY;
 		}
 		if (m_PoseCounter==0) Land();
-	}ef(m_State==FROZEN) {
+	}
+    else if (m_State==FROZEN) {
 		// 凍っちゃった…
 		m_PoseCounter--;
 		if (m_HitBottom) {
@@ -680,41 +709,54 @@ virtual void OnDraw(CDIB32* lp)
 	SetViewPos(-16,-15);
 	if (m_State==STANDING) {	// 立ってるとき
 		if (m_pInput->GetKeyPressed(F3KEY_SMILE)) CX = 18;
-	}ef(m_State==RUNNING) {
+	}
+    else if (m_State==RUNNING) {
 		CX = m_PoseCounter<6?m_PoseCounter+2:14-m_PoseCounter;
-	}ef(m_State==WALKING) {
+	}
+    else if (m_State==WALKING) {
 		CX = 11;
-	}ef(m_State==CHARGING) {
+	}
+    else if (m_State==CHARGING) {
 		CX=	(m_ChargePower>=m_JumpFunc[0].Power?24:
 			(m_ChargePower>=m_JumpFunc[1].Power?11:
 			(m_ChargePower>=m_JumpFunc[2].Power?25:
 			(m_ChargePower>=m_JumpFunc[3].Power?12:
 			12))));
-	}ef(m_State==JUMPING) {
+	}
+    else if (m_State==JUMPING) {
 		CX = ((m_DY>=0)?10:9);
-	}ef(m_State==BREATHEIN) {
+	}
+    else if (m_State==BREATHEIN) {
 		CX=	(m_ChargePower< 40.0f?15:
 			(m_ChargePower<120.0f?16:
 			17));
 		if (!m_HitBottom) CX += 12;
-	}ef(m_State==BREATHEOUT) {
+	}
+    else if (m_State==BREATHEOUT) {
 		CX = 14;
 		if (!m_HitBottom) CX += 12;
-	}ef(m_State==TIRED) {
+	}
+    else if (m_State==TIRED) {
 		CX = ((m_PoseCounter+1)%40<20)?21:22;
-	}ef(m_State==DAMAGED) {
+	}
+    else if (m_State==DAMAGED) {
 		CX = 13;
-	}ef(m_State==FROZEN) {
+	}
+    else if (m_State==FROZEN) {
 		CX = 23;
-	}ef(m_State==DEAD) {
+	}
+    else if (m_State==DEAD) {
 		CX = 13;	CY = 0;
-	}ef(m_State==SMILING) {
+	}
+    else if (m_State==SMILING) {
 		CX = 18;	CY = 0;
-	}ef(m_State==SLEEPING) {
+	}
+    else if (m_State==SLEEPING) {
 		CX = 19+(int)(m_PoseCounter>=20);
 		if (m_Power<-1.0f/4096.0f) CX += 2;
 		CY = 0;
-	}ef(m_State==BLINKING) {
+	}
+    else if (m_State==BLINKING) {
 		CX = m_BananaDistance<MAXDISTANCE?1:30;
 		if (m_pInput->GetKeyPressed(F3KEY_SMILE)) CX = 18;
 	}

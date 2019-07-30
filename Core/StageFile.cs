@@ -150,7 +150,8 @@ class Cf3StageFile
 	if (m_StageHeader.datasize == m_StageHeader.packsize) {
 		// 無圧縮
 		AnalyzeData((BYTE*)File.GetMemory()+sizeof(tagf3StageHeader));
-	}ef(m_StageHeader.datasize > m_StageHeader.packsize) {
+	}
+    else if (m_StageHeader.datasize > m_StageHeader.packsize) {
 		// LZSSによる圧縮
 		BYTE* data = (BYTE*)::GlobalAlloc(GMEM_FIXED | GMEM_NOCOMPACT,m_StageHeader.datasize+1);
 		CLZSS lzss;

@@ -70,42 +70,55 @@ void OnDraw(CDIB32* lp)
 	int CX=0, CY=m_funya->m_Direction;
 	SetViewPos(-16,-15);
 	if (m_funya->m_State==Cf3MapObjectfunya::STANDING) {	// 立ってるとき
-	}ef(m_funya->m_State==Cf3MapObjectfunya::RUNNING) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::RUNNING) {
 		CX = m_funya->m_PoseCounter<6?m_funya->m_PoseCounter+2:14-m_funya->m_PoseCounter;
-	}ef(m_funya->m_State==Cf3MapObjectfunya::WALKING) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::WALKING) {
 		CX = 11;
-	}ef(m_funya->m_State==Cf3MapObjectfunya::CHARGING) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::CHARGING) {
 		CX=	
 		(m_funya->m_ChargePower>=m_funya->m_JumpFunc[0].Power?24:
 		(m_funya->m_ChargePower>=m_funya->m_JumpFunc[1].Power?11:
 		(m_funya->m_ChargePower>=m_funya->m_JumpFunc[2].Power?25:
 		(m_funya->m_ChargePower>=m_funya->m_JumpFunc[3].Power?12:
 		12))));
-	}ef(m_funya->m_State==Cf3MapObjectfunya::JUMPING) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::JUMPING) {
 		CX = ((m_funya->m_DY>=0)?10:9);
-	}ef(m_funya->m_State==Cf3MapObjectfunya::BREATHEIN) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::BREATHEIN) {
 		if (m_funya->m_ChargePower<40.0f)	{ CX = 15; }
-		ef (m_funya->m_ChargePower<120.0f)	{ CX = 16; }
+            else if (m_funya->m_ChargePower<120.0f)	{ CX = 16; }
 		else						{ CX = 17; }
 		if (!m_funya->m_HitBottom) CX += 12;
-	}ef(m_funya->m_State==Cf3MapObjectfunya::BREATHEOUT) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::BREATHEOUT) {
 		CX = 14;
 		if (!m_funya->m_HitBottom) CX += 12;
-	}ef(m_funya->m_State==Cf3MapObjectfunya::TIRED) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::TIRED) {
 		CX = ((m_funya->m_PoseCounter+1)%40<20)?21:22;
-	}ef(m_funya->m_State==Cf3MapObjectfunya::DAMAGED) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::DAMAGED) {
 		CX = 13;
-	}ef(m_funya->m_State==Cf3MapObjectfunya::FROZEN) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::FROZEN) {
 		CX = 23;
-	}ef(m_funya->m_State==Cf3MapObjectfunya::DEAD) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::DEAD) {
 		CX = 13;	CY = 0;
-	}ef(m_funya->m_State==Cf3MapObjectfunya::SMILING) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::SMILING) {
 		CX = 18;	CY = 0;
-	}ef(m_funya->m_State==Cf3MapObjectfunya::SLEEPING) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::SLEEPING) {
 		CX = 19+(int)(m_funya->m_PoseCounter>=20);
 		if (m_funya->m_Power<-1.0f/4096.0f) CX += 2;
 		CY = 0;
-	}ef(m_funya->m_State==Cf3MapObjectfunya::BLINKING) {
+	}
+        else if (m_funya->m_State==Cf3MapObjectfunya::BLINKING) {
 		CX = 1;
 	}
 	RECT rc = {CX*32, CY*32, CX*32+32, CY*32+32,};
