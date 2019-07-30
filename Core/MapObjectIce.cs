@@ -50,8 +50,8 @@ static void OnDrawAll(CDIB32* lp)
 	m_pParent->GetViewPos(sx,sy);
 	sx = (-sx)>>5; sy = (-sy)>>5;
 	ex = sx+320/32; ey = sy+224/32;
-	Saturate(sx,ex,m_pParent->GetWidth()-1);
-	Saturate(sy,ey,m_pParent->GetHeight()-1);
+        TL.Saturate(sx,ref ex,m_pParent->GetWidth()-1);
+        TL.Saturate(sy,ref ey,m_pParent->GetHeight()-1);
 	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx-1, sy-1, ex+1, ey+1, MOT_ICE); (*it)!=NULL; it++) {
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
@@ -72,8 +72,8 @@ void OnMove()
 	m_DX -= (m_DX-Wind)*FRICTION;
 	m_DY += GRAVITY;
 	m_DY -= m_DY*FRICTION;
-	Saturate(-13.0f,m_DX,13.0f);
-	Saturate(-13.0f,m_DY,13.0f);
+        TL.Saturate(-13.0f,ref m_DX,13.0f);
+        TL.Saturate(-13.0f,ref m_DY,13.0f);
 	m_X += m_DX;
 	int s=GetSize();
 	if (m_DX>0) {

@@ -95,8 +95,8 @@ static void OnDrawAll(CDIB32* lp)
 	m_pParent->GetViewPos(sx,sy);
 	sx = (-sx)>>5; sy = (-sy)>>5;
 	ex = sx+320/32; ey = sy+224/32;
-	Saturate(sx,ex,m_pParent->GetWidth()-1);
-	Saturate(sy,ey,m_pParent->GetHeight()-1);
+        TL.Saturate(sx,ref ex,m_pParent->GetWidth()-1);
+        TL.Saturate(sy,ref ey,m_pParent->GetHeight()-1);
 	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx-1, sy-1, ex+1, ey+1, MOT_GEASPRIN); (*it)!=NULL; it++) {
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
@@ -131,22 +131,22 @@ void Reaction(Cf3MapObjectBase* obj)
 	obj->GetPos(objX,objY);
 	switch(obj->GetType()) {
 	case MOT_FUNYA:{
-		if (IsIn(m_X-16,objX,m_X+16)) {
-			if (IsIn(m_Y-32,objY,m_Y)) {
+		if (TL.IsIn(m_X-16,objX,m_X+16)) {
+			if (TL.IsIn(m_Y-32,objY,m_Y)) {
 				// 踏まれた！
 				Laugh();
 				m_Spring[DIR_FRONT] = 32;
 				if (!m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32),HIT_TOP)) m_GY++;
 			}
-		}ef(IsIn(m_X+16,objX,m_X+29)) {
-			if (IsIn(m_Y-16,objY,m_Y+16)) {
+		}ef(TL.IsIn(m_X+16,objX,m_X+29)) {
+			if (TL.IsIn(m_Y-16,objY,m_Y+16)) {
 				// 右から来た！
 				if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32),HIT_TOP)) Back(DIR_RIGHT);
 				else Laugh();
 				m_Spring[DIR_RIGHT] = 32;
 			}
-		}ef(IsIn(m_X-29,objX,m_X-16)) {
-			if (IsIn(m_Y-16,objY,m_Y+16)) {
+		}ef(TL.IsIn(m_X-29,objX,m_X-16)) {
+			if (TL.IsIn(m_Y-16,objY,m_Y+16)) {
 				// 左から来た！
 				if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32),HIT_TOP)) Back(DIR_LEFT);
 				else Laugh();
@@ -169,8 +169,8 @@ void Synergy()
 		if ((*it)->IsValid()) {
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
-			if (IsIn(objX-16,m_X,objX+16)) {
-				if (IsIn(objY,m_Y,objY+40)) {
+			if (TL.IsIn(objX-16,m_X,objX+16)) {
+				if (TL.IsIn(objY,m_Y,objY+40)) {
 					// 食べられちゃった！！
 					m_State = DEAD;
 					new Cf3MapObjectEffect(m_X, m_Y, 0);
@@ -189,12 +189,12 @@ void Synergy()
 			if ((*it)!=this&&(*it)->IsValid()) {
 				float objX, objY;
 				(*it)->GetPos(objX,objY);
-				if (IsIn(m_X-8,objX,m_X+8)) {
-					if (IsIn(m_Y-32,objY,m_Y)) {
+				if (TL.IsIn(m_X-8,objX,m_X+8)) {
+					if (TL.IsIn(m_Y-32,objY,m_Y)) {
 						// 踏まれた！
 						Laugh();
 						m_Spring[DIR_FRONT] = 32;
-					}ef(IsIn(m_Y,objY,m_Y+32)) {
+					}ef(TL.IsIn(m_Y,objY,m_Y+32)) {
 						// 踏んだ！
 						if (((Cf3MapObjectGeasprin*)(*it))->m_State!=FROZEN) {
 							Jump();
@@ -204,8 +204,8 @@ void Synergy()
 							Freeze();
 						}
 					}
-				}ef(IsIn(m_X+16,objX,m_X+29)) {
-					if (IsIn(m_Y-16,objY,m_Y+16)) {
+				}ef(TL.IsIn(m_X+16,objX,m_X+29)) {
+					if (TL.IsIn(m_Y-16,objY,m_Y+16)) {
 						// 右から来た！
 						if (((Cf3MapObjectGeasprin*)(*it))->m_State!=FROZEN) {
 							Blow(DIR_RIGHT);
@@ -216,8 +216,8 @@ void Synergy()
 							Freeze();
 						}
 					}
-				}ef(IsIn(m_X-29,objX,m_X-16)) {
-					if (IsIn(m_Y-16,objY,m_Y+16)) {
+				}ef(TL.IsIn(m_X-29,objX,m_X-16)) {
+					if (TL.IsIn(m_Y-16,objY,m_Y+16)) {
 						// 左から来た！
 						if (((Cf3MapObjectGeasprin*)(*it))->m_State!=FROZEN) {
 							Blow(DIR_LEFT);
@@ -277,7 +277,7 @@ void OnMove()
 	}ef (m_State==FALLING) {
 		if (m_Delay==0) {
 			m_DY += 2;
-			Saturate(-60,m_DY,60);
+                TL.Saturate(-60,ref m_DY,60);
 			m_GY += m_DY;
 		}
 		m_X = m_GX*8; m_Y = m_GY/8;
@@ -355,9 +355,9 @@ void OnDraw(CDIB32* lp)
 	}ef(m_State==FALLING) {
 		CX = 5;
 	}ef(m_State==LAUGHING) {
-		if (IsIn(20,m_Delay,40)) {
+		if (TL.IsIn(20,m_Delay,40)) {
 			CX = 3+(m_Delay/4&1);
-		}ef(IsIn(0,m_Delay,20)) {
+		}ef(TL.IsIn(0,m_Delay,20)) {
 			CX = 4;
 		}
 	}ef(m_State==BLOWN) {

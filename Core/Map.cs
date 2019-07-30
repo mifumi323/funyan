@@ -87,8 +87,8 @@ class Cf3Map
     void AddMapObject(int x, int y, Cf3MapObjectBase* p)
     {
         if (p==NULL) return;
-        Saturate(0, x, m_Width[1]-1);
-        Saturate(0, y, m_Height[1]-1);
+        TL.Saturate(0, ref x, m_Width[1]-1);
+            TL.Saturate(0, ref y, m_Height[1]-1);
         int i = GetIndex(x, y);
         Cf3MapObjectBase* o=m_pObject[i];
         if (o==NULL) {
@@ -106,8 +106,8 @@ class Cf3Map
     void RemoveMapObject(int x, int y, Cf3MapObjectBase* p)
     {
         if (p==NULL) return;
-        Saturate(0, x, m_Width[1]-1);
-        Saturate(0, y, m_Height[1]-1);
+            TL.Saturate(0, ref x, m_Width[1]-1);
+            TL.Saturate(0, ref y, m_Height[1]-1);
         int i = GetIndex(x, y);
         Cf3MapObjectBase* o=m_pObject[i];
         if (o==p) o = m_pObject[i] = p->m_pNext;
@@ -158,8 +158,8 @@ class Cf3Map
         float objX, objY, dX, dY, fX, fY, power=0.0f;
         DWORD*pixel=dib->GetPtr();
         float offx = m_ScrollRX-320/2, offy = m_ScrollRY-224/2-2;
-        Saturate(0.0f,offx,m_Width[1]*32-320.0f);
-        Saturate(0.0f,offy,m_Height[1]*32-224.0f);
+            TL.Saturate(0.0f,ref offx,m_Width[1]*32-320.0f);
+            TL.Saturate(0.0f,ref offy,m_Height[1]*32-224.0f);
         for (int y=0; y<224; y++) {
             for (int x=0; x<320; x++) {
                 fX=x+offx; fY=y+offy;	// GetViewPosとオフセットの掛け方が逆
@@ -272,8 +272,8 @@ class Cf3Map
     void GetViewPos(int &x, int &y, float scrollx = 1.0f, float scrolly = 1.0f)
     {
         int offx = m_ScrollRX-320/2, offy = m_ScrollRY-224/2-2;
-        Saturate(0,offx,m_Width[1]*32-320);
-        Saturate(0,offy,m_Height[1]*32-224);
+            TL.Saturate(0,ref offx,m_Width[1]*32-320);
+            TL.Saturate(0,ref offy,m_Height[1]*32-224);
         x -=(int)(offx*scrollx); y -= (int)(offy*scrolly);
     }
     void OnMove()
@@ -324,8 +324,8 @@ class Cf3Map
             GetViewPos(sx,sy,mx,my);
             sx = (-sx)>>5; sy = (-sy)>>5;
             ex = sx+320/32; ey = sy+224/32;
-            Saturate(sx,ex,m_Width[0]-1);
-            Saturate(sy,ey,m_Height[0]-1);
+                TL.Saturate(sx,ref ex,m_Width[0]-1);
+                TL.Saturate(sy,ref ey,m_Height[0]-1);
             for (y=sy; y<=ey; y++) {
                 for (x=sx; x<=ex; x++) {
                     z = y*m_Width[0]+x;
@@ -351,8 +351,8 @@ class Cf3Map
             GetViewPos(sx,sy);
             sx = (-sx)>>5; sy = (-sy)>>5;
             ex = sx+320/32; ey = sy+224/32;
-            Saturate(sx,ex,m_Width[1]-1);
-            Saturate(sy,ey,m_Height[1]-1);
+                TL.Saturate(sx,ref ex,m_Width[1]-1);
+                TL.Saturate(sy,ref ey,m_Height[1]-1);
             for (y=sy; y<=ey; y++) {
                 for (x=sx; x<=ex; x++) {
                     z = y*m_Width[1]+x;
@@ -420,33 +420,6 @@ class Cf3Map
         Cf3MapObjectIce::OnDrawAll(lp);
         Cf3MapObjectEffect::OnDrawAll(lp);
         Cf3MapObjectWind::OnDrawAll(lp);
-    /*	// デバッグ
-        if (m_MapData[1]) {
-            CTextDIB32 t;
-            sx = sy = 0;
-            GetViewPos(sx,sy);
-            sx = (-sx)>>5; sy = (-sy)>>5;
-            ex = sx+320/32; ey = sy+224/32;
-            Saturate(sx,ex,m_Width[1]-1);
-            Saturate(sy,ey,m_Height[1]-1);
-            for (y=sy; y<=ey; y++) {
-                for (x=sx; x<=ex; x++) {
-                    z = y*m_Width[1]+x;
-                    vx = x*32; vy = y*32;
-                    GetViewPos(vx,vy);
-                    if (m_pObject[z]) {
-                        Cf3MapObjectBase*p=m_pObject[z];
-                        int q=0;
-                        while (p) {
-                            t.GetFont()->SetText(p->GetID());
-                            t.UpdateText();
-                            lp->Blt(&t, vx+q*4, vy+q*4);
-                            q++; p = p->m_pNext;
-                        }
-                    }
-                }
-            }
-        }*/
         if (m_MapData[2]) {
             float mx = 1.0f;
             if (m_Width[1]-10>0) mx = (float)(m_Width[2]-10)/(m_Width[1]-10);
@@ -456,8 +429,8 @@ class Cf3Map
             GetViewPos(sx,sy,mx,my);
             sx = (-sx)>>5; sy = (-sy)>>5;
             ex = sx+320/32; ey = sy+224/32;
-            Saturate(sx,ex,m_Width[2]-1);
-            Saturate(sy,ey,m_Height[2]-1);
+                TL.Saturate(sx,ref ex,m_Width[2]-1);
+                TL.Saturate(sy,ref ey,m_Height[2]-1);
             for (y=sy; y<=ey; y++) {
                 for (x=sx; x<=ex; x++) {
                     z = y*m_Width[2]+x;
@@ -617,7 +590,7 @@ class Cf3Map
                             windmap[z+dx]|=0x10;
                             if (windmap[z+dx]&0x8) break;
                         }
-                        if (IsIn(-0.01f,wind,0.01f)) {
+                        if (TL.IsIn(-0.01f,wind,0.01f)) {
                             wind = 0.0f;
                         }else{
                             new Cf3MapObjectWind(x,y,dx,wind);

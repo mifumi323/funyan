@@ -37,7 +37,6 @@ void InnerOnDraw(CPlaneBase* lp)
 		}
 		lp->Blt(m_Text,m_nX, m_nY);
 		RECT rc = { 288, 96, 320, 128 };
-		//BringClose(m_CursorY, 32*m_Selected, 8);
 		m_CursorY = (m_CursorY+32*m_Selected)/2;
 		lp->Blt(m_Cursor,m_nX-32, m_nY+m_CursorY,&rc);
 	}

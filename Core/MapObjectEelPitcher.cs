@@ -67,8 +67,8 @@ void Reaction(Cf3MapObjectBase* obj)
 	obj->GetPos(objX,objY);
 	switch(obj->GetType()) {
 	case MOT_FUNYA:{
-		if (IsIn(m_X-16,objX,m_X+16)) {
-			if (IsIn(m_Y-16,objY,m_Y)) {
+		if (TL.IsIn(m_X-16,objX,m_X+16)) {
+			if (TL.IsIn(m_Y-16,objY,m_Y)) {
 				// 踏まれた！！
 				m_bBlinking = true;
 			}
@@ -77,8 +77,8 @@ void Reaction(Cf3MapObjectBase* obj)
 				   }
 	case MOT_NEEDLE:
 	case MOT_GEASPRIN:{
-		if (IsIn(m_X-16,objX,m_X+16)) {
-			if (IsIn(m_Y,objY,m_Y+40)) {
+		if (TL.IsIn(m_X-16,objX,m_X+16)) {
+			if (TL.IsIn(m_Y,objY,m_Y+40)) {
 				// 食べちゃった！！
 				m_Level++;
 			}
@@ -106,8 +106,8 @@ void Synergy()
 				if ((*it)->IsValid()) {
 					float objX, objY;
 					(*it)->GetPos(objX,objY);
-					if (IsIn(m_X-16,objX,m_X+16)) {
-						if (IsIn(m_Y,objY,m_Y+40)) {
+					if (TL.IsIn(m_X-16,objX,m_X+16)) {
+						if (TL.IsIn(m_Y,objY,m_Y+40)) {
 							Freeze();
 						}
 					}
@@ -120,8 +120,8 @@ void Synergy()
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
 			if (m_State==EELLEAF||m_State==EELFROZEN) {
-				if (IsIn(m_X-16,objX,m_X+16)) {
-					if (IsIn(m_Y,objY,m_Y+16)) {
+				if (TL.IsIn(m_X-16,objX,m_X+16)) {
+					if (TL.IsIn(m_Y,objY,m_Y+16)) {
 						if (((Cf3MapObjectEelPitcher*)(*it))->m_State!=EELLEAF) {
 							// 食べちゃった！！
 							m_Level+=((Cf3MapObjectEelPitcher*)(*it))->m_Level;
@@ -132,8 +132,8 @@ void Synergy()
 					}
 				}
 			}ef(m_State==EELSEED) {
-				if (IsIn(objX-16,m_X,objX+16)) {
-					if (IsIn(objY,m_Y,objY+16)) {
+				if (TL.IsIn(objX-16,m_X,objX+16)) {
+					if (TL.IsIn(objY,m_Y,objY+16)) {
 						if (((Cf3MapObjectEelPitcher*)(*it))->m_State!=EELDEAD) {
 							// 食べられちゃった！！
 							m_State = EELDEAD;
@@ -156,9 +156,9 @@ void Synergy()
 void OnMove()
 {
 	if (m_State==EELLEAF){
-		BringClose(m_Y,m_RootY-m_Level*32,4.0f);
+            TL.BringClose(ref m_Y,m_RootY-m_Level*32,4.0f);
 		m_DX = m_DX + (m_pParent->GetWind(floor(m_X/32),floor(m_Y/32))-m_DX)*m_Level*0.1+(m_RootX-m_X)*0.025;
-		Saturate(-14.0f,m_DX,14.0f);
+            TL.Saturate(-14.0f,ref m_DX,14.0f);
 		m_X += m_DX;
 		if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32),HIT_RIGHT)) {
 			m_DX = 0;
@@ -175,9 +175,9 @@ void OnMove()
 			new Cf3MapObjectEffect(m_X, m_Y, 0);
 		}
 	}ef(m_State==EELSEED) {
-		BringClose(m_DY,8.0f,1.0f);
+            TL.BringClose(ref m_DY,8.0f,1.0f);
 		m_DX = m_DX + (m_pParent->GetWind(floor(m_X/32),floor(m_Y/32))-m_DX)*0.2;
-		Saturate(-14.0f,m_DX,14.0f);
+            TL.Saturate(-14.0f,ref m_DX,14.0f);
 		m_X += m_DX;
 		if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32),HIT_RIGHT)) {
 			m_DX = 0;
@@ -238,13 +238,13 @@ void OnDraw(CDIB32* lp)
 			}
 		}
 		SetViewPos(-16,-16);
-		if (IsIn(17,height,32)) {
+		if (TL.IsIn(17,height,32)) {
 			// あご
 			int height3 = height-16;
 			rc.left=offset1+offset2;	rc.top = 80;
 			rc.right=rc.left+32;		rc.bottom = rc.top+height3;
 			lp->Blt(graphic,m_nVX,m_nVY+32,&rc);
-		}ef(IsIn(33,height,48)) {
+		}ef(TL.IsIn(33,height,48)) {
 			int height2 = height-32;
 			// ふくろ
 			rc.left=offset1+offset2;	rc.top = 64;

@@ -15,7 +15,7 @@ private:
 void BreatheOut()
 {
 	int p=floor(m_ChargePower/40.0f)+1;
-	Saturate(1,p,m_nPower);
+        TL.Saturate(1,ref p,m_nPower);
 	int start=-m_Angle+(p-1)*16,angle;
 	for (int i=0; i<p; i++) {
 		angle = start-32*i;
@@ -128,35 +128,35 @@ void Synergy()
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
 			if (!((Cf3MapObjectGeasprin*)(*it))->IsFrozen()) {
-				if (IsIn(objX-16,m_X,objX+15)) {
-					if (IsIn(objY-30,m_Y,objY+16)) {
+				if (TL.IsIn(objX-16,m_X,objX+15)) {
+					if (TL.IsIn(objY-30,m_Y,objY+16)) {
 						theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_DY=-10;
 					}
-				}ef(IsIn(objX+16,m_X,objX+29)) {
-					if (IsIn(objY-16,m_Y,objY+15)) {
+				}ef(TL.IsIn(objX+16,m_X,objX+29)) {
+					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_DX=10;
 					}
-				}ef(IsIn(objX-29,m_X,objX-16)) {
-					if (IsIn(objY-16,m_Y,objY+15)) {
+				}ef(TL.IsIn(objX-29,m_X,objX-16)) {
+					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_DX=-10;
 					}
 				}
 			}else{
-				if (IsIn(objX-16,m_X,objX+15)) {
-					if (IsIn(objY-30,m_Y,objY)&&m_DY>=0) {
+				if (TL.IsIn(objX-16,m_X,objX+15)) {
+					if (TL.IsIn(objY-30,m_Y,objY)&&m_DY>=0) {
 						m_Y = objY-30;
 						m_DY=0;
 					}
-				}ef(IsIn(objX+16,m_X,objX+29)) {
-					if (IsIn(objY-16,m_Y,objY+15)) {
+				}ef(TL.IsIn(objX+16,m_X,objX+29)) {
+					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						m_X = objX+30;
 						m_DX=0;
 					}
-				}ef(IsIn(objX-29,m_X,objX-16)) {
-					if (IsIn(objY-16,m_Y,objY+15)) {
+				}ef(TL.IsIn(objX-29,m_X,objX-16)) {
+					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						m_X = objX-30;
 						m_DX=-0;
 					}
@@ -180,8 +180,8 @@ void Synergy()
 		if ((*it)->IsValid()&&((Cf3MapObjectEelPitcher*)(*it))->IsLeaf()) {
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
-			if (IsIn(objX-16,m_X,objX+16)) {
-				if (IsIn(objY-14,m_Y,objY)) {
+			if (TL.IsIn(objX-16,m_X,objX+16)) {
+				if (TL.IsIn(objY-14,m_Y,objY)) {
 					if (m_DY>=0) {
 						m_Y = objY-14;
 						m_DY=0;

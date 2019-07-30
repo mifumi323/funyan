@@ -44,7 +44,7 @@ void BreatheOut()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	int p=floor(m_ChargePower/40.0f)+1;
-	Saturate(1,p,m_nPower);
+        TL.Saturate(1,ref p,m_nPower);
 	struct { float x, y, dx, dy; } s[4];
 	if (m_Direction==DIR_FRONT) {
 		if (p&1) {
@@ -313,8 +313,8 @@ void GetViewPos(int &vx, int &vy)
 		ef (ty==1) { m_VOffsetToY = 50; }
 		ef (ty==2) { m_VOffsetToY = -50; }
 		ef (ty==3) { m_VOffsetToY = 0; }
-		BringClose(m_VOffsetX,m_VOffsetToX,1+(int)(m_DX*m_VOffsetToX<0)+(int)(m_VOffsetX*m_VOffsetToX<0));
-		BringClose(m_VOffsetY,m_VOffsetToY,1+(int)(m_DY*m_VOffsetToY<0)+(int)(m_VOffsetY*m_VOffsetToY<0));
+        TL.BringClose(ref m_VOffsetX,m_VOffsetToX,1+(int)(m_DX*m_VOffsetToX<0)+(int)(m_VOffsetX*m_VOffsetToX<0));
+        TL.BringClose(ref m_VOffsetY,m_VOffsetToY,1+(int)(m_DY*m_VOffsetToY<0)+(int)(m_VOffsetY*m_VOffsetToY<0));
 		ox = m_VOffsetX;	oy = m_VOffsetY;
 		vx = m_X+ox;	vy = m_Y+oy;
 	}else{
@@ -333,37 +333,37 @@ void Synergy()
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
 			if (!((Cf3MapObjectGeasprin*)(*it))->IsFrozen()) {
-				if (IsIn(objX-16,m_X,objX+15)) {
-					if (IsIn(objY-30,m_Y,objY+16)) {
+				if (TL.IsIn(objX-16,m_X,objX+15)) {
+					if (TL.IsIn(objY-30,m_Y,objY+16)) {
 						if (m_bOriginal) theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_Y--;
 						HighJump();
 					}
-				}ef(IsIn(objX+16,m_X,objX+29)) {
-					if (IsIn(objY-16,m_Y,objY+15)) {
+				}ef(TL.IsIn(objX+16,m_X,objX+29)) {
+					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						if (m_bOriginal) theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_DX=10;
 					}
-				}ef(IsIn(objX-29,m_X,objX-16)) {
-					if (IsIn(objY-16,m_Y,objY+15)) {
+				}ef(TL.IsIn(objX-29,m_X,objX-16)) {
+					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						if (m_bOriginal) theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
 						m_DX=-10;
 					}
 				}
 			}else{
-				if (IsIn(objX-16,m_X,objX+15)) {
-					if (IsIn(objY-30,m_Y,objY)&&m_DY>=0) {
+				if (TL.IsIn(objX-16,m_X,objX+15)) {
+					if (TL.IsIn(objY-30,m_Y,objY)&&m_DY>=0) {
 						m_OnEnemy = true;
 						m_Y = objY-30;
 						if (m_State==JUMPING) Land();
 					}
-				}ef(IsIn(objX+16,m_X,objX+29)) {
-					if (IsIn(objY-16,m_Y,objY+15)) {
+				}ef(TL.IsIn(objX+16,m_X,objX+29)) {
+					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						m_X = objX+30;
 						m_DX=0;
 					}
-				}ef(IsIn(objX-29,m_X,objX-16)) {
-					if (IsIn(objY-16,m_Y,objY+15)) {
+				}ef(TL.IsIn(objX-29,m_X,objX-16)) {
+					if (TL.IsIn(objY-16,m_Y,objY+15)) {
 						m_X = objX-30;
 						m_DX=-0;
 					}
@@ -389,8 +389,8 @@ void Synergy()
 		if ((*it)->IsValid()&&((Cf3MapObjectEelPitcher*)(*it))->IsLeaf()) {
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
-			if (IsIn(objX-16,m_X,objX+16)) {
-				if (IsIn(objY-14,m_Y,objY)) {
+			if (TL.IsIn(objX-16,m_X,objX+16)) {
+				if (TL.IsIn(objY-14,m_Y,objY)) {
 					if (m_DY>=0) {
 						m_OnEnemy = true;
 						m_Y = objY-14;
@@ -512,7 +512,7 @@ void OnMove()
 	if (m_State==STANDING||m_State==SLEEPING||m_State==BLINKING) {
 		// 立ってるとき
 		m_DX -= WINDFACTOR*(m_DX-Wind)*RUNFRICTION;
-		BringClose(m_DX,0.0f,Friction);
+        TL.BringClose(ref m_DX,0.0f,Friction);
 		if (m_DX==0) m_Direction = DIR_FRONT;
 		if (m_State==STANDING && ++m_Sleepy>=30*40/3) Sleep();
 		if (m_State==BLINKING && --m_PoseCounter==0) m_State = STANDING;
@@ -597,7 +597,7 @@ void OnMove()
 		if (m_pInput->GetKeyPushed(F3KEY_UP)) m_Direction = DIR_FRONT;
 		if (m_HitBottom) {
 			m_DX -= WINDFACTOR*(m_DX-Wind)*RUNFRICTION;
-			BringClose(m_DX,0.0f,Friction);
+            TL.BringClose(ref m_DX,0.0f,Friction);
 			if (m_pInput->GetKeyPushed(F3KEY_DOWN)) Sit();
 		}else {
 			m_ChargePower+=1.0f;
@@ -615,7 +615,7 @@ void OnMove()
 		m_ChargePower-=1.0f;
 		if (m_HitBottom) {
 			m_DX -= WINDFACTOR*(m_DX-Wind)*RUNFRICTION;
-			BringClose(m_DX,0.0f,Friction);
+            TL.BringClose(ref m_DX,0.0f,Friction);
 		}else {
 			if (m_DY>=0) {
 				m_DX -= (m_DX-Wind)*JUMPFRICTIONX;
@@ -637,7 +637,7 @@ void OnMove()
 		m_PoseCounter--;
 		if (m_HitBottom) {
 			m_DX -= WINDFACTOR*(m_DX-Wind)*RUNFRICTION;
-			BringClose(m_DX,0.0f,Friction);
+            TL.BringClose(ref m_DX,0.0f,Friction);
 		}else {
 			m_DX -= (m_DX-Wind)*JUMPFRICTIONX;
 			if (m_HitLeft||m_HitRight) m_Direction = DIR_FRONT;
@@ -650,7 +650,7 @@ void OnMove()
 		m_PoseCounter--;
 		if (m_HitBottom) {
 			m_DX -= WINDFACTOR*(m_DX-Wind)*RUNFRICTION/5;
-			BringClose(m_DX,0.0f,Friction/5);
+            TL.BringClose(ref m_DX,0.0f,Friction/5);
 		}else {
 			m_DX -= (m_DX-Wind)*JUMPFRICTIONX/5;
 			m_DY += Gravity*(1+ADDGRAVITY);
@@ -658,9 +658,9 @@ void OnMove()
 		}
 		if (m_PoseCounter==0) Land();
 	}
-	// 速度飽和(めり込み防止)
-	Saturate(-RUNMAX,m_DX,RUNMAX);
-	Saturate(-JUMPMAX,m_DY,FALLMAX);
+    // 速度飽和(めり込み防止)
+    TL.Saturate(-RUNMAX,ref m_DX,RUNMAX);
+    TL.Saturate(-JUMPMAX,ref m_DY,FALLMAX);
 	// 実際の移動+当たり判定
 	// １回の移動ごとに当たり判定
 	// という手順ですり抜けバグは解消されるはず

@@ -12,8 +12,8 @@ protected:
 	case MOT_FUNYA:
 	case MOT_GEASPRIN:{
 		if (m_Type!=NDT_VERTICAL || m_State!=NDS_STOP || m_Speed!=0) return;
-		if (IsIn(m_X-16,objX,m_X+16)) {
-			if (IsIn(m_Y+15,objY,m_Y+271)) {
+		if (TL.IsIn(m_X-16,objX,m_X+16)) {
+			if (TL.IsIn(m_Y+15,objY,m_Y+271)) {
 				m_State = NDS_DOWN;
 			}
 		}
@@ -53,8 +53,8 @@ public:
 	m_pParent->GetViewPos(sx,sy);
 	sx = (-sx)>>5; sy = (-sy)>>5;
 	ex = sx+320/32; ey = sy+224/32;
-	Saturate(sx,ex,m_pParent->GetWidth()-1);
-	Saturate(sy,ey,m_pParent->GetHeight()-1);
+        TL.Saturate(sx,ref ex,m_pParent->GetWidth()-1);
+        TL.Saturate(sy,ref ey,m_pParent->GetHeight()-1);
 	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx, sy, ex, ey, MOT_NEEDLE); (*it)!=NULL; it++) {
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
@@ -96,8 +96,8 @@ void Synergy()
 		if ((*it)->IsValid()) {
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
-			if (IsIn(objX-16,m_X,objX+16)) {
-				if (IsIn(objY,m_Y,objY+40)) {
+			if (TL.IsIn(objX-16,m_X,objX+16)) {
+				if (TL.IsIn(objY,m_Y,objY+40)) {
 					// 食べられちゃった！！
 					m_Type = NDT_DEAD;
 					new Cf3MapObjectEffect(m_X, m_Y, 0);
@@ -122,7 +122,7 @@ virtual void OnMove()
 	}
 	if (m_Type==NDT_HORIZONTAL) {
 		if (m_State==NDS_STOP) {
-			BringClose(m_Speed,0.0f,1.0f);
+			TL.BringClose(ref m_Speed,0.0f,1.0f);
 			if (m_Speed==0) {
 				if (!m_pParent->GetHit(floor((m_X+15)/32),floor((m_Y+16)/32),HIT_TOP)||
 					m_pParent->GetHit(floor((m_X+15)/32),floor((m_Y)/32),HIT_LEFT)) {
@@ -149,19 +149,19 @@ virtual void OnMove()
 	}ef(m_Type==NDT_VERTICAL) {
 		if (m_State==NDS_STOP) {
 			if (m_Speed!=0) {
-				BringClose(m_Speed,0.0f,1.0f);
+                    TL.BringClose(ref m_Speed,0.0f,1.0f);
 				if (m_Speed==0) {
 					m_State=NDS_UP;
 				}
 			}
 		}ef(m_State==NDS_UP) {
-			BringClose(m_Y,m_StartY,1.0f);
+                TL.BringClose(ref m_Y,m_StartY,1.0f);
 			if (m_Y==m_StartY) {
 				m_State=NDS_STOP;
 			}
 		}ef(m_State==NDS_DOWN) {
 			m_Speed+=0.2f;
-			Saturate(0.0f,m_Speed,10.0f);
+                TL.Saturate(0.0f,ref m_Speed,10.0f);
 			m_Y += m_Speed;
 			if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32),HIT_TOP)) {
 				m_Y = floor((m_Y+16)/32)*32-15;
