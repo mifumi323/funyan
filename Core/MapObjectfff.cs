@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectfff : public Cf3MapObjectMain  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectfff : public Cf3MapObjectMain  
 {
 private:
 	void Tire();
@@ -42,3 +44,4 @@ Cf3MapObjectfff(int nCX, int nCY);
 ~Cf3MapObjectfff() { }
 
 };
+}

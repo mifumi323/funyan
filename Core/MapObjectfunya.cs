@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectfunya : public Cf3MapObjectMain  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectfunya : public Cf3MapObjectMain  
 {
 	friend class Cf3MapObjectmrframe;
 friend class CExplainScene;
@@ -72,3 +74,4 @@ Cf3MapObjectfunya(int nCX, int nCY);
 virtual ~Cf3MapObjectfunya() { }
 
 };
+}

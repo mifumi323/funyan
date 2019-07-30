@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectBanana : public Cf3MapObjectBase  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectBanana : public Cf3MapObjectBase  
 {
 private:
 //	CDIB32* m_Graphic;
@@ -17,3 +19,4 @@ Cf3MapObjectBanana(int nCX, int nCY);
 ~Cf3MapObjectBanana();
 
 };
+}

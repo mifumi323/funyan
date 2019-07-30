@@ -1,4 +1,6 @@
-﻿class TNavi
+﻿namespace MifuminSoft.funyan.Core
+{
+class TNavi
 {
     public:
 	TNavi() { dib = NULL; offset = 16; rect.left = rect.top = rect.right = rect.bottom = 0; }
@@ -46,3 +48,4 @@ class Cf3NavigationBar
 };
 
 extern Cf3NavigationBar f3Navi;
+}

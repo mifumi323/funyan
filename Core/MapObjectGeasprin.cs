@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectGeasprin : public Cf3MapObjectBase  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectGeasprin : public Cf3MapObjectBase  
 {
 protected:
 	void Freeze();
@@ -48,3 +50,4 @@ Cf3MapObjectGeasprin(int nCX, int nCY, f3MapObjectDirection direction = DIR_LEFT
 virtual ~Cf3MapObjectGeasprin();
 
 };
+}

@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectEffect : public Cf3MapObjectBase  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectEffect : public Cf3MapObjectBase  
 {
 protected:
 	static set<Cf3MapObjectEffect*> m_EffectList;
@@ -19,3 +21,4 @@ static void OnDrawAll(CDIB32* lp);
 Cf3MapObjectEffect(float x, float y, int EffectType);
 ~Cf3MapObjectEffect();
 };
+}

@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectNeedle : public Cf3MapObjectBase  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectNeedle : public Cf3MapObjectBase  
 {
 protected:
 	void Reaction(Cf3MapObjectBase* obj);
@@ -37,3 +39,4 @@ Cf3MapObjectNeedle(int nCX, int nCY, int nType = 0);
 virtual ~Cf3MapObjectNeedle();
 
 };
+}

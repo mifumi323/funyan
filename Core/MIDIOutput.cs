@@ -1,4 +1,6 @@
-﻿class Cf3MIDIOutput : public CMIDIOutputDM
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MIDIOutput : public CMIDIOutputDM
 {
 protected:
 	bool m_bSecondary;
@@ -13,3 +15,4 @@ Cf3MIDIOutput();
 virtual ~Cf3MIDIOutput();
 
 };
+}

@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectFire : public Cf3MapObjectIceBase  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectFire : public Cf3MapObjectIceBase  
 {
 private:
 	static set<Cf3MapObjectFire*> m_FireList;
@@ -23,3 +25,4 @@ Cf3MapObjectFire(int x, int y);
 virtual ~Cf3MapObjectFire();
 
 };
+}

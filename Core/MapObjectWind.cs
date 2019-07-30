@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectWind : public Cf3MapObjectBase  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectWind : public Cf3MapObjectBase  
 {
 protected:
 	static set<Cf3MapObjectWind*> m_WindList;
@@ -27,3 +29,4 @@ Cf3MapObjectWind(int x, int y, int w, float s);
 virtual ~Cf3MapObjectWind();
 
 };
+}

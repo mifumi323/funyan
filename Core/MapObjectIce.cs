@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectIce : public Cf3MapObjectIceBase  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectIce : public Cf3MapObjectIceBase  
 {
 protected:
 	static set<Cf3MapObjectIce*> Cf3MapObjectIce::m_IceList;
@@ -19,3 +21,4 @@ Cf3MapObjectIce(float x, float y, float dx, float dy);
 virtual ~Cf3MapObjectIce();
 
 };
+}

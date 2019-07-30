@@ -1,4 +1,6 @@
-﻿struct tagf3StageHeader
+﻿namespace MifuminSoft.funyan.Core
+{
+struct tagf3StageHeader
 {
     char ident[8];      // "funya3s1"
     long datasize;      // 展開サイズ
@@ -43,3 +45,4 @@ class Cf3StageFile
     virtual ~Cf3StageFile();
 
 };
+}

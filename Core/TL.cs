@@ -1,4 +1,6 @@
-﻿// min以上max以下に制限する
+﻿namespace MifuminSoft.funyan.Core
+{
+// min以上max以下に制限する
 template<class T>
 void Saturate(T min, T& num, T max)
 {
@@ -62,4 +64,5 @@ replace_all(
     }
     result.append(source, pos_before, source.size() - pos_before);
     return result;
+}
 }

@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectmrframe : public Cf3MapObjectBase 
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectmrframe : public Cf3MapObjectBase 
 {
 protected:
 	CDIB32* m_Graphic;
@@ -23,3 +25,4 @@ Cf3MapObjectmrframe(int nCX, int nCY);
 virtual ~Cf3MapObjectmrframe();
 
 };
+}

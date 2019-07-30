@@ -1,4 +1,6 @@
-﻿enum {
+﻿namespace MifuminSoft.funyan.Core
+{
+enum {
     REPLAYBUFFER = 4096,
 };
 
@@ -66,3 +68,4 @@ class Cf3Replay
     Cf3Map* GetMap() { return m_pPlayerState->map; }
 
 };
+}

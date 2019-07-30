@@ -1,4 +1,6 @@
-﻿class Cf3GameInput
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3GameInput
 {
     public:
 	virtual bool GetKeyPushed(int key)=0;
@@ -35,3 +37,4 @@ Cf3MapObjectMain(f3MapObjectType eType) : Cf3MapObjectBase(eType) { }
 virtual ~Cf3MapObjectMain() { }
 
 };
+}

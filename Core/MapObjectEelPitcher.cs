@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectEelPitcher : public Cf3MapObjectBase  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectEelPitcher : public Cf3MapObjectBase  
 {
 private:
 	void Freeze() { m_State = EELFROZEN; m_Delay = 80; }
@@ -37,3 +39,4 @@ Cf3MapObjectEelPitcher(int nCX, int nCY);
 ~Cf3MapObjectEelPitcher();
 
 };
+}

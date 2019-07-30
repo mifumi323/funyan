@@ -1,4 +1,6 @@
-﻿class Cf3Select : public CLayer  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3Select : public CLayer  
 {
 protected:
 	int m_Selected;
@@ -55,3 +57,4 @@ void Clear();
 Cf3Select();
 virtual ~Cf3Select();
 };
+}

@@ -1,4 +1,6 @@
-﻿extern class Cf3Setting
+﻿namespace MifuminSoft.funyan.Core
+{
+extern class Cf3Setting
 {
     protected:
 	struct tagSetting
@@ -48,3 +50,4 @@
     int m_StartTime;
     int m_Key[F3KEY_BUFSIZE];
 }* theSetting;
+}

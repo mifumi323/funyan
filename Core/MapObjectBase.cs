@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectBase
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectBase
 {
     //	friend class Cf3MapObjectmrframe;
     //	friend class Cf3MapObjectEffect;
@@ -47,3 +49,4 @@
     Cf3MapObjectBase* m_pNext;
 
 };
+}

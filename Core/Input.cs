@@ -1,4 +1,6 @@
-﻿enum {
+﻿namespace MifuminSoft.funyan.Core
+{
+enum {
     F3KEY_EXIT,
     F3KEY_PAUSE,
     F3KEY_UP,
@@ -46,3 +48,4 @@ extern class Cf3Input
 	LRESULT SetButtonState(int button, bool state);
 }
 f3Input;
+}

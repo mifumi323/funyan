@@ -1,4 +1,6 @@
-﻿// 書式と文字列のセット
+﻿namespace MifuminSoft.funyan.Core
+{
+// 書式と文字列のセット
 struct Tf3HTMLPiece
 {
     string data;            // 表示するテキストまたは画像ファイル名
@@ -58,3 +60,4 @@ int m_nLength;
 HTMLAlign m_Align, m_DefaultAlign;
 HTMLVAlign m_VAlign, m_DefaultVAlign;
 };
+}

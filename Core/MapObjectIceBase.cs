@@ -1,4 +1,6 @@
-﻿class Cf3MapObjectIceBase : public Cf3MapObjectBase  
+﻿namespace MifuminSoft.funyan.Core
+{
+class Cf3MapObjectIceBase : public Cf3MapObjectBase  
 {
 protected:
 	CDIB32* m_Graphic;
@@ -7,3 +9,4 @@ public:
 virtual ~Cf3MapObjectIceBase() { }
 
 };
+}
