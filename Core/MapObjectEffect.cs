@@ -1,9 +1,9 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-    const float PI=3.141592653589793238f;
 class Cf3MapObjectEffect : public Cf3MapObjectBase  
 {
 protected:
+    const float PI=3.141592653589793238f;
 	static set<Cf3MapObjectEffect*> m_EffectList;
 //	CDIB32* m_Graphic;
 static RECT m_GraphicRect[4 * 16] = {

@@ -1,10 +1,15 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System;
+
+namespace MifuminSoft.funyan.Core
 {
-const BYTE HIT_TOP = 0x01;
-const BYTE HIT_BOTTOM = 0x02;
-const BYTE HIT_LEFT = 0x04;
-const BYTE HIT_RIGHT = 0x08;
-const BYTE HIT_DEATH = 0x10;
+    [Flags]
+    enum HIT : byte {
+        HIT_TOP = 0x01,
+        HIT_BOTTOM = 0x02,
+        HIT_LEFT = 0x04,
+        HIT_RIGHT = 0x08,
+        HIT_DEATH = 0x10,
+    }
 
 class Cf3Map
 {

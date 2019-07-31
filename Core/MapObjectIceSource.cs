@@ -1,10 +1,10 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-#define PHASEMAX	32
 class Cf3MapObjectIceSource : public Cf3MapObjectIceBase  
 {
 protected:
-	static set<Cf3MapObjectIceSource*> m_IceList;
+    const int PHASEMAX = 32;
+    static set<Cf3MapObjectIceSource*> m_IceList;
 int m_Phase;
 int m_Size;
 public:

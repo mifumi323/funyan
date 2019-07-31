@@ -1,19 +1,12 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-const float RUNMAX = 13.0f;
-const float RUNFRICTION = 0.43f;
-const float WALKACCEL = 0.4f;
-const float WALKFRICTION = 0.24f;
-const float JUMPACCEL = 0.12f;
-const float JUMPMAX = 13.0f;
-const float FALLMAX = 13.0f;
-const float GRAVITY = 0.2f;
-const float FRICTION = 0.026f;
-const float REFRECTION = 0.9f;
-const int LIFE = 160;
 class Cf3MapObjectIce : public Cf3MapObjectIceBase  
 {
 protected:
+    const float GRAVITY = 0.2f;
+    const float FRICTION = 0.026f;
+    const float REFRECTION = 0.9f;
+    const int LIFE = 160;
 	static set<Cf3MapObjectIce*> Cf3MapObjectIce::m_IceList;
 
 float m_DX, m_DY;

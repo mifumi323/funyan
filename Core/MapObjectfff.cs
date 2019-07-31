@@ -1,12 +1,12 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-const float FLYACCEL = 0.24f;
-const float FLYFRICTION = 0.026f;
-const float ROTATEACCEL = 0.5f;
-const float ROTATEFRICTION = 0.01f;
 class Cf3MapObjectfff : public Cf3MapObjectMain  
 {
 private:
+    const float FLYACCEL = 0.24f;
+    const float FLYFRICTION = 0.026f;
+    const float ROTATEACCEL = 0.5f;
+    const float ROTATEFRICTION = 0.01f;
 	void Tire()
 {
 	m_State = TIRED;

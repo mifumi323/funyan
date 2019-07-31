@@ -1,35 +1,33 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-const float RUNMAX = 13.0f;
-const float RUNFRICTION = 0.43f;
-const float WALKACCEL = 0.4f;
-const float WALKFRICTION = 0.24f;
-const float JUMPACCEL = 0.12f;
-const float JUMPMAX = 13.0f;
-const float FALLMAX = 13.0f;
-const float ADDGRAVITY = 4.0f;
-const float JUMPFRICTIONX = 0.026f;
-const float JUMPFRICTIONY = 0.10f;
-const float WINDFACTOR = 0.10f;
-const float MAXDISTANCE = 1.6e5f;
-
-#define SIN15	0.25881904510252076234889883762405f
-#define SIN30	0.5f
-#define SIN45	0.70710678118654752440084436210485f
-#define SIN60	0.86602540378443864676372317075294f
-#define SIN75	0.9659258262890682867497431997289f
-#define COS15	SIN75
-#define COS30	SIN60
-#define COS45	SIN45
-#define COS60	SIN30
-#define COS75	SIN15
-
-#define INVINCITY 0
-class Cf3MapObjectfunya : public Cf3MapObjectMain  
+    class Cf3MapObjectfunya : public Cf3MapObjectMain  
 {
 	friend class Cf3MapObjectmrframe;
 friend class CExplainScene;
 protected:
+    const float RUNMAX = 13.0f;
+    const float RUNFRICTION = 0.43f;
+    const float WALKACCEL = 0.4f;
+    const float WALKFRICTION = 0.24f;
+    const float JUMPACCEL = 0.12f;
+    const float JUMPMAX = 13.0f;
+    const float FALLMAX = 13.0f;
+    const float ADDGRAVITY = 4.0f;
+    const float JUMPFRICTIONX = 0.026f;
+    const float JUMPFRICTIONY = 0.10f;
+    const float WINDFACTOR = 0.10f;
+    const float MAXDISTANCE = 1.6e5f;
+
+    const float SIN15 = 0.25881904510252076234889883762405f;
+    const float SIN30 = 0.5f;
+    const float SIN45 = 0.70710678118654752440084436210485f;
+    const float SIN60 = 0.86602540378443864676372317075294f;
+    const float SIN75 = 0.9659258262890682867497431997289f;
+    const float COS15 = SIN75;
+    const float COS30 = SIN60;
+    const float COS45 = SIN45;
+    const float COS60 = SIN30;
+    const float COS75 = SIN15;
 	void Freeze(int level = 15)
 {
 	m_State = FROZEN;

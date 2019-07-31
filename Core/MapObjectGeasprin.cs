@@ -1,9 +1,9 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-const WalkDelay = 10;
 class Cf3MapObjectGeasprin : public Cf3MapObjectBase  
 {
 protected:
+    const int WalkDelay = 10;
 	void Freeze()
 {
 	m_Delay = 200;

@@ -1,57 +1,5 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-// 普通の設定項目
-static char SS_BGM[] =			"BGM";
-static char SS_FULLSCREEN[] =	"FULLSCREEN";
-static char SS_ZOOM[] =			"ZOOM";
-static char SS_BACKGROUND[] =	"BACKGROUND";
-static char SS_CHARACTER[] =	"CHARACTER";
-static char SS_VIEWTIME[] =		"VIEWTIME";
-static char SS_FPS[] =			"FPS";
-static char SS_ESP[] =			"ESP";
-static char SS_GRAVITY[] =		"GRAVITY";
-static char SS_RECORDCLEAR[] =	"RECORDCLEAR";
-static char SS_RECORDMISS[] =	"RECORDMISS";
-static char SS_RECORDNUMBER[] =	"RECORDNUMBER";
-
-// プレイ記録
-static char SS_BANANA[] =		"BANANA";
-static char SS_PLAYTIME[] =		"PLAYTIME";
-static char SS_SLEEPTIME[] =	"SLEEPTIME";
-static char SS_SMILES[] =		"SMILES";
-static char SS_TIMEMASTER[] =	"TIMEMASTER";
-static char SS_EYEWITNESS[] =	"EYEWITNESS";
-static char SS_FEATHERIRON[] =	"FEATHERIRON";
-static char SS_GRAPECOLORED[] =	"GRAPECOLORED";
-static char SS_ESREVER[] =		"ESREVER";
-static char SS_DRAWMETHOD[] =	"DRAWMETHOD";
-static char SS_OUTLINE[] =		"OUTLINE";
-static char SS_COLDMAN[] =		"COLDMAN";
-static char SS_HYPER[] =		"HYPER";
-static char SS_ANDBALLOON[] =	"ANDBALLOON";
-
-// キー設定
-static char SS_KEY_EXIT[] =		"KEY_EXIT";
-static char SS_KEY_PAUSE[] =	"KEY_PAUSE";
-static char SS_KEY_UP[] =		"KEY_UP";
-static char SS_KEY_LEFT[] =		"KEY_LEFT";
-static char SS_KEY_RIGHT[] =	"KEY_RIGHT";
-static char SS_KEY_DOWN[] =		"KEY_DOWN";
-static char SS_KEY_JUMP[] =		"KEY_JUMP";
-static char SS_KEY_ATTACK[] =	"KEY_ATTACK";
-static char SS_KEY_SMILE[] =	"KEY_SMILE";
-static char SS_KEY_FPS[] =		"KEY_FPS";
-static char SS_KEY_BGMNONE[] =	"KEY_BGMNONE";
-static char SS_KEY_BGMDEF[] =	"KEY_BGMDEF";
-static char SS_KEY_BGMUSER[] =	"KEY_BGMUSER";
-static char SS_KEY_CAPTURE[] =	"KEY_CAPTURE";
-static char SS_KEY_RECORD[] =	"KEY_RECORD";
-
-// その他
-static char SS_PROGRESS[] =		"PROGRESS";
-static char SS_CHECKSUM[] =		"CHECKSUM";
-
-
 extern class Cf3Setting
 {
     protected:
@@ -66,6 +14,58 @@ extern class Cf3Setting
     map<string, int> m_Progress;
 
     public:
+    // 普通の設定項目
+    static char SS_BGM[] =			"BGM";
+    static char SS_FULLSCREEN[] =	"FULLSCREEN";
+    static char SS_ZOOM[] =			"ZOOM";
+    static char SS_BACKGROUND[] =	"BACKGROUND";
+    static char SS_CHARACTER[] =	"CHARACTER";
+    static char SS_VIEWTIME[] =		"VIEWTIME";
+    static char SS_FPS[] =			"FPS";
+    static char SS_ESP[] =			"ESP";
+    static char SS_GRAVITY[] =		"GRAVITY";
+    static char SS_RECORDCLEAR[] =	"RECORDCLEAR";
+    static char SS_RECORDMISS[] =	"RECORDMISS";
+    static char SS_RECORDNUMBER[] =	"RECORDNUMBER";
+
+    // プレイ記録
+    static char SS_BANANA[] =		"BANANA";
+    static char SS_PLAYTIME[] =		"PLAYTIME";
+    static char SS_SLEEPTIME[] =	"SLEEPTIME";
+    static char SS_SMILES[] =		"SMILES";
+    static char SS_TIMEMASTER[] =	"TIMEMASTER";
+    static char SS_EYEWITNESS[] =	"EYEWITNESS";
+    static char SS_FEATHERIRON[] =	"FEATHERIRON";
+    static char SS_GRAPECOLORED[] =	"GRAPECOLORED";
+    static char SS_ESREVER[] =		"ESREVER";
+    static char SS_DRAWMETHOD[] =	"DRAWMETHOD";
+    static char SS_OUTLINE[] =		"OUTLINE";
+    static char SS_COLDMAN[] =		"COLDMAN";
+    static char SS_HYPER[] =		"HYPER";
+    static char SS_ANDBALLOON[] =	"ANDBALLOON";
+
+    // キー設定
+    static char SS_KEY_EXIT[] =		"KEY_EXIT";
+    static char SS_KEY_PAUSE[] =	"KEY_PAUSE";
+    static char SS_KEY_UP[] =		"KEY_UP";
+    static char SS_KEY_LEFT[] =		"KEY_LEFT";
+    static char SS_KEY_RIGHT[] =	"KEY_RIGHT";
+    static char SS_KEY_DOWN[] =		"KEY_DOWN";
+    static char SS_KEY_JUMP[] =		"KEY_JUMP";
+    static char SS_KEY_ATTACK[] =	"KEY_ATTACK";
+    static char SS_KEY_SMILE[] =	"KEY_SMILE";
+    static char SS_KEY_FPS[] =		"KEY_FPS";
+    static char SS_KEY_BGMNONE[] =	"KEY_BGMNONE";
+    static char SS_KEY_BGMDEF[] =	"KEY_BGMDEF";
+    static char SS_KEY_BGMUSER[] =	"KEY_BGMUSER";
+    static char SS_KEY_CAPTURE[] =	"KEY_CAPTURE";
+    static char SS_KEY_RECORD[] =	"KEY_RECORD";
+
+    // その他
+    static char SS_PROGRESS[] =		"PROGRESS";
+    static char SS_CHECKSUM[] =		"CHECKSUM";
+
+
 	void SetProgress(string &file, int stage)
 {
 	m_Progress[file] = stage;

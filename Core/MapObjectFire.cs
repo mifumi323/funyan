@@ -1,9 +1,9 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-#define PHASEMAX	32
 class Cf3MapObjectFire : public Cf3MapObjectIceBase  
 {
 private:
+    const int PHASEMAX = 32;
 	static set<Cf3MapObjectFire*> m_FireList;
 
 int m_Phase;
