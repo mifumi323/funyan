@@ -1,10 +1,9 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3MapObjectEelPitcher : public Cf3MapObjectBase  
+public class Cf3MapObjectEelPitcher : Cf3MapObjectBase  
 {
-private:
-	void Freeze() { m_State = EELFROZEN; m_Delay = 80; }
-void Seed()
+        private void Freeze() { m_State = EELFROZEN; m_Delay = 80; }
+        private void Seed()
 {
 	int d=0;
 	m_State = m_Delay?EELBUD:EELLEAF;
@@ -14,13 +13,13 @@ void Seed()
 	if (m_pParent->GetHit(floor((m_X+14)/32),floor(m_Y/32),HIT_TOP)) d|=2;
 	m_Direction = (d==1?DIR_RIGHT:(d==2?DIR_LEFT:((CApp::random(2))?DIR_LEFT:DIR_RIGHT)));
 }
-//	CDIB32* m_Graphic;
-static map<int, Cf3MapObjectEelPitcher*> m_EnemyList;
+        //	CDIB32* m_Graphic;
+        private static map<int, Cf3MapObjectEelPitcher*> m_EnemyList;
 
-f3MapObjectDirection m_Direction;
-int m_Level;                        // 最大高さ
-int m_Delay;                        // 待ち時間
-enum f3EelPitcherState
+        private f3MapObjectDirection m_Direction;
+        private int m_Level;                        // 最大高さ
+        private int m_Delay;                        // 待ち時間
+        private enum f3EelPitcherState
 {
     EELSEED,
     EELBUD,
@@ -29,38 +28,38 @@ enum f3EelPitcherState
     EELDEAD,
 }
 m_State;
-	float m_DX, m_DY;
-float m_RootX, m_RootY;         // 根元
-bool m_bBlinking;
-public:
-	bool IsLeaf() { return m_State == EELLEAF || m_State == EELFROZEN; }
-static void OnDrawAll(CDIB32* lp)
+private float m_DX, m_DY;
+        private float m_RootX, m_RootY;         // 根元
+        private bool m_bBlinking;
+
+        public bool IsLeaf() { return m_State == EELLEAF || m_State == EELFROZEN; }
+        public static void OnDrawAll(CDIB32* lp)
 {
 	for(map<int, Cf3MapObjectEelPitcher*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it).second->IsValid()) (*it).second->OnDraw(lp);
 	}
 }
-static void OnPreDrawAll()
+        public static void OnPreDrawAll()
 {
 	for(map<int, Cf3MapObjectEelPitcher*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it).second->IsValid()) (*it).second->OnPreDraw();
 	}
 }
-static void SynergyAll()
+        public static void SynergyAll()
 {
 	for(map<int, Cf3MapObjectEelPitcher*>::iterator it=m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it).second->IsValid()) (*it).second->Synergy();
 	}
 }
-static void OnMoveAll()
+        public static void OnMoveAll()
 {
 	for(map<int, Cf3MapObjectEelPitcher*>::iterator it=m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it).second->IsValid()) (*it).second->OnMove();
 	}
 }
-static map<int, Cf3MapObjectEelPitcher*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
-static map<int, Cf3MapObjectEelPitcher*>::iterator IteratorEnd() { return m_EnemyList.end(); }
-void Reaction(Cf3MapObjectBase* obj)
+        public static map<int, Cf3MapObjectEelPitcher*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
+        public static map<int, Cf3MapObjectEelPitcher*>::iterator IteratorEnd() { return m_EnemyList.end(); }
+        public void Reaction(Cf3MapObjectBase* obj)
 {
 	if (obj==NULL||obj==this) return;
 	float objX, objY;
@@ -90,7 +89,7 @@ void Reaction(Cf3MapObjectBase* obj)
 			}
 	}
 }
-void Synergy()
+        public void Synergy()
 {
 	if (!IsValid()) return;
 	m_bBlinking = false;
@@ -154,7 +153,7 @@ void Synergy()
 		if ((*it)->IsValid()) Reaction((*it));
 	}
 }
-void OnMove()
+        public void OnMove()
 {
 	if (m_State==EELLEAF){
             TL.BringClose(ref m_Y,m_RootY-m_Level*32,4.0f);
@@ -215,7 +214,7 @@ void OnMove()
 		Kill();
 	}
 }
-void OnDraw(CDIB32* lp)
+        public void OnDraw(CDIB32* lp)
 {
 	SetViewPos(-16,-16);
 	int height = m_RootY-m_Y;
@@ -280,7 +279,7 @@ void OnDraw(CDIB32* lp)
 		lp->Blt(graphic,m_nVX,m_nVY,&rc);
 	}
 }
-Cf3MapObjectEelPitcher(int nCX, int nCY)
+        public Cf3MapObjectEelPitcher(int nCX, int nCY)
 	:Cf3MapObjectBase(MOT_EELPITCHER)
 	,m_Delay(0)
 	,m_Level(1)
@@ -292,7 +291,7 @@ Cf3MapObjectEelPitcher(int nCX, int nCY)
 //	m_Graphic = ResourceManager.Get(RID_EELPITCHER);
 	SetPos(nCX*32+16,nCY*32+16);
 }
-~Cf3MapObjectEelPitcher()
+        public ~Cf3MapObjectEelPitcher()
 {
 	m_EnemyList.erase(GetID());
 }

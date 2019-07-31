@@ -3,7 +3,7 @@
 namespace MifuminSoft.funyan.Core
 {
     [Flags]
-    enum HIT : byte {
+    public enum HIT : byte {
         HIT_TOP = 0x01,
         HIT_BOTTOM = 0x02,
         HIT_LEFT = 0x04,
@@ -11,23 +11,20 @@ namespace MifuminSoft.funyan.Core
         HIT_DEATH = 0x10,
     }
 
-class Cf3Map
+    public class Cf3Map
 {
-    friend class Cf3MapObjectBanana;
-    friend class CExplainScene;
-    private:
-	CDIB32* m_MapChip[3];
-    BYTE* m_MapData[3];
-    BYTE m_Width[3], m_Height[3];
-    BYTE m_Hit[240];
-    BYTE m_Stage;
-    LONG m_nGotBanana, m_nTotalBanana;
+        private CDIB32* m_MapChip[3];
+        private BYTE* m_MapData[3];
+        private BYTE m_Width[3], m_Height[3];
+        private BYTE m_Hit[240];
+        private BYTE m_Stage;
+        private LONG m_nGotBanana, m_nTotalBanana;
 
-    string m_Title;
+        private string m_Title;
 
-    bool m_bPlayable;
+        private bool m_bPlayable;
 
-    static BYTE m_defHit[240] = {
+        private static BYTE m_defHit[240] = {
         0x00,0x0f,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,
         0x00,0x0f,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,
         0x00,0x0f,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,
@@ -44,25 +41,25 @@ class Cf3Map
         0x00,0x0f,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,
         0x00,0x0f,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x10,
     };
-    static float m_Friction[8] = {
+        private static float m_Friction[8] = {
         0.10f,0.00f,0.02f,0.05f,0.07f,0.15f,0.20f,1.00f,
     };
 
-    BGMNumber m_BGMNumber;
+        private BGMNumber m_BGMNumber;
 
-    int m_ScrollX, m_ScrollY;
-    float m_ScrollRX, m_ScrollRY;
+        private int m_ScrollX, m_ScrollY;
+        private float m_ScrollRX, m_ScrollRY;
 
-    float* m_Wind;
-    Cf3MapObjectBase** m_pObject;
-    vector<Cf3MapObjectBase*> m_NearObject;
+        private float* m_Wind;
+        private Cf3MapObjectBase** m_pObject;
+        private vector<Cf3MapObjectBase*> m_NearObject;
 
-    Cf3MapObjectMain* m_MainChara;
+        private Cf3MapObjectMain* m_MainChara;
 
-    static int m_nEffect=0;
-    CDIB32* m_pDIBBuf;
-    public:
-	Cf3MapObjectBase** GetMapObjects(int x1, int y1, int x2, int y2, f3MapObjectType eType)
+        private static int m_nEffect=0;
+        private CDIB32* m_pDIBBuf;
+
+        public Cf3MapObjectBase** GetMapObjects(int x1, int y1, int x2, int y2, f3MapObjectType eType)
     {
         if (x1<0) x1 = 0;
         if (y1<0) y1 = 0;
@@ -87,9 +84,9 @@ class Cf3Map
         }
         return &m_NearObject.front();
     }
-    int GetIndex(int level, int x, int y) { return x + y * m_Width[level]; }
-    int GetIndex(int x, int y) { return x + y * m_Width[1]; }
-    void AddMapObject(int x, int y, Cf3MapObjectBase* p)
+        public int GetIndex(int level, int x, int y) { return x + y * m_Width[level]; }
+        public int GetIndex(int x, int y) { return x + y * m_Width[1]; }
+        public void AddMapObject(int x, int y, Cf3MapObjectBase* p)
     {
         if (p==NULL) return;
         TL.Saturate(0, ref x, m_Width[1]-1);
@@ -108,7 +105,7 @@ class Cf3Map
             o = o->m_pNext;
         }
     }
-    void RemoveMapObject(int x, int y, Cf3MapObjectBase* p)
+        public void RemoveMapObject(int x, int y, Cf3MapObjectBase* p)
     {
         if (p==NULL) return;
             TL.Saturate(0, ref x, m_Width[1]-1);
@@ -122,7 +119,7 @@ class Cf3Map
         }
         p->m_pNext = NULL;
     }
-    CDIB32* ReadMapChip(Cf3StageFile* lp, int level)
+        public CDIB32* ReadMapChip(Cf3StageFile* lp, int level)
     {
         BYTE* buf;
         DWORD s;
@@ -143,22 +140,22 @@ class Cf3Map
         dib->Load("resource/Cave.bmp",false);
         return dib;
     }
-    bool IsPlayable() { return m_bPlayable; }
-    BYTE GetHeight(int level = 1) { return m_Height[level]; }
-    BYTE GetWidth(int level = 1) { return m_Width[level]; }
-    bool ItemCompleted() { return m_nGotBanana == m_nTotalBanana; }
-    static void SetEffect(int effect) { m_nEffect = effect; }
-    void GetMainCharaCPos(int &x, int &y)
+        public bool IsPlayable() { return m_bPlayable; }
+        public BYTE GetHeight(int level = 1) { return m_Height[level]; }
+        public BYTE GetWidth(int level = 1) { return m_Width[level]; }
+        public bool ItemCompleted() { return m_nGotBanana == m_nTotalBanana; }
+        public static void SetEffect(int effect) { m_nEffect = effect; }
+        public void GetMainCharaCPos(int &x, int &y)
     {
         m_MainChara->GetCPos(x,y);
     }
-    LRESULT SetMapData(int level, int x, int y, BYTE data)
+        public LRESULT SetMapData(int level, int x, int y, BYTE data)
     {
         if (level<0 || 2<level || x<0 || m_Width[level]<=x || y<0 || m_Height[level]<=y || data>=0xf0) return 1;
         m_MapData[level][x+y*m_Width[level]] = data;
         return 0;
     }
-    void CreateTemparatureMap(CDIB32* dib)
+        public void CreateTemparatureMap(CDIB32* dib)
     {
         float objX, objY, dX, dY, fX, fY, power=0.0f;
         DWORD*pixel=dib->GetPtr();
@@ -221,39 +218,39 @@ class Cf3Map
         }
         if (lpDst==dib)  lpDst->BltFast(lpSrc,0,0);
     }
-    float GetWind(int x, int y)
+        public float GetWind(int x, int y)
     {
         if (m_Wind==NULL || x<0 || m_Width[1]<=x || y<0 || m_Height[1]<=y) return 0.0f;
         return m_Wind[GetIndex(x, y)];
     }
-    Cf3MapObjectMain* GetMainChara() { return m_MainChara; }
-    BGMNumber GetBGM() { return m_BGMNumber; }
-    static long GetChunkType(long type, int stage)
+        public Cf3MapObjectMain* GetMainChara() { return m_MainChara; }
+        public BGMNumber GetBGM() { return m_BGMNumber; }
+        public static long GetChunkType(long type, int stage)
     {
         long r=stage&0xf,l=stage&0xf0;
         if (r>=0xa) r+=0x7;
         if (l>=0xa0) l+=0x70;
         return type + (r<<24) + (l<<12);
     }
-    bool IsMainCharaDied()
+        public bool IsMainCharaDied()
     {
         return m_MainChara!=NULL&&m_MainChara->IsDied();
     }
-    string GetTitle() { return m_Title; }
-    long GetTotalBanana() { return m_nTotalBanana; }
-    long GetGotBanana() { return m_nGotBanana; }
-    void KillAllMapObject()
+        public string GetTitle() { return m_Title; }
+        public long GetTotalBanana() { return m_nTotalBanana; }
+        public long GetGotBanana() { return m_nGotBanana; }
+        public void KillAllMapObject()
     {
         Cf3MapObjectBase::KillAll();
     }
-    void GarbageMapObject()
+        public void GarbageMapObject()
     {
         if (m_MainChara!=NULL&&!m_MainChara->IsValid()){
             m_MainChara=NULL;
         }
         Cf3MapObjectBase::Garbage();
     }
-    void OnPreDraw()
+        public void OnPreDraw()
     {
         if (m_MainChara != NULL) {
             m_MainChara->OnPreDraw();
@@ -272,19 +269,19 @@ class Cf3Map
         m_ScrollRX = (m_ScrollRX+m_ScrollX)/2;
         m_ScrollRY = (m_ScrollRY+m_ScrollY)/2;
     }
-    float GetFriction(int x, int y)
+        public float GetFriction(int x, int y)
     {
         if (x<0 || m_Width[1]<=x || y<0 || m_Height[1]<=y) return 0.0f;
         return m_Friction[m_Hit[GetMapData(1,x,y)]>>5];
     }
-    void GetViewPos(int &x, int &y, float scrollx = 1.0f, float scrolly = 1.0f)
+        public void GetViewPos(int &x, int &y, float scrollx = 1.0f, float scrolly = 1.0f)
     {
         int offx = m_ScrollRX-320/2, offy = m_ScrollRY-224/2-2;
             TL.Saturate(0,ref offx,m_Width[1]*32-320);
             TL.Saturate(0,ref offy,m_Height[1]*32-224);
         x -=(int)(offx*scrollx); y -= (int)(offy*scrolly);
     }
-    void OnMove()
+        public void OnMove()
     {
         if (m_MainChara != NULL) m_MainChara->OnMove();
         Cf3MapObjectEelPitcher::OnMoveAll();
@@ -303,20 +300,20 @@ class Cf3Map
         Cf3MapObjectIce::SynergyAll();
         Cf3MapObjectFire::SynergyAll();
     }
-    BYTE GetMapData(int level, int x, int y)
+        public BYTE GetMapData(int level, int x, int y)
     {
         if (level<0 || 2<level || x<0 || m_Width[level]<=x || y<0 || m_Height[level]<=y) return 0;
         return m_MapData[level][GetIndex(level, x, y)];
     }
-    bool GetHit(int x, int y, BYTE hit)
+        public bool GetHit(int x, int y, BYTE hit)
     {
         if (x<0 || m_Width[1]<=x) return (0x0f&hit)!=0;
         if (y<0) return GetHit(x,0,hit);
         if (y>=m_Height[1]) return GetHit(x,m_Height[1]-1,hit);
         return (m_Hit[GetMapData(1,x,y)]&hit)!=0;
     }
-    void OnDraw(CDIB32* lp) { OnDraw(lp, false); }
-    void OnDraw(CDIB32* lp, bool bShowHit)
+        public void OnDraw(CDIB32* lp) { OnDraw(lp, false); }
+        public void OnDraw(CDIB32* lp, bool bShowHit)
     {
         int x,y,z;
         int vx,vy;
@@ -468,7 +465,7 @@ class Cf3Map
         }
         if (lpDst==lp)  lpDst->BltFast(lpSrc,0,0);
     }
-    Cf3Map(Cf3StageFile* lp, int stage, bool playable = true)
+        public Cf3Map(Cf3StageFile* lp, int stage, bool playable = true)
     {
         BYTE* buf;
         DWORD s;
@@ -648,7 +645,7 @@ class Cf3Map
         m_ScrollX = m_ScrollY = 0;
         if (m_MainChara!=NULL) m_MainChara->GetPos(m_ScrollRX, m_ScrollRY);
     }
-    virtual ~Cf3Map()
+        public virtual ~Cf3Map()
     {
         KillAllMapObject();
         GarbageMapObject();

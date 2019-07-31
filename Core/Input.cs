@@ -1,6 +1,6 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-enum F3KEY
+    public enum F3KEY
     {
     F3KEY_EXIT,
     F3KEY_PAUSE,
@@ -21,7 +21,7 @@ enum F3KEY
     F3KEY_BUFSIZE
 };
 
-struct tagButtonState
+    publicstruct tagButtonState
 {
     int Button;     // 実際のボタン
     bool Pressed;   // 今押されているか
@@ -29,34 +29,32 @@ struct tagButtonState
     bool Released;	// 今離されたか
 };
 
-// Cf3Input
-// インプット用のクラス
-// 継承してキーボード用・マウス用・ジョイスティック用を用意する(つもり)
-extern class Cf3Input
+    // Cf3Input
+    // インプット用のクラス
+    // 継承してキーボード用・マウス用・ジョイスティック用を用意する(つもり)
+    public class Cf3Input
 {
-    public:
-	LPSTR GetKeyName(int key) { return m_KeyName[m_ButtonState[key].Button]; }
-    void Init(int* key)
+        public LPSTR GetKeyName(int key) { return m_KeyName[m_ButtonState[key].Button]; }
+        public void Init(int* key)
     {
         for (int i=0; i<F3KEY_BUFSIZE; i++) {
             m_ButtonState[i].Button = key[i]?key[i]:m_DefaultButton[i];
         }
     }
-    void Input()
+        public void Input()
     {
         for (int i=0; i<F3KEY_BUFSIZE; i++) {
             SetButtonState(i, GetAsyncKeyState(m_ButtonState[i].Button)!=0);
         }
     }
-    bool GetKeyReleased(int key) { return key < F3KEY_BUFSIZE && m_ButtonState[key].Released; }
-    bool GetKeyPushed(int key) { return key < F3KEY_BUFSIZE && m_ButtonState[key].Pushed; }
-    bool GetKeyPressed(int key) { return key < F3KEY_BUFSIZE && m_ButtonState[key].Pressed; }
-    Cf3Input() { ZERO(m_ButtonState); }
-    virtual ~Cf3Input() { }
+        public bool GetKeyReleased(int key) { return key < F3KEY_BUFSIZE && m_ButtonState[key].Released; }
+        public bool GetKeyPushed(int key) { return key < F3KEY_BUFSIZE && m_ButtonState[key].Pushed; }
+        public bool GetKeyPressed(int key) { return key < F3KEY_BUFSIZE && m_ButtonState[key].Pressed; }
+        public Cf3Input() { ZERO(m_ButtonState); }
+        public virtual ~Cf3Input() { }
 
-    private:
-	tagButtonState m_ButtonState[F3KEY_BUFSIZE];
-    static const int m_DefaultButton[F3KEY_BUFSIZE] = {
+        private tagButtonState m_ButtonState[F3KEY_BUFSIZE];
+        private static const int m_DefaultButton[F3KEY_BUFSIZE] = {
         VK_ESCAPE,	// F3KEY_EXIT
         VK_RETURN,	// F3KEY_PAUSE
         VK_UP,		// F3KEY_UP
@@ -73,7 +71,7 @@ extern class Cf3Input
         'C',		// F3KEY_CAPTURE
         0,			// F3KEY_RECORD
     };
-    static const LPSTR m_KeyName[256] = {
+        private static const LPSTR m_KeyName[256] = {
         // 00
         "なし",			"?",			"?",			"?",
         "?",			"?",			"?",			"?",
@@ -155,8 +153,8 @@ extern class Cf3Input
         "?",			"?",			"?",			"?",
         "?",			"?",			"?",			"?",
     };
-    protected:
-	LRESULT SetButtonState(int button, bool state)
+
+        protected LRESULT SetButtonState(int button, bool state)
     {
         if (button >= F3KEY_BUFSIZE) return 1;	// そんなボタンないしぃ～
         m_ButtonState[button].Pushed = !m_ButtonState[button].Pressed && state;

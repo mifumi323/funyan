@@ -1,44 +1,41 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-    class Cf3MapObjectfunya : public Cf3MapObjectMain  
+    public class Cf3MapObjectfunya : Cf3MapObjectMain  
 {
-	friend class Cf3MapObjectmrframe;
-friend class CExplainScene;
-protected:
-    const float RUNMAX = 13.0f;
-    const float RUNFRICTION = 0.43f;
-    const float WALKACCEL = 0.4f;
-    const float WALKFRICTION = 0.24f;
-    const float JUMPACCEL = 0.12f;
-    const float JUMPMAX = 13.0f;
-    const float FALLMAX = 13.0f;
-    const float ADDGRAVITY = 4.0f;
-    const float JUMPFRICTIONX = 0.026f;
-    const float JUMPFRICTIONY = 0.10f;
-    const float WINDFACTOR = 0.10f;
-    const float MAXDISTANCE = 1.6e5f;
+        protected const float RUNMAX = 13.0f;
+        protected const float RUNFRICTION = 0.43f;
+        protected const float WALKACCEL = 0.4f;
+        protected const float WALKFRICTION = 0.24f;
+        protected const float JUMPACCEL = 0.12f;
+        protected const float JUMPMAX = 13.0f;
+        protected const float FALLMAX = 13.0f;
+        protected const float ADDGRAVITY = 4.0f;
+        protected const float JUMPFRICTIONX = 0.026f;
+        protected const float JUMPFRICTIONY = 0.10f;
+        protected const float WINDFACTOR = 0.10f;
+        protected const float MAXDISTANCE = 1.6e5f;
 
-    const float SIN15 = 0.25881904510252076234889883762405f;
-    const float SIN30 = 0.5f;
-    const float SIN45 = 0.70710678118654752440084436210485f;
-    const float SIN60 = 0.86602540378443864676372317075294f;
-    const float SIN75 = 0.9659258262890682867497431997289f;
-    const float COS15 = SIN75;
-    const float COS30 = SIN60;
-    const float COS45 = SIN45;
-    const float COS60 = SIN30;
-    const float COS75 = SIN15;
-	void Freeze(int level = 15)
+        protected const float SIN15 = 0.25881904510252076234889883762405f;
+        protected const float SIN30 = 0.5f;
+        protected const float SIN45 = 0.70710678118654752440084436210485f;
+        protected const float SIN60 = 0.86602540378443864676372317075294f;
+        protected const float SIN75 = 0.9659258262890682867497431997289f;
+        protected const float COS15 = SIN75;
+        protected const float COS30 = SIN60;
+        protected const float COS45 = SIN45;
+        protected const float COS60 = SIN30;
+        protected const float COS75 = SIN15;
+        protected void Freeze(int level = 15)
 {
 	m_State = FROZEN;
 	m_PoseCounter = level*8;
 }
-void Tire()
+        protected void Tire()
 {
 	m_State = TIRED;
 	m_PoseCounter = 100;
 }
-void BreatheOut()
+        protected void BreatheOut()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	int p=floor(m_ChargePower/40.0f)+1;
@@ -102,7 +99,7 @@ void BreatheOut()
 	m_State = BREATHEOUT;
 	m_ChargePower=10.0f;
 }
-void BreatheIn()
+protected void BreatheIn()
 {
 	if (m_nPower) {
 		if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
@@ -110,35 +107,35 @@ void BreatheIn()
 		m_ChargePower = 0.0f;
 	}
 }
-void Sit()
+protected void Sit()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	m_State = WALKING;
 }
-void Sleep()
+protected void Sleep()
 {
 	m_State = SLEEPING;
 	if (m_bOriginal) theApp->GetBGM()->MusicEffect(MEN_SLEEP);
 	m_PoseCounter = 0;
 }
-void Blink()
+protected void Blink()
 {
 	m_State = BLINKING;
 	m_PoseCounter = m_BananaDistance<MAXDISTANCE?2:12;
 }
-void HighJump()
+protected void HighJump()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	if (m_State!=FROZEN) m_State=JUMPING;
 	m_DY = -6.35f;
 }
-void Smile()
+protected void Smile()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	m_State = SMILING;
 	m_DX = m_DY = 0;
 }
-void HitCheck()
+protected void HitCheck()
 {
 	int CX=floor(m_X/32),
 		CL=floor((m_X-14)/32),
@@ -196,39 +193,39 @@ void HitCheck()
 	if (m_Y-14 > 32*m_pParent->GetHeight()) Die();
 #endif
 }
-void Stop()
+protected void Stop()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	m_State = STANDING;
 	m_Sleepy = 0;
 }
-void Run(f3MapObjectDirection direction)
+protected void Run(f3MapObjectDirection direction)
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	m_State = RUNNING;
 	m_Direction = direction;
 	m_PoseCounter = 0;
 }
-void Fall()
+protected void Fall()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	m_State = JUMPING;
 }
-void Land()
+protected void Land()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	m_State = STANDING;
 	m_DY = 0;
 	m_Sleepy = 0;
 }
-void StartJump()
+protected void StartJump()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	m_State=CHARGING;
 	m_ChargePower = 1.0f;
 	m_DY = 0;
 }
-void Jump()
+protected void Jump()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MEN_AWAKE);
 	m_State=JUMPING;
@@ -242,22 +239,22 @@ void Jump()
 		0))));
 }
 
-CDIB32* m_Graphic;
-CDIB32* m_Graphic2;
+protected CDIB32* m_Graphic;
+protected CDIB32* m_Graphic2;
 
-float m_DX, m_DY;                           // 位置などの情報
-float m_BananaDistance;
-float m_ChargePower;                        // ジャンプチャージ係数(1.0f=100%から減ってゆく)
-float m_ChargeDec;                          // ジャンプチャージ係数減衰値(設定で変化する予定)
-static const f3JumpFunction m_JumpFunc[4] = {
+protected float m_DX, m_DY;                           // 位置などの情報
+protected float m_BananaDistance;
+protected float m_ChargePower;                        // ジャンプチャージ係数(1.0f=100%から減ってゆく)
+protected float m_ChargeDec;                          // ジャンプチャージ係数減衰値(設定で変化する予定)
+protected static const f3JumpFunction m_JumpFunc[4] = {
 	4.5f, 0.994f,
 	3.6f, 0.980f,
 	2.6f, 0.940f,
 	0.9f, 0.0f,
 };  // チャージ－ジャンプ力対応
-float m_Power, m_PowerX, m_PowerY;
-int m_nPower;
-enum f3MainCharaState
+protected float m_Power, m_PowerX, m_PowerY;
+protected int m_nPower;
+protected enum f3MainCharaState
 {
     STANDING,
     RUNNING,
@@ -276,28 +273,28 @@ enum f3MainCharaState
 }
 m_State;
 	f3MapObjectDirection m_Direction;
-bool m_HitLeft, m_HitRight, m_HitTop, m_HitBottom, m_OnEnemy;
-bool m_bOriginal;
-bool m_bFirst;
+protected bool m_HitLeft, m_HitRight, m_HitTop, m_HitBottom, m_OnEnemy;
+protected bool m_bOriginal;
+protected bool m_bFirst;
 
-int m_PoseCounter, m_PoseCounter2, m_Sleepy;
+protected int m_PoseCounter, m_PoseCounter2, m_Sleepy;
 
 // 表示位置調整
-int m_VOffsetX, m_VOffsetY;
-int m_VOffsetToX, m_VOffsetToY;
-public:
-	float GetGravity() { int g = theSetting->m_Gravity; return g == 1 ? 0.2f : (g == 2 ? 0.05f : 0.1f); }
-bool IsFrozen() { return m_State == FROZEN; }
-void Die()
+protected int m_VOffsetX, m_VOffsetY;
+protected int m_VOffsetToX, m_VOffsetToY;
+
+public float GetGravity() { int g = theSetting->m_Gravity; return g == 1 ? 0.2f : (g == 2 ? 0.05f : 0.1f); }
+public bool IsFrozen() { return m_State == FROZEN; }
+public void Die()
 {
 	m_State = DEAD;
 	m_DX = m_DY = 0;
 }
-bool IsDied()
+public bool IsDied()
 {
 	return m_State==DEAD;
 }
-void GetViewPos(int &vx, int &vy)
+public void GetViewPos(int &vx, int &vy)
 {
 	if (m_pParent->IsPlayable()) {
 		int ox=0,oy=0,tx=0,ty=0;
@@ -321,7 +318,7 @@ void GetViewPos(int &vx, int &vy)
 		vx = m_X;	vy = m_Y;
 	}
 }
-void Synergy()
+public void Synergy()
 {
 	if (m_State==DEAD||m_State==SMILING) return;
 	m_OnEnemy = false;
@@ -482,7 +479,7 @@ void Synergy()
 	}
 	if (m_OnEnemy) HitCheck();
 }
-void OnPreDraw()
+public void OnPreDraw()
 {
 	if (!IsValid()) return;
 	// PoseCounterの処理
@@ -517,7 +514,7 @@ void OnPreDraw()
 	}
 	if (m_Power<-1.0f/4096.0f) { ++m_PoseCounter2 %= 40; }
 }
-void OnMove()
+public void OnMove()
 {
 	if (!IsValid()) return;
 	if (!m_pParent->IsPlayable()) return;
@@ -699,7 +696,7 @@ void OnMove()
 		HitCheck();
 	}
 }
-virtual void OnDraw(CDIB32* lp)
+public virtual void OnDraw(CDIB32* lp)
 {
 	if (!IsValid()) return;
 	if (m_pParent->ItemCompleted()) Smile();
@@ -770,7 +767,7 @@ virtual void OnDraw(CDIB32* lp)
 		lp->BltNatural(m_Graphic,m_nVX-16,m_nVY,&rc);
 	}
 }
-Cf3MapObjectfunya(int nCX, int nCY)
+public Cf3MapObjectfunya(int nCX, int nCY)
 	:Cf3MapObjectMain(MOT_FUNYA)
 {
 	m_Graphic = ResourceManager.Get(RID_MAIN);
@@ -790,7 +787,7 @@ Cf3MapObjectfunya(int nCX, int nCY)
 	m_PoseCounter2=0;
 	m_BananaDistance = 0.0f;
 }
-virtual ~Cf3MapObjectfunya() { }
+public virtual ~Cf3MapObjectfunya() { }
 
 };
 }

@@ -1,38 +1,37 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3MapObjectGeasprin : public Cf3MapObjectBase  
+public class Cf3MapObjectGeasprin : Cf3MapObjectBase  
 {
-protected:
-    const int WalkDelay = 10;
-	void Freeze()
+        protected const int WalkDelay = 10;
+        protected void Freeze()
 {
 	m_Delay = 200;
 	m_State=FROZEN;
 }
-void Back(f3MapObjectDirection dir)
+        protected void Back(f3MapObjectDirection dir)
 {
 	if (dir!=DIR_FRONT) m_Direction = dir;
 	m_Delay = 1;
 	m_State=BACK;
 }
-void Jump()
+        protected void Jump()
 {
 	m_DY = -60;
 	m_State = FALLING;
 }
-void Blow(f3MapObjectDirection dir = DIR_FRONT)
+        protected void Blow(f3MapObjectDirection dir = DIR_FRONT)
 {
 	if (dir!=DIR_FRONT) m_Direction = dir;
 	m_Spring[m_Direction] = 32;
 	m_Delay = 20;
 	m_State=BLOWN;
 }
-void Laugh()
+        protected void Laugh()
 {
 	m_Delay = 80;
 	m_State = LAUGHING;
 }
-void Stop()
+        protected void Stop()
 {
 	if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+17)/32),HIT_TOP)) {
 		m_Delay = 40;
@@ -43,17 +42,17 @@ void Stop()
 		m_State = FALLING;
 	}
 }
-void Walk()
+        protected void Walk()
 {
 	m_Delay = WalkDelay;
 	m_State = WALKING;
 	m_Direction = (m_Direction==DIR_LEFT?DIR_RIGHT:DIR_LEFT);
 }
-CDIB32* m_Graphic;
-static map<int, Cf3MapObjectGeasprin*> m_EnemyList;
-//	static set<Cf3MapObjectGeasprin*> m_EnemyList;
+        protected CDIB32* m_Graphic;
+        protected static map<int, Cf3MapObjectGeasprin*> m_EnemyList;
+        //	static set<Cf3MapObjectGeasprin*> m_EnemyList;
 
-enum f3GeasprinState
+        protected enum f3GeasprinState
 {
     STANDING,   // 立ち
     WALKING,    // 歩き
@@ -66,14 +65,14 @@ enum f3GeasprinState
 }
 m_State;
 	int m_GX, m_GY;
-int m_DY;
-f3MapObjectDirection m_Direction;
-int m_Delay;
-unsigned int m_Spring[3];
-unsigned int m_Spring2[3];
-public:
-	bool IsFrozen() { return m_State == FROZEN; }
-void OnPreDraw()
+        protected int m_DY;
+        protected f3MapObjectDirection m_Direction;
+        protected int m_Delay;
+        protected unsigned int m_Spring[3];
+        protected unsigned int m_Spring2[3];
+
+        public bool IsFrozen() { return m_State == FROZEN; }
+        public void OnPreDraw()
 {
 	if (m_Spring[DIR_FRONT]) {
 		if (m_Spring[DIR_FRONT]>32) m_Spring[DIR_FRONT] = 32;
@@ -88,7 +87,7 @@ void OnPreDraw()
 		m_Spring[DIR_RIGHT]--;
 	}
 }
-static void OnDrawAll(CDIB32* lp)
+        public static void OnDrawAll(CDIB32* lp)
 {
 	int sx, sy, ex, ey;
 	sx = sy = 0;
@@ -104,27 +103,27 @@ static void OnDrawAll(CDIB32* lp)
 		if ((*it)->m_bValid) (*it)->OnDraw(lp);
 	}*/
 }
-static void OnPreDrawAll()
+        public static void OnPreDrawAll()
 {
 	for(map<int, Cf3MapObjectGeasprin*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it).second->IsValid()) (*it).second->OnPreDraw();
 	}
 }
-static void SynergyAll()
+        public static void SynergyAll()
 {
 	for(map<int, Cf3MapObjectGeasprin*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it).second->IsValid()) (*it).second->Synergy();
 	}
 }
-static void OnMoveAll()
+        public static void OnMoveAll()
 {
 	for(map<int, Cf3MapObjectGeasprin*>::iterator it=m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it).second->IsValid()) (*it).second->OnMove();
 	}
 }
-static map<int, Cf3MapObjectGeasprin*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
-static map<int, Cf3MapObjectGeasprin*>::iterator IteratorEnd() { return m_EnemyList.end(); }
-void Reaction(Cf3MapObjectBase* obj)
+        public static map<int, Cf3MapObjectGeasprin*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
+        public static map<int, Cf3MapObjectGeasprin*>::iterator IteratorEnd() { return m_EnemyList.end(); }
+        public void Reaction(Cf3MapObjectBase* obj)
 {
 	if (obj==NULL) return;
 	float objX, objY;
@@ -162,7 +161,7 @@ void Reaction(Cf3MapObjectBase* obj)
 			}
 	}
 }
-void Synergy()
+        public void Synergy()
 {
 	if (!IsValid()) return;
 	Cf3MapObjectBase**it;
@@ -249,12 +248,12 @@ void Synergy()
 		}
 	}
 }
-void SetPos(float x, float y)
+        public void SetPos(float x, float y)
 {
 	m_X = x; m_Y = y;
 	m_GX = floor(x/8); m_GY = floor(y*8);
 }
-void OnMove()
+        public void OnMove()
 {
 	if (!IsValid()) return;
 	if (m_Delay) m_Delay--;
@@ -345,7 +344,7 @@ void OnMove()
 		new Cf3MapObjectEffect(m_X, m_Y, 1);
 	}
 }
-void OnDraw(CDIB32* lp)
+        public void OnDraw(CDIB32* lp)
 {
 	if (!IsValid()) return;
 	SetViewPos(-16,-16);
@@ -392,7 +391,7 @@ void OnDraw(CDIB32* lp)
 	RECT rc = {CX*32, CY*32, CX*32+32, CY*32+32,};
 	lp->BltNatural(m_Graphic,m_nVX,m_nVY,&rc);
 }
-Cf3MapObjectGeasprin(int nCX, int nCY, f3MapObjectDirection direction = DIR_LEFT)
+        public Cf3MapObjectGeasprin(int nCX, int nCY, f3MapObjectDirection direction = DIR_LEFT)
 	:Cf3MapObjectBase(MOT_GEASPRIN)
 {
 	m_EnemyList.insert(pair<int, Cf3MapObjectGeasprin*>(GetID(), this));
@@ -402,7 +401,7 @@ Cf3MapObjectGeasprin(int nCX, int nCY, f3MapObjectDirection direction = DIR_LEFT
 	m_Spring[DIR_FRONT] = m_Spring[DIR_LEFT] = m_Spring[DIR_RIGHT] = m_Spring2[DIR_FRONT] = m_Spring2[DIR_LEFT] = m_Spring2[DIR_RIGHT] = 0;
 	Stop();
 }
-virtual ~Cf3MapObjectGeasprin()
+        public virtual ~Cf3MapObjectGeasprin()
 {
 	m_EnemyList.erase(GetID());
 }

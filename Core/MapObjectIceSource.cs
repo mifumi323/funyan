@@ -1,27 +1,26 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3MapObjectIceSource : public Cf3MapObjectIceBase  
+public class Cf3MapObjectIceSource : Cf3MapObjectIceBase  
 {
-protected:
-    const int PHASEMAX = 32;
-    static set<Cf3MapObjectIceSource*> m_IceList;
-int m_Phase;
-int m_Size;
-public:
-	static set<Cf3MapObjectIceSource*>::iterator IteratorBegin() { return m_IceList.begin(); }
-static set<Cf3MapObjectIceSource*>::iterator IteratorEnd() { return m_IceList.end(); }
-int GetSize()
+        protected const int PHASEMAX = 32;
+        protected static set<Cf3MapObjectIceSource*> m_IceList;
+        protected int m_Phase;
+        protected int m_Size;
+
+        public static set<Cf3MapObjectIceSource*>::iterator IteratorBegin() { return m_IceList.begin(); }
+        public static set<Cf3MapObjectIceSource*>::iterator IteratorEnd() { return m_IceList.end(); }
+        public int GetSize()
 {
 	int s=abs((PHASEMAX/2)-m_Phase)*6/PHASEMAX+4;
 	return s;
 }
-static void OnPreDrawAll()
+        public static void OnPreDrawAll()
 {
 	for(set<Cf3MapObjectIceSource*>::iterator it = m_IceList.begin();it!=m_IceList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnPreDraw();
 	}
 }
-static void OnDrawAll(CDIB32* lp)
+        public static void OnDrawAll(CDIB32* lp)
 {
 	int sx, sy, ex, ey;
 	sx = sy = 0;
@@ -34,19 +33,19 @@ static void OnDrawAll(CDIB32* lp)
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }
-void OnPreDraw()
+        public void OnPreDraw()
 {
 	if (CApp::random(40)) { m_Phase++; m_Phase%=PHASEMAX; }
 	m_Size = GetSize();
 }
-void OnDraw(CDIB32* lp)
+        public void OnDraw(CDIB32* lp)
 {
 	if (!IsValid()) return;
 	RECT rc = { (7-m_Size)*64, 0, (8-m_Size)*64, 64, };
 	SetViewPos(-32,-32);
 	lp->BltNatural(m_Graphic,m_nVX,m_nVY,&rc);
 }
-Cf3MapObjectIceSource(int x, int y)
+        public Cf3MapObjectIceSource(int x, int y)
 	:Cf3MapObjectIceBase(MOT_ICESOURCE)
 {
 	m_IceList.insert(this);
@@ -54,7 +53,7 @@ Cf3MapObjectIceSource(int x, int y)
 	m_Phase = CApp::random(PHASEMAX);
 	m_Size = GetSize();
 }
-virtual ~Cf3MapObjectIceSource()
+        public virtual ~Cf3MapObjectIceSource()
 {
 	m_IceList.erase(this);
 }

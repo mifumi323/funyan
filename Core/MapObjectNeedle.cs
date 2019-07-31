@@ -1,9 +1,8 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3MapObjectNeedle : public Cf3MapObjectBase  
+public class Cf3MapObjectNeedle : Cf3MapObjectBase  
 {
-protected:
-	void Reaction(Cf3MapObjectBase* obj)
+        protected void Reaction(Cf3MapObjectBase* obj)
 {
 	if (obj==NULL) return;
 	float objX, objY;
@@ -24,12 +23,12 @@ protected:
 			}
 	}
 }
-CDIB32* m_Graphic;
-static set<Cf3MapObjectNeedle*> m_EnemyList;
+        protected CDIB32* m_Graphic;
+        protected static set<Cf3MapObjectNeedle*> m_EnemyList;
 
-float m_StartY;
-float m_Speed;
-enum NDT
+        protected float m_StartY;
+        protected float m_Speed;
+        protected enum NDT
     {
     NDT_UNDEFINED,
     NDT_HORIZONTAL,
@@ -37,7 +36,7 @@ enum NDT
     NDT_DEAD,
 }
 m_Type;
-	enum NDS
+	protected enum NDS
     {
     NDS_WAIT,
     NDS_STOP,
@@ -47,8 +46,8 @@ m_Type;
     NDS_UP,
 }
 m_State;
-public:
-	static void OnDrawAll(CDIB32* lp)
+
+	public static void OnDrawAll(CDIB32* lp)
 {
 	int sx, sy, ex, ey;
 	sx = sy = 0;
@@ -64,27 +63,27 @@ public:
 		if ((*it)->m_bValid) (*it)->OnDraw(lp);
 	}*/
 }
-static void OnPreDrawAll()
+        public static void OnPreDrawAll()
 {
 	for(set<Cf3MapObjectNeedle*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnPreDraw();
 	}
 }
-static void SynergyAll()
+        public static void SynergyAll()
 {
 	for(set<Cf3MapObjectNeedle*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it)->IsValid()) (*it)->Synergy();
 	}
 }
-static void OnMoveAll()
+        public static void OnMoveAll()
 {
 	for(set<Cf3MapObjectNeedle*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnMove();
 	}
 }
-static set<Cf3MapObjectNeedle*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
-static set<Cf3MapObjectNeedle*>::iterator IteratorEnd() { return m_EnemyList.end(); }
-void Synergy()
+        public static set<Cf3MapObjectNeedle*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
+        public static set<Cf3MapObjectNeedle*>::iterator IteratorEnd() { return m_EnemyList.end(); }
+        public void Synergy()
 {
 	if (!IsValid()) return;
 	Cf3MapObjectBase**it;
@@ -108,7 +107,7 @@ void Synergy()
 		}
 	}
 }
-virtual void OnMove()
+        public virtual void OnMove()
 {
 	if (!IsValid()) return;
 	if (m_Type==NDT_UNDEFINED) {
@@ -184,13 +183,13 @@ virtual void OnMove()
 		Kill();
 	}
 }
-virtual void OnDraw(CDIB32* lp)
+        public virtual void OnDraw(CDIB32* lp)
 {
 	if (!IsValid()) return;
 	SetViewPos(-15,-15);
 	lp->Blt(m_Graphic,m_nVX,m_nVY);
 }
-Cf3MapObjectNeedle(int nCX, int nCY, int nType = 0)
+        public Cf3MapObjectNeedle(int nCX, int nCY, int nType = 0)
 	:Cf3MapObjectBase(MOT_NEEDLE)
 {
 	m_EnemyList.insert(this);
@@ -216,7 +215,7 @@ Cf3MapObjectNeedle(int nCX, int nCY, int nType = 0)
 	}
 	m_Speed = 0;
 }
-virtual ~Cf3MapObjectNeedle()
+        public virtual ~Cf3MapObjectNeedle()
 {
 	m_EnemyList.erase(this);
 }

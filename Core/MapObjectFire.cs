@@ -1,16 +1,15 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3MapObjectFire : public Cf3MapObjectIceBase  
+public class Cf3MapObjectFire : Cf3MapObjectIceBase  
 {
-private:
-    const int PHASEMAX = 32;
-	static set<Cf3MapObjectFire*> m_FireList;
+        private const int PHASEMAX = 32;
+        private static set<Cf3MapObjectFire*> m_FireList;
 
-int m_Phase;
-int m_Size;
-int m_Delay;
-public:
-	void Synergy()
+        private int m_Phase;
+        private int m_Size;
+        private int m_Delay;
+
+        public void Synergy()
 {
 	if (m_Delay==0) {
 		// ふにゃ
@@ -34,52 +33,52 @@ public:
 		}
 	}
 }
-bool IsActive() { return m_Delay == 0; }
-static set<Cf3MapObjectFire*>::iterator IteratorBegin() { return m_FireList.begin(); }
-static set<Cf3MapObjectFire*>::iterator IteratorEnd() { return m_FireList.end(); }
-void OnPreDraw()
+        public bool IsActive() { return m_Delay == 0; }
+        public static set<Cf3MapObjectFire*>::iterator IteratorBegin() { return m_FireList.begin(); }
+        public static set<Cf3MapObjectFire*>::iterator IteratorEnd() { return m_FireList.end(); }
+        public void OnPreDraw()
 {
 	if (CApp::random(40)) { m_Phase++; m_Phase%=PHASEMAX; }
 	if (m_Size<GetSize()) { m_Size++; }
         else if (m_Size>GetSize()) { m_Size--; }
 }
-void OnMove()
+        public void OnMove()
 {
 	if (m_Delay>0) m_Delay--;
         else if (m_Delay<0) m_Delay++;
 }
-void OnDraw(CDIB32* lp)
+        public void OnDraw(CDIB32* lp)
 {
 	if (!IsValid()) return;
 	RECT rc = { (15-m_Size)*64, 64, (16-m_Size)*64, 128, };
 	SetViewPos(-32,-32);
 	lp->BltNatural(m_Graphic,m_nVX,m_nVY,&rc);
 }
-int GetSize()
+        public int GetSize()
 {
 	int s=abs((PHASEMAX/2)-m_Phase)*6/PHASEMAX;
 	if (m_Delay==0) s+=10;
 	return s;
 }
-static void SynergyAll()
+        public static void SynergyAll()
 {
 	for(set<Cf3MapObjectFire*>::iterator it = m_FireList.begin();it!=m_FireList.end();it++){
 		if ((*it)->IsValid()) (*it)->Synergy();
 	}
 }
-static void OnPreDrawAll()
+        public static void OnPreDrawAll()
 {
 	for(set<Cf3MapObjectFire*>::iterator it = m_FireList.begin();it!=m_FireList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnPreDraw();
 	}
 }
-static void OnMoveAll()
+        public static void OnMoveAll()
 {
 	for(set<Cf3MapObjectFire*>::iterator it = m_FireList.begin();it!=m_FireList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnMove();
 	}
 }
-static void OnDrawAll(CDIB32* lp)
+        public static void OnDrawAll(CDIB32* lp)
 {
 	int sx, sy, ex, ey;
 	sx = sy = 0;
@@ -92,7 +91,7 @@ static void OnDrawAll(CDIB32* lp)
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }
-Cf3MapObjectFire(int x, int y)
+        public Cf3MapObjectFire(int x, int y)
 	:Cf3MapObjectIceBase(MOT_FIRE)
 	,m_Delay(0)
 {
@@ -101,7 +100,7 @@ Cf3MapObjectFire(int x, int y)
 	m_Phase = CApp::random(PHASEMAX);
 	m_Size = GetSize();
 }
-virtual ~Cf3MapObjectFire()
+        public virtual ~Cf3MapObjectFire()
 {
 	m_FireList.erase(this);
 }

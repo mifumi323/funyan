@@ -1,57 +1,56 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3MapObjectmrframe : public Cf3MapObjectBase 
+public class Cf3MapObjectmrframe : Cf3MapObjectBase 
 {
-protected:
-	CDIB32* m_Graphic;
+        protected CDIB32* m_Graphic;
 
-Cf3MapObjectfunya* m_funya;
-int m_nLife;
-public:
-	void UpdateCPos()
+        protected Cf3MapObjectfunya* m_funya;
+        protected int m_nLife;
+
+        public void UpdateCPos()
 {
 	m_funya->UpdateCPos();
 }
-bool IsFrozen()
+        public bool IsFrozen()
 {
 	return m_funya->IsFrozen();
 }
-static set<Cf3MapObjectmrframe*> m_EnemyList;
-static void OnDrawAll(CDIB32* lp)
+        public static set<Cf3MapObjectmrframe*> m_EnemyList;
+        public static void OnDrawAll(CDIB32* lp)
 {
 	for(set<Cf3MapObjectmrframe*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }
-static void OnPreDrawAll()
+        public static void OnPreDrawAll()
 {
 	for(set<Cf3MapObjectmrframe*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnPreDraw();
 	}
 }
-static void SynergyAll()
+        public static void SynergyAll()
 {
 	for(set<Cf3MapObjectmrframe*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it)->IsValid()) (*it)->Synergy();
 	}
 }
-static void OnMoveAll()
+        public static void OnMoveAll()
 {
 	for(set<Cf3MapObjectmrframe*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnMove();
 	}
 }
-static set<Cf3MapObjectmrframe*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
-static set<Cf3MapObjectmrframe*>::iterator IteratorEnd() { return m_EnemyList.end(); }
-void Synergy()
+        public static set<Cf3MapObjectmrframe*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
+        public static set<Cf3MapObjectmrframe*>::iterator IteratorEnd() { return m_EnemyList.end(); }
+        public void Synergy()
 {
 	m_funya->Synergy();
 }
-void OnPreDraw()
+        public void OnPreDraw()
 {
 	m_funya->OnPreDraw();
 }
-void OnMove()
+        public void OnMove()
 {
 	m_funya->OnMove();
 	SetPos(m_funya->m_X,m_funya->m_Y);
@@ -63,7 +62,7 @@ void OnMove()
 		}
 	}
 }
-void OnDraw(CDIB32* lp)
+        public void OnDraw(CDIB32* lp)
 {
 	if (!IsValid()) return;
 	if (m_pParent->ItemCompleted()) m_funya->Smile();
@@ -124,7 +123,7 @@ void OnDraw(CDIB32* lp)
 	RECT rc = {CX*32, CY*32, CX*32+32, CY*32+32,};
 	lp->BltNatural(m_Graphic,m_nVX,m_nVY,&rc);
 }
-Cf3MapObjectmrframe(int nCX, int nCY)
+        public Cf3MapObjectmrframe(int nCX, int nCY)
 	:Cf3MapObjectBase(MOT_FUNYA)
 {
 	m_EnemyList.insert(this);
@@ -135,7 +134,7 @@ Cf3MapObjectmrframe(int nCX, int nCY)
 	SetPos(m_funya->m_X,m_funya->m_Y);
 	m_nLife=100;
 }
-virtual ~Cf3MapObjectmrframe()
+        public virtual ~Cf3MapObjectmrframe()
 {
 	m_EnemyList.erase(this);
 	delete m_funya;

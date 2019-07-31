@@ -1,12 +1,11 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3MapObjectEffect : public Cf3MapObjectBase  
+public class Cf3MapObjectEffect : Cf3MapObjectBase  
 {
-protected:
-    const float PI=3.141592653589793238f;
-	static set<Cf3MapObjectEffect*> m_EffectList;
-//	CDIB32* m_Graphic;
-static RECT m_GraphicRect[4 * 16] = {
+        protected const float PI=3.141592653589793238f;
+        protected static set<Cf3MapObjectEffect*> m_EffectList;
+        //	CDIB32* m_Graphic;
+        protected static RECT m_GraphicRect[4 * 16] = {
 	{ 0,0, 5,5}, { 0,5, 5,10}, { 0,10, 5,15}, { 0,15, 5,20},
 	{ 5,0,10,5}, { 5,5,10,10}, { 5,10,10,15}, { 5,15,10,20},
 	{10,0,15,5}, {10,5,15,10}, {10,10,15,15}, {10,15,15,20},
@@ -24,15 +23,15 @@ static RECT m_GraphicRect[4 * 16] = {
 	{70,0,75,5}, {70,5,75,10}, {70,10,75,15}, {70,15,75,20},
 	{75,0,80,5}, {75,5,80,10}, {75,10,80,15}, {75,15,80,20},
 };
-int m_nEffectType;
-struct tagStar
+        protected int m_nEffectType;
+        protected struct tagStar
 {
-    float x, y, dx, dy, f;
-    int n, r;
+    public float x, y, dx, dy, f;
+    public int n, r;
 } * m_Star;
-int m_StarNum;
-public:
-	void OnDraw(CDIB32* lp)
+protected int m_StarNum;
+
+        public void OnDraw(CDIB32* lp)
 {
 	CDIB32* graphic = ResourceManager.Get(RID_EFFECT);
 	for (int i=0; i<m_StarNum; i++) {
@@ -42,7 +41,7 @@ public:
 		}
 	}
 }
-void OnPreDraw()
+        public void OnPreDraw()
 {
 	int n=m_StarNum;
 	for (int i=0; i<m_StarNum; i++) {
@@ -54,12 +53,12 @@ void OnPreDraw()
 	}
 	if (!n) Kill();
 }
-static void OnPreDrawAll() {
+        public static void OnPreDrawAll() {
 	for(set<Cf3MapObjectEffect*>::iterator it = m_EffectList.begin();it!=m_EffectList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnPreDraw();
 	}
 }
-static void OnDrawAll(CDIB32* lp) {
+        public static void OnDrawAll(CDIB32* lp) {
 	int sx, sy, ex, ey;
 	sx = sy = 0;
 	m_pParent->GetViewPos(sx,sy);
@@ -71,7 +70,7 @@ static void OnDrawAll(CDIB32* lp) {
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }
-Cf3MapObjectEffect(float x, float y, int EffectType)
+        public Cf3MapObjectEffect(float x, float y, int EffectType)
 	:Cf3MapObjectBase(MOT_EFFECT)
 	,m_StarNum(0)
 	,m_Star(NULL)
@@ -113,7 +112,7 @@ Cf3MapObjectEffect(float x, float y, int EffectType)
 		m_Star[i].r = CApp::random(4*16);
 	}
 }
-~Cf3MapObjectEffect()
+        public ~Cf3MapObjectEffect()
 {
 	m_EffectList.erase(this);
 	DELETEPTR_SAFE(m_Star);

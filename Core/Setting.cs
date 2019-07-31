@@ -1,81 +1,79 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-extern class Cf3Setting
+extern public class Cf3Setting
 {
-    protected:
-	struct tagSetting
+        protected struct tagSetting
     {
-        LPSTR name;
-        int* pdata;
-        bool check;
+        public LPSTR name;
+        public int* pdata;
+        public bool check;
     } *m_Data;
-	int m_DataCount;
+	    protected int m_DataCount;
 
-    map<string, int> m_Progress;
+        protected map<string, int> m_Progress;
 
-    public:
-    // 普通の設定項目
-    static char SS_BGM[] =			"BGM";
-    static char SS_FULLSCREEN[] =	"FULLSCREEN";
-    static char SS_ZOOM[] =			"ZOOM";
-    static char SS_BACKGROUND[] =	"BACKGROUND";
-    static char SS_CHARACTER[] =	"CHARACTER";
-    static char SS_VIEWTIME[] =		"VIEWTIME";
-    static char SS_FPS[] =			"FPS";
-    static char SS_ESP[] =			"ESP";
-    static char SS_GRAVITY[] =		"GRAVITY";
-    static char SS_RECORDCLEAR[] =	"RECORDCLEAR";
-    static char SS_RECORDMISS[] =	"RECORDMISS";
-    static char SS_RECORDNUMBER[] =	"RECORDNUMBER";
+        // 普通の設定項目
+        public static char SS_BGM[] =			"BGM";
+        public static char SS_FULLSCREEN[] =	"FULLSCREEN";
+        public static char SS_ZOOM[] =			"ZOOM";
+        public static char SS_BACKGROUND[] =	"BACKGROUND";
+        public static char SS_CHARACTER[] =	"CHARACTER";
+        public static char SS_VIEWTIME[] =		"VIEWTIME";
+        public static char SS_FPS[] =			"FPS";
+        public static char SS_ESP[] =			"ESP";
+        public static char SS_GRAVITY[] =		"GRAVITY";
+        public static char SS_RECORDCLEAR[] =	"RECORDCLEAR";
+        public static char SS_RECORDMISS[] =	"RECORDMISS";
+        public static char SS_RECORDNUMBER[] =	"RECORDNUMBER";
 
-    // プレイ記録
-    static char SS_BANANA[] =		"BANANA";
-    static char SS_PLAYTIME[] =		"PLAYTIME";
-    static char SS_SLEEPTIME[] =	"SLEEPTIME";
-    static char SS_SMILES[] =		"SMILES";
-    static char SS_TIMEMASTER[] =	"TIMEMASTER";
-    static char SS_EYEWITNESS[] =	"EYEWITNESS";
-    static char SS_FEATHERIRON[] =	"FEATHERIRON";
-    static char SS_GRAPECOLORED[] =	"GRAPECOLORED";
-    static char SS_ESREVER[] =		"ESREVER";
-    static char SS_DRAWMETHOD[] =	"DRAWMETHOD";
-    static char SS_OUTLINE[] =		"OUTLINE";
-    static char SS_COLDMAN[] =		"COLDMAN";
-    static char SS_HYPER[] =		"HYPER";
-    static char SS_ANDBALLOON[] =	"ANDBALLOON";
+        // プレイ記録
+        public static char SS_BANANA[] =		"BANANA";
+        public static char SS_PLAYTIME[] =		"PLAYTIME";
+        public static char SS_SLEEPTIME[] =	"SLEEPTIME";
+        public static char SS_SMILES[] =		"SMILES";
+        public static char SS_TIMEMASTER[] =	"TIMEMASTER";
+        public static char SS_EYEWITNESS[] =	"EYEWITNESS";
+        public static char SS_FEATHERIRON[] =	"FEATHERIRON";
+        public static char SS_GRAPECOLORED[] =	"GRAPECOLORED";
+        public static char SS_ESREVER[] =		"ESREVER";
+        public static char SS_DRAWMETHOD[] =	"DRAWMETHOD";
+        public static char SS_OUTLINE[] =		"OUTLINE";
+        public static char SS_COLDMAN[] =		"COLDMAN";
+        public static char SS_HYPER[] =		"HYPER";
+        public static char SS_ANDBALLOON[] =	"ANDBALLOON";
 
-    // キー設定
-    static char SS_KEY_EXIT[] =		"KEY_EXIT";
-    static char SS_KEY_PAUSE[] =	"KEY_PAUSE";
-    static char SS_KEY_UP[] =		"KEY_UP";
-    static char SS_KEY_LEFT[] =		"KEY_LEFT";
-    static char SS_KEY_RIGHT[] =	"KEY_RIGHT";
-    static char SS_KEY_DOWN[] =		"KEY_DOWN";
-    static char SS_KEY_JUMP[] =		"KEY_JUMP";
-    static char SS_KEY_ATTACK[] =	"KEY_ATTACK";
-    static char SS_KEY_SMILE[] =	"KEY_SMILE";
-    static char SS_KEY_FPS[] =		"KEY_FPS";
-    static char SS_KEY_BGMNONE[] =	"KEY_BGMNONE";
-    static char SS_KEY_BGMDEF[] =	"KEY_BGMDEF";
-    static char SS_KEY_BGMUSER[] =	"KEY_BGMUSER";
-    static char SS_KEY_CAPTURE[] =	"KEY_CAPTURE";
-    static char SS_KEY_RECORD[] =	"KEY_RECORD";
+        // キー設定
+        public static char SS_KEY_EXIT[] =		"KEY_EXIT";
+        public static char SS_KEY_PAUSE[] =	"KEY_PAUSE";
+        public static char SS_KEY_UP[] =		"KEY_UP";
+        public static char SS_KEY_LEFT[] =		"KEY_LEFT";
+        public static char SS_KEY_RIGHT[] =	"KEY_RIGHT";
+        public static char SS_KEY_DOWN[] =		"KEY_DOWN";
+        public static char SS_KEY_JUMP[] =		"KEY_JUMP";
+        public static char SS_KEY_ATTACK[] =	"KEY_ATTACK";
+        public static char SS_KEY_SMILE[] =	"KEY_SMILE";
+        public static char SS_KEY_FPS[] =		"KEY_FPS";
+        public static char SS_KEY_BGMNONE[] =	"KEY_BGMNONE";
+        public static char SS_KEY_BGMDEF[] =	"KEY_BGMDEF";
+        public static char SS_KEY_BGMUSER[] =	"KEY_BGMUSER";
+        public static char SS_KEY_CAPTURE[] =	"KEY_CAPTURE";
+        public static char SS_KEY_RECORD[] =	"KEY_RECORD";
 
-    // その他
-    static char SS_PROGRESS[] =		"PROGRESS";
-    static char SS_CHECKSUM[] =		"CHECKSUM";
+        // その他
+        public static char SS_PROGRESS[] =		"PROGRESS";
+        public static char SS_CHECKSUM[] =		"CHECKSUM";
 
 
-	void SetProgress(string &file, int stage)
+        public void SetProgress(string &file, int stage)
 {
 	m_Progress[file] = stage;
 }
-    int GetProgress(string &file)
+        public int GetProgress(string &file)
 {
 	map<string,int>::iterator it=m_Progress.find(file);
 	if (it==m_Progress.end()) return 0; else return (*it).second;
 }
-    void InitSaveData()
+        public void InitSaveData()
 {
 	for (int i=0; i<m_DataCount; i++) {
 		if (m_Data[i].check) {
@@ -83,7 +81,7 @@ extern class Cf3Setting
 		}
 	}
 }
-    int GetChecksum()
+        public int GetChecksum()
 {
 	int checksum=0;
 	for (int i=0; i<m_DataCount; i++) {
@@ -116,7 +114,7 @@ extern class Cf3Setting
 	}
 	return checksum;
 }
-    Cf3Setting()
+        public Cf3Setting()
 {
 	int checksum = 0;
 	tagSetting DefSetting[] = {
@@ -205,7 +203,7 @@ extern class Cf3Setting
 	m_StartTime = timeGetTime();
 	theSetting = this;
 }
-    virtual ~Cf3Setting()
+        public virtual ~Cf3Setting()
 {
 	m_PlayTime += (timeGetTime()-m_StartTime)/1000;
 	CFile file;
@@ -223,33 +221,33 @@ extern class Cf3Setting
 	delete [] m_Data;
 }
 
-    int m_BGMMode;
-    int m_FullScreen;
-    int m_Zoom;
-    int m_Background;
-    int m_Character;
-    int m_ViewTime;
-    int m_FPS;
-    int m_ESP;
-    int m_Gravity;
-    int m_RecordClear;
-    int m_RecordMiss;
-    int m_RecordNumber;
-    int m_Banana;
-    int m_PlayTime;
-    int m_SleepTime;
-    int m_Smiles;
-    int m_TimeMaster;
-    int m_Eyewitness;
-    int m_FeatherIron;
-    int m_GrapeColored;
-    int m_Esrever;
-    int m_DrawMethod;
-    int m_Outline;
-    int m_ColdMan;
-    int m_Hyper;
-    int m_AndBalloon;
-    int m_StartTime;
-    int m_Key[F3KEY_BUFSIZE];
+        public int m_BGMMode;
+        public int m_FullScreen;
+        public int m_Zoom;
+        public int m_Background;
+        public int m_Character;
+        public int m_ViewTime;
+        public int m_FPS;
+        public int m_ESP;
+        public int m_Gravity;
+        public int m_RecordClear;
+        public int m_RecordMiss;
+        public int m_RecordNumber;
+        public int m_Banana;
+        public int m_PlayTime;
+        public int m_SleepTime;
+        public int m_Smiles;
+        public int m_TimeMaster;
+        public int m_Eyewitness;
+        public int m_FeatherIron;
+        public int m_GrapeColored;
+        public int m_Esrever;
+        public int m_DrawMethod;
+        public int m_Outline;
+        public int m_ColdMan;
+        public int m_Hyper;
+        public int m_AndBalloon;
+        public int m_StartTime;
+        public int m_Key[F3KEY_BUFSIZE];
 }* theSetting;
 }

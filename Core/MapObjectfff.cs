@@ -1,18 +1,17 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3MapObjectfff : public Cf3MapObjectMain  
+public class Cf3MapObjectfff : Cf3MapObjectMain  
 {
-private:
-    const float FLYACCEL = 0.24f;
-    const float FLYFRICTION = 0.026f;
-    const float ROTATEACCEL = 0.5f;
-    const float ROTATEFRICTION = 0.01f;
-	void Tire()
+        private const float FLYACCEL = 0.24f;
+        private const float FLYFRICTION = 0.026f;
+        private const float ROTATEACCEL = 0.5f;
+        private const float ROTATEFRICTION = 0.01f;
+        private void Tire()
 {
 	m_State = TIRED;
 	m_PoseCounter = 100;
 }
-void BreatheOut()
+        private void BreatheOut()
 {
 	int p=floor(m_ChargePower/40.0f)+1;
         TL.Saturate(1,ref p,m_nPower);
@@ -29,24 +28,24 @@ void BreatheOut()
 	m_State = BREATHEOUT;
 	m_ChargePower=10.0f;
 }
-void BreatheIn()
+        private void BreatheIn()
 {
 	if (m_nPower) {
 		m_State = BREATHEIN;
 		m_ChargePower = 0.0f;
 	}
 }
-void Freeze(int level = 15)
+        private void Freeze(int level = 15)
 {
 	m_State = FROZEN;
 	m_PoseCounter = level*8;
 }
-void Die()
+        private void Die()
 {
 	m_State=DEAD;
 	m_DX = m_DY = 0;
 }
-void HitCheck()
+        private void HitCheck()
 {
 	float mw=m_pParent->GetWidth()*32, mh=m_pParent->GetHeight()*32;
 	int CX=floor(m_X/32),
@@ -91,15 +90,15 @@ void HitCheck()
 	if (m_Y+14 < 0) Die();
 	if (m_Y-14 > mh) Die();
 }
-void Smile() { m_State = SMILE; }
+        private void Smile() { m_State = SMILE; }
 
-float m_OldX, m_OldY;
-float m_DX, m_DY, m_OldDX, m_OldDY; // 位置などの情報
-float m_Angle, m_DAngle;            // 回転とか
-float m_ChargePower;                // ジャンプチャージ係数(1.0f=100%から減ってゆく)
-float m_Power, m_PowerX, m_PowerY;
-int m_nPower;
-enum f3fffState
+        private float m_OldX, m_OldY;
+        private float m_DX, m_DY, m_OldDX, m_OldDY; // 位置などの情報
+        private float m_Angle, m_DAngle;            // 回転とか
+        private float m_ChargePower;                // ジャンプチャージ係数(1.0f=100%から減ってゆく)
+        private float m_Power, m_PowerX, m_PowerY;
+        private int m_nPower;
+        private enum f3fffState
 {
     NORMAL,
     BREATHEIN,
@@ -111,14 +110,14 @@ enum f3fffState
 }
 m_State;
 
-	int m_PoseCounter, m_PoseCounter2;
+	private int m_PoseCounter, m_PoseCounter2;
 
-// 表示位置調整
-int m_VOffsetX, m_VOffsetY;
-int m_VOffsetToX, m_VOffsetToY;
-public:
-	bool IsFrozen() { return m_State == FROZEN; }
-void Synergy()
+        // 表示位置調整
+        private int m_VOffsetX, m_VOffsetY;
+        private int m_VOffsetToX, m_VOffsetToY;
+
+        public bool IsFrozen() { return m_State == FROZEN; }
+        public void Synergy()
 {
 	if (m_State==DEAD||m_State==SMILE) return;
 	m_Power = m_PowerX = m_PowerY = 0.0f;
@@ -264,8 +263,8 @@ void Synergy()
 		theApp->GetBGM()->MusicEffect(MEN_BANANAPOSITION, nBanana?(float)nPosition/nBanana:0.0f);
 	}
 }
-bool IsDied() { return m_State == DEAD; }
-void OnMove()
+        public bool IsDied() { return m_State == DEAD; }
+        public void OnMove()
 {
 	if (!IsValid()) return;
 	if (!m_pParent->IsPlayable()) return;
@@ -356,7 +355,7 @@ void OnMove()
 	m_Y += m_DY;
 	HitCheck();
 }
-void OnDraw(CDIB32* lp)
+        public void OnDraw(CDIB32* lp)
 {
 	if (!IsValid()) return;
 	if (m_pParent->ItemCompleted()) Smile();
@@ -391,7 +390,7 @@ void OnDraw(CDIB32* lp)
 		lp->BltNatural(graphic,m_nVX-16,m_nVY,&rc);
 	}
 }
-Cf3MapObjectfff(int nCX, int nCY)
+        public Cf3MapObjectfff(int nCX, int nCY)
 	:Cf3MapObjectMain(MOT_FUNYA)
 	,m_DX   (0.0f), m_DY   (0.0f)
 	,m_OldDX(0.0f), m_OldDY(0.0f)
@@ -409,7 +408,7 @@ Cf3MapObjectfff(int nCX, int nCY)
 	SetPos(nCX*32+16,nCY*32+18);
 	m_OldX = m_X; m_OldY = m_Y;
 }
-~Cf3MapObjectfff() { }
+        public ~Cf3MapObjectfff() { }
 
 };
 }

@@ -1,13 +1,13 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-struct tagf3StageHeader
+public struct tagf3StageHeader
 {
-    char ident[8];      // "funya3s1"
-    long datasize;      // 展開サイズ
-    long packsize;		// 圧縮サイズ(datasizeと同じ場合無圧縮)
+    public char ident[8];      // "funya3s1"
+    public long datasize;      // 展開サイズ
+    public long packsize;		// 圧縮サイズ(datasizeと同じ場合無圧縮)
 };
 
-enum CT
+public enum CT
     {
     CT_TITL = 0x4C544954,
     CT_AUTH = 0x48545541,
@@ -30,17 +30,16 @@ enum CT
     CT_HYPR = 0x52505948,
 };
 
-class Cf3StageFile
+public class Cf3StageFile
 {
-    protected:
-	void ClearData()
+        protected void ClearData()
 {
 	for (map<DWORD,HGLOBAL>::iterator it=m_Data.begin(); it!=m_Data.end(); it++) {
 		::GlobalFree((*it).second);
 	}
 	m_Data.clear();
 }
-    void AnalyzeData(BYTE* data)
+        protected void AnalyzeData(BYTE* data)
 {
 	DWORD NumberOfBytesRead = 0;
 	DWORD size, type;
@@ -58,10 +57,10 @@ class Cf3StageFile
 		NumberOfBytesRead += size;
 	}
 }
-    tagf3StageHeader m_StageHeader;
-    map<DWORD, HGLOBAL> m_Data;
-    public:
-	LRESULT Write(string filename)
+        protected tagf3StageHeader m_StageHeader;
+        protected map<DWORD, HGLOBAL> m_Data;
+
+        public LRESULT Write(string filename)
 {
 	// サイズ計算するのジャー
 	DWORD dwSrcSize = 0;
@@ -115,14 +114,14 @@ class Cf3StageFile
 	delete[]lpSrcAdr;
 	return 0;
 }
-    void SetStageData(DWORD dwType, DWORD dwSize, void* lpData)
+        public void SetStageData(DWORD dwType, DWORD dwSize, void* lpData)
 {
 	HGLOBAL hData = ::GlobalAlloc(GMEM_FIXED | GMEM_NOCOMPACT,dwSize);
 	::CopyMemory(hData, lpData, dwSize);
 	m_Data[dwType] = hData;
 }
-// データを取得。なければNULL
-    BYTE* GetStageData(const DWORD dwType, DWORD*dwSize=NULL)
+        // データを取得。なければNULL
+        public BYTE* GetStageData(const DWORD dwType, DWORD*dwSize=NULL)
 {
 	map<DWORD,HGLOBAL>::iterator it = m_Data.find(dwType);
 	if (it!=m_Data.end()) {
@@ -132,7 +131,7 @@ class Cf3StageFile
 	return NULL;
 }
 // ステージファイルを読み込みメモリに格納する
-	LRESULT Read(string filename)
+public LRESULT Read(string filename)
 {
 	ClearData();
 	CFile File;
@@ -166,10 +165,10 @@ class Cf3StageFile
 	// これにて終了
 	return 0;
 }
-    Cf3StageFile()
+public Cf3StageFile()
 {
 }
-    virtual ~Cf3StageFile()
+public virtual ~Cf3StageFile()
 {
 	ClearData();
 }

@@ -1,42 +1,41 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3MapObjectIce : public Cf3MapObjectIceBase  
+public class Cf3MapObjectIce : Cf3MapObjectIceBase  
 {
-protected:
-    const float GRAVITY = 0.2f;
-    const float FRICTION = 0.026f;
-    const float REFRECTION = 0.9f;
-    const int LIFE = 160;
-	static set<Cf3MapObjectIce*> Cf3MapObjectIce::m_IceList;
+        protected const float GRAVITY = 0.2f;
+        protected const float FRICTION = 0.026f;
+        protected const float REFRECTION = 0.9f;
+        protected const int LIFE = 160;
+        protected static set<Cf3MapObjectIce*> Cf3MapObjectIce::m_IceList;
 
-float m_DX, m_DY;
-int m_Life;
-public:
-	int GetSize()
+        protected float m_DX, m_DY;
+        protected int m_Life;
+
+        public int GetSize()
 {
 	return 16*m_Life/LIFE;
 }
-static set<Cf3MapObjectIce*>::iterator IteratorBegin() { return m_IceList.begin(); }
-static set<Cf3MapObjectIce*>::iterator IteratorEnd() { return m_IceList.end(); }
-static void OnPreDrawAll()
+        public static set<Cf3MapObjectIce*>::iterator IteratorBegin() { return m_IceList.begin(); }
+        public static set<Cf3MapObjectIce*>::iterator IteratorEnd() { return m_IceList.end(); }
+        public static void OnPreDrawAll()
 {
 	for(set<Cf3MapObjectIce*>::iterator it = m_IceList.begin();it!=m_IceList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnPreDraw();
 	}
 }
-static void SynergyAll()
+        public static void SynergyAll()
 {
 	for(set<Cf3MapObjectIce*>::iterator it = m_IceList.begin();it!=m_IceList.end();it++){
 		if ((*it)->IsValid()) (*it)->Synergy();
 	}
 }
-static void OnMoveAll()
+        public static void OnMoveAll()
 {
 	for(set<Cf3MapObjectIce*>::iterator it = m_IceList.begin();it!=m_IceList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnMove();
 	}
 }
-static void OnDrawAll(CDIB32* lp)
+        public static void OnDrawAll(CDIB32* lp)
 {
 	int sx, sy, ex, ey;
 	sx = sy = 0;
@@ -49,7 +48,7 @@ static void OnDrawAll(CDIB32* lp)
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }
-void OnDraw(CDIB32* lp)
+        public void OnDraw(CDIB32* lp)
 {
 	if (!IsValid()||m_Life<=0) return;
 	RECT rc;
@@ -58,7 +57,7 @@ void OnDraw(CDIB32* lp)
 	SetViewPos(-32,-32);
 	lp->BltNatural(m_Graphic,m_nVX,m_nVY,&rc);
 }
-void OnMove()
+        public void OnMove()
 {
 	if (--m_Life<=0) Kill();
 	float Wind=m_pParent->GetWind(floor(m_X/32),floor(m_Y/32));
@@ -111,7 +110,7 @@ void OnMove()
 		}
 	}
 }
-Cf3MapObjectIce(float x, float y, float dx, float dy)
+        public Cf3MapObjectIce(float x, float y, float dx, float dy)
 	:Cf3MapObjectIceBase(MOT_ICE)
 {
 	m_IceList.insert(this);
@@ -119,7 +118,7 @@ Cf3MapObjectIce(float x, float y, float dx, float dy)
 	m_DX = dx; m_DY = dy;
 	m_Life=LIFE;
 }
-virtual ~Cf3MapObjectIce()
+        public virtual ~Cf3MapObjectIce()
 {
 	m_IceList.erase(this);
 }

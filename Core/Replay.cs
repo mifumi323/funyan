@@ -1,53 +1,49 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3Replay
+public class Cf3Replay
 {
-    protected:
-            const int REPLAYBUFFER = 4096;
-	class CKeyState
+        protected const int REPLAYBUFFER = 4096;
+        protected class CKeyState
     {
-        public:
-		CKeyState() { ZERO(pushed); ZERO(pressed); }
+		public CKeyState() { ZERO(pushed); ZERO(pressed); }
         // こうしてある程度まとめたほうが速度的にもメモリ的にも効率がよろしい
-        BYTE pushed[REPLAYBUFFER], pressed[REPLAYBUFFER];
+        public BYTE pushed[REPLAYBUFFER], pressed[REPLAYBUFFER];
     };
-    list<CKeyState> m_State;
-    list<CKeyState>::iterator m_iPointer;
-    int m_nPointer;
-    int m_nProgress;
-    int m_nSize;
-    class Cf3ReplayPlayerState
+        protected list<CKeyState> m_State;
+        protected list<CKeyState>::iterator m_iPointer;
+        protected int m_nPointer;
+        protected int m_nProgress;
+        protected int m_nSize;
+        protected class Cf3ReplayPlayerState
     {
-        public:
-		Cf3ReplayPlayerState()
+		public Cf3ReplayPlayerState()
         {
             stage = NULL;
             map = NULL;
             oldgravity = theSetting->m_Gravity;
             oldhyper = theSetting->m_Hyper;
         }
-        virtual ~Cf3ReplayPlayerState()
+        public virtual ~Cf3ReplayPlayerState()
         {
             DELETE_SAFE(stage);
             DELETE_SAFE(map);
             theSetting->m_Gravity = oldgravity;
             theSetting->m_Hyper = oldhyper;
         }
-        Cf3StageFile* stage;
-        Cf3Map* map;
-        string stagetitle;
-        string maptitle;
-        long oldgravity;
-        long oldhyper;
+        public Cf3StageFile* stage;
+        public Cf3Map* map;
+        public string stagetitle;
+        public string maptitle;
+        public long oldgravity;
+        public long oldhyper;
     }*m_pPlayerState;
-	string m_FileName;
+	    protected string m_FileName;
 
-    public:
-	// 共通
-	int GetSize() { return m_nSize; }
-    string GetFileName() { return m_FileName; }
-    bool Finished() { return m_nProgress >= m_nSize; }
-    void Reset()
+        // 共通
+        public int GetSize() { return m_nSize; }
+        public string GetFileName() { return m_FileName; }
+        public bool Finished() { return m_nProgress >= m_nSize; }
+        public void Reset()
 {
 	m_State.clear();
 	m_State.push_back(CKeyState());
@@ -55,14 +51,14 @@ class Cf3Replay
 	Seek();
 	DELETE_SAFE(m_pPlayerState);
 }
-    void Seek(int position = 0)
+        public void Seek(int position = 0)
 {
 	m_iPointer = m_State.begin();
 	m_nPointer=m_nProgress=0;
 	// position!=0にシークすべきではないのだが一応
 	while(m_nProgress<position) Progress();
 }
-    void Progress()
+        public void Progress()
 {
 	m_nProgress++;
 	m_nPointer++;
@@ -75,18 +71,18 @@ class Cf3Replay
 		m_nPointer=0;
 	}
 }
-    Cf3Replay()
+        public Cf3Replay()
 {
 	m_pPlayerState=NULL;
 	Reset();
 }
-    virtual ~Cf3Replay()
+        public virtual ~Cf3Replay()
 {
 	DELETE_SAFE(m_pPlayerState);
 }
 
-    // Recorder
-    void Save(Cf3StageFile* stage, int map)
+        // Recorder
+        public void Save(Cf3StageFile* stage, int map)
 {
 	if (CApp::MakeFileName(m_FileName,"f3r",theSetting->m_RecordNumber,true)) {
 		Cf3StageFile data;
@@ -134,11 +130,11 @@ class Cf3Replay
 		data.Write(m_FileName);
 	}
 }
-    void StartRecording()
+        public void StartRecording()
 {
 	Reset();
 }
-    void Record()
+        public void Record()
 {
 	(*m_iPointer).pressed[m_nPointer]=(*m_iPointer).pushed[m_nPointer]=0;
 	for (int i=0; i<8; i++) {
@@ -149,8 +145,8 @@ class Cf3Replay
 	m_nSize++;
 }
 
-    // Player
-    void Load(const string& filename)
+        // Player
+        public void Load(const string& filename)
 {
 	m_FileName = filename;
 	Reset();
@@ -174,7 +170,7 @@ class Cf3Replay
 	m_pPlayerState->map = new Cf3Map(m_pPlayerState->stage, ptr?*ptr:0);
 	Seek();
 }
-	void Replay()
+public void Replay()
 {
 	if (Finished()) return;
 	ReplayInput.pressed	= (*m_iPointer).pressed	[m_nPointer];

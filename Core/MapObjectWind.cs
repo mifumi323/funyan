@@ -1,27 +1,25 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-class Cf3MapObjectWind : public Cf3MapObjectBase  
+public class Cf3MapObjectWind : Cf3MapObjectBase  
 {
-protected:
-	static set<Cf3MapObjectWind*> m_WindList;
+        protected static set<Cf3MapObjectWind*> m_WindList;
 
-struct tagWindParticle
+        protected struct tagWindParticle
 {
-    float x;
-    int y;
-    float dx;
-    int color;
+    public float x;
+    public int y;
+    public float dx;
+    public int color;
 } * m_Particle;
-int m_ParticleCount;
+protected int m_ParticleCount;
 
-float m_Left, m_Right;
-float m_Strength;
+        protected float m_Left, m_Right;
+        protected float m_Strength;
 
-static CDIB32 m_Graphic[2];
-static bool m_bGraphicInitialize = false;
+        protected static CDIB32 m_Graphic[2];
+        protected static bool m_bGraphicInitialize = false;
 
-public:
-	void OnPreDraw()
+        public void OnPreDraw()
 {
 	for (int i=0; i<m_ParticleCount; i++) {
 		m_Particle[i].x+=m_Particle[i].dx;
@@ -39,26 +37,26 @@ public:
 		}
 	}
 }
-void OnDraw(CDIB32* lp)
+        public void OnDraw(CDIB32* lp)
 {
 	SetViewPos();
 	for (int i=0; i<m_ParticleCount; i++) {
 		lp->BltFast(&m_Graphic[m_Particle[i].color&1],m_nVX+m_Particle[i].x,m_nVY+m_Particle[i].y);
 	}
 }
-static void OnPreDrawAll()
+        public static void OnPreDrawAll()
 {
 	for(set<Cf3MapObjectWind*>::iterator it = m_WindList.begin();it!=m_WindList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnPreDraw();
 	}
 }
-static void OnDrawAll(CDIB32* lp)
+        public static void OnDrawAll(CDIB32* lp)
 {
 	for(set<Cf3MapObjectWind*>::iterator it = m_WindList.begin();it!=m_WindList.end();it++){
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }
-Cf3MapObjectWind(int x, int y, int w, float s)
+        public Cf3MapObjectWind(int x, int y, int w, float s)
 	:Cf3MapObjectBase(MOT_EFFECT)
 {
 	m_WindList.insert(this);
@@ -83,7 +81,7 @@ Cf3MapObjectWind(int x, int y, int w, float s)
 		m_Particle[i].dx = m_Strength*(0.5f+(float)CApp::random(4096)/4096);
 	}
 }
-virtual ~Cf3MapObjectWind()
+        public virtual ~Cf3MapObjectWind()
 {
 	m_WindList.erase(this);
 }
