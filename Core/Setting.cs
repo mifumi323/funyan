@@ -1,6 +1,10 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace MifuminSoft.funyan.Core
 {
-extern public class Cf3Setting
+    public class Cf3Setting
 {
         protected struct tagSetting
     {
@@ -10,7 +14,7 @@ extern public class Cf3Setting
     } *m_Data;
 	    protected int m_DataCount;
 
-        protected map<string, int> m_Progress;
+        protected Dictionary<string, int> m_Progress = new Dictionary<string, int>();
 
         // 普通の設定項目
         public static char SS_BGM[] =			"BGM";
@@ -64,15 +68,14 @@ extern public class Cf3Setting
         public static char SS_CHECKSUM[] =		"CHECKSUM";
 
 
-        public void SetProgress(string &file, int stage)
+        public void SetProgress(string file, int stage)
 {
 	m_Progress[file] = stage;
 }
-        public int GetProgress(string &file)
-{
-	map<string,int>::iterator it=m_Progress.find(file);
-	if (it==m_Progress.end()) return 0; else return (*it).second;
-}
+        public int GetProgress(string file)
+        {
+            return m_Progress.TryGetValue(file,out var progress) ? progress : 0;
+        }
         public void InitSaveData()
 {
 	for (int i=0; i<m_DataCount; i++) {
@@ -99,8 +102,8 @@ extern public class Cf3Setting
 				;
 		}
 	}
-	for (map<string,int>::iterator it=m_Progress.begin(); it!=m_Progress.end(); it++) {
-		int d = (*it).second;
+	foreach (var it in m_Progress) {
+		int d = it.Value;
 		checksum = checksum
 			+((d>> 0)&1)+((d>> 1)&1)+((d>> 2)&1)+((d>> 3)&1)
 			+((d>> 4)&1)+((d>> 5)&1)+((d>> 6)&1)+((d>> 7)&1)
@@ -190,16 +193,8 @@ extern public class Cf3Setting
 	}
 	// チェックサム
 	if (checksum != GetChecksum()) InitSaveData();
-	// 存在しないファイルの進行状況を消す
-	for (map<string,int>::iterator it=m_Progress.begin(); it!=m_Progress.end();) {
-		if (!CDir().IsFileExist((*it).first)) {
-			map<string,int>::iterator it2=it;
-			it++;
-			m_Progress.erase(it2);
-		}else {
-			it++;
-		}
-	}
+            // 存在しないファイルの進行状況を消す
+            m_Progress = m_Progress.Where(it => File.Exists(it.Key)).ToDictionary(it => it.Key, it => it.Value);
 	m_StartTime = timeGetTime();
 	theSetting = this;
 }
@@ -213,9 +208,9 @@ extern public class Cf3Setting
 		if (*m_Data[i].pdata)
 			fprintf(fp,"%s %d\n",m_Data[i].name,*m_Data[i].pdata);
 	}
-	for (map<string,int>::iterator it=m_Progress.begin(); it!=m_Progress.end(); it++) {
-		if ((*it).second)
-			fprintf(fp,"%s \"%s\" %d\n",SS_PROGRESS,(*it).first.c_str(),(*it).second);
+	foreach (var it in m_Progress) {
+		if (it.Value > 0)
+			fprintf(fp,"%s \"%s\" %d\n",SS_PROGRESS,it.Key,it.Value);
 	}
 	fprintf(fp,"%s %d\n",SS_CHECKSUM,GetChecksum());
 	delete [] m_Data;

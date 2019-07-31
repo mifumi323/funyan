@@ -416,10 +416,9 @@ public void Synergy()
 		}
 #endif
 		// 氷ゾーン
-		for(set<Cf3MapObjectIceSource*>::iterator is = Cf3MapObjectIceSource::IteratorBegin();
-		is!=Cf3MapObjectIceSource::IteratorEnd();is++){
+		foreach(var is_ in Cf3MapObjectIceSource.All()){
 			float objX, objY;
-			(*is)->GetPos(objX,objY);
+			is_.GetPos(objX,objY);
 			float dX = objX-m_X, dY = objY-m_Y,
 				p=1.0f/(dX*dX+dY*dY), p3 = p*sqrt(p);
 			m_Power += p;
@@ -427,11 +426,10 @@ public void Synergy()
 			m_PowerY+= dY*p3;
 		}
 		// 炎ゾーン
-		for(set<Cf3MapObjectFire*>::iterator fr = Cf3MapObjectFire::IteratorBegin();
-		fr!=Cf3MapObjectFire::IteratorEnd();fr++){
-			if ((*fr)->IsActive()) {
+		foreach(var fr = Cf3MapObjectFire.All()){
+			if (fr.IsActive()) {
 				float objX, objY;
-				(*fr)->GetPos(objX,objY);
+				fr.GetPos(objX,objY);
 				float dX = objX-m_X, dY = objY-m_Y,
 					p=1.0f/(dX*dX+dY*dY), p3 = p*sqrt(p);
 				m_Power -= p;
@@ -465,9 +463,9 @@ public void Synergy()
 		float bd;
 		int nBanana=0, nPosition=0;
 		int cx, cy;
-		for(set<Cf3MapObjectBanana*>::iterator bn = Cf3MapObjectBanana::IteratorBegin();bn!=Cf3MapObjectBanana::IteratorEnd();bn++){
-			if ((*bn)->IsValid()) {
-				(*bn)->GetCPos(cx, cy);
+		foreach(var bn = Cf3MapObjectBanana.All()){
+			if (bn.IsValid()) {
+				bn.GetCPos(cx, cy);
 				bd = (cx*32+16-m_X)*(cx*32+16-m_X)+(cy*32+16-m_Y)*(cy*32+16-m_Y);
 				if (bd<m_BananaDistance) m_BananaDistance=bd;
 				nBanana++;

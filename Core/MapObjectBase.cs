@@ -1,4 +1,6 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectBase
 {
@@ -7,9 +9,9 @@ public class Cf3MapObjectBase
         private int m_nID;
 
         private static int m_nNextID = 0;
-        private static MapObjectList m_CharaList;
+        private static HashSet<Cf3MapObjectBase> m_CharaList = new HashSet<Cf3MapObjectBase>();
 
-        protected static void RemoveCharaFromList(Cf3MapObjectBase* lp) { m_CharaList.erase(lp); }
+        protected static void RemoveCharaFromList(Cf3MapObjectBase lp) { m_CharaList.Remove(lp); }
         protected void SetViewPos(float offsetx = 0, float offsety = 0)
     {
         m_nVX = m_X+offsetx;
@@ -24,13 +26,13 @@ public class Cf3MapObjectBase
 
         protected static Cf3Map* m_pParent = NULL;
 
-        public static int Count() { return m_CharaList.size(); }
+        public static int Count() { return m_CharaList.Count; }
         public static void UpdateCPosAll()
-    {
-        for(MapObjectList::iterator it = m_CharaList.begin();it!=m_CharaList.end();it++){
-            if ((*it)->m_bValid) (*it)->UpdateCPos();
+        {
+            foreach (var it in m_CharaList) {
+                if (it.m_bValid) it.UpdateCPos();
+            }
         }
-    }
         public virtual void UpdateCPos()
     {
         int cx, cy;
@@ -41,11 +43,11 @@ public class Cf3MapObjectBase
         }
     }
         public static void KillAll()
-    {
-        for(MapObjectList::iterator it = m_CharaList.begin();it!=m_CharaList.end();it++){
-            if ((*it)->m_bValid) (*it)->Kill();
+        {
+            foreach (var it in m_CharaList) {
+                if (it.m_bValid) it.Kill();
+            }
         }
-    }
         public virtual void Synergy() { }              // 自発的相互作用(必ず自己完結すること)
         public virtual void GetCPos(int& x, int& y)
     {
@@ -60,16 +62,7 @@ public class Cf3MapObjectBase
         //	float GetDistance(Cf3MapObjectBase& obj);
         public static void Garbage()
     {
-        for(MapObjectList::iterator it = m_CharaList.begin();it!=m_CharaList.end();){
-            if (!(*it)->IsValid()) {
-                Cf3MapObjectBase* lp = *it;
-                it++;
-                DELETE_SAFE(lp);	//	イテレータはeraseするときにその要素を
-                                    //	指していると不正になる
-            } else {
-                it++;
-            }
-        }
+            m_CharaList.RemoveWhere(it => !it.IsValid());
     }
         public static void SetParent(Cf3Map* lp) { m_pParent = lp; }
         public virtual void OnPreDraw() { }
@@ -94,13 +87,13 @@ public class Cf3MapObjectBase
 	,m_nID(m_nNextID++)
 	,m_pNext(NULL)
     {
-        m_CharaList.insert(this);
+        m_CharaList.Add(this);
     //	m_nScrollX = m_nScrollY = 1.0f;	// 標準でスクロールに完全についてゆく
     }
         public virtual ~Cf3MapObjectBase()
     {
         m_pParent->RemoveMapObject(m_nCX, m_nCY, this);
-        m_CharaList.erase(this);
+        m_CharaList.Remove(this);
     }
 
     Cf3MapObjectBase* m_pNext;

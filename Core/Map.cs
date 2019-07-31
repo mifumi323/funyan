@@ -167,19 +167,15 @@ namespace MifuminSoft.funyan.Core
                 fX=x+offx; fY=y+offy;	// GetViewPosとオフセットの掛け方が逆
                 power = 0.0f;
                 // 氷ゾーン
-                for(set<Cf3MapObjectIceSource*>::iterator is = Cf3MapObjectIceSource::IteratorBegin();
-                is!=Cf3MapObjectIceSource::IteratorEnd();is++){
-    //			if ((*is)->IsValid()) {	// IsValid==falseになることはない(と思う)
-                        (*is)->GetPos(objX,objY);
+                foreach(var is_ in Cf3MapObjectIceSource.All()){
+                        is_.GetPos(objX,objY);
                         dX = objX-fX; dY = objY-fY;
                         power += 1.0f/(dX*dX+dY*dY);
-    //				}
                 }
                 // 炎ゾーン
-                for(set<Cf3MapObjectFire*>::iterator fr = Cf3MapObjectFire::IteratorBegin();
-                fr!=Cf3MapObjectFire::IteratorEnd();fr++){
-                    if (/*(*fr)->IsValid()&&*/(*fr)->IsActive()) {	// IsValid==falseになることはない(と思う)
-                        (*fr)->GetPos(objX,objY);
+                foreach(var fr in Cf3MapObjectFire.All()){
+                    if (fr.IsActive()) {
+                        fr.GetPos(objX,objY);
                         dX = objX-fX; dY = objY-fY;
                         power -= 1.0f/(dX*dX+dY*dY);
                     }

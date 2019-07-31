@@ -1,25 +1,26 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectIceSource : Cf3MapObjectIceBase  
 {
         protected const int PHASEMAX = 32;
-        protected static set<Cf3MapObjectIceSource*> m_IceList;
+        protected static HashSet<Cf3MapObjectIceSource> m_IceList = new HashSet<Cf3MapObjectIceSource>();
         protected int m_Phase;
         protected int m_Size;
 
-        public static set<Cf3MapObjectIceSource*>::iterator IteratorBegin() { return m_IceList.begin(); }
-        public static set<Cf3MapObjectIceSource*>::iterator IteratorEnd() { return m_IceList.end(); }
+        public static IEnumerable<Cf3MapObjectIceSource> All() { return m_IceList; }
         public int GetSize()
 {
 	int s=abs((PHASEMAX/2)-m_Phase)*6/PHASEMAX+4;
 	return s;
 }
         public static void OnPreDrawAll()
-{
-	for(set<Cf3MapObjectIceSource*>::iterator it = m_IceList.begin();it!=m_IceList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnPreDraw();
-	}
-}
+        {
+            foreach (var it in m_IceList) {
+                if (it.IsValid()) it.OnPreDraw();
+            }
+        }
         public static void OnDrawAll(CDIB32* lp)
 {
 	int sx, sy, ex, ey;
@@ -48,14 +49,14 @@ public class Cf3MapObjectIceSource : Cf3MapObjectIceBase
         public Cf3MapObjectIceSource(int x, int y)
 	:Cf3MapObjectIceBase(MOT_ICESOURCE)
 {
-	m_IceList.insert(this);
+	m_IceList.Add(this);
 	SetPos(x*32+16,y*32+16);
 	m_Phase = CApp::random(PHASEMAX);
 	m_Size = GetSize();
 }
         public virtual ~Cf3MapObjectIceSource()
 {
-	m_IceList.erase(this);
+	m_IceList.Remove(this);
 }
 
 };

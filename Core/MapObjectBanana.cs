@@ -1,16 +1,18 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
     public class Cf3MapObjectBanana : Cf3MapObjectBase  
 {
         //	CDIB32* m_Graphic;
-        private static set<Cf3MapObjectBanana*> m_BananaList;
+        private static HashSet<Cf3MapObjectBanana> m_BananaList = new HashSet<Cf3MapObjectBanana>();
 
         public void UpdateCPos() { }
         public static void OnPreDrawAll() { }
         public static void SynergyAll()
 {
-	for(set<Cf3MapObjectBanana*>::iterator it = m_BananaList.begin();it!=m_BananaList.end();it++){
-		if ((*it)->IsValid()) (*it)->Synergy();
+	foreach(var it in m_BananaList){
+		if (it.IsValid()) it.Synergy();
 	}
 }
         public static void OnDrawAll(CDIB32* lp)
@@ -26,8 +28,7 @@
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }
-        public static set<Cf3MapObjectBanana*>::iterator IteratorBegin() { return m_BananaList.begin(); }
-        public static set<Cf3MapObjectBanana*>::iterator IteratorEnd() { return m_BananaList.end(); }
+        public static IEnumerable<Cf3MapObjectBanana> All() { return m_BananaList; }
         public void Reaction(Cf3MapObjectBase* obj)
 {
 	if (!IsValid()) return;
@@ -67,13 +68,13 @@
 	:Cf3MapObjectBase(MOT_BANANA)
 //	,m_Graphic(ResourceManager.Get(RID_MAIN))
 {
-	m_BananaList.insert(this);
+	m_BananaList.Add(this);
 	SetPos(nCX*32+16,nCY*32+16);
 	m_pParent->AddMapObject(m_nCX=nCX, m_nCY=nCY, this);
 }
         public ~Cf3MapObjectBanana()
 {
-	m_BananaList.erase(this);
+	m_BananaList.Remove(this);
 }
 
 };

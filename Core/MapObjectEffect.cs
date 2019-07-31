@@ -1,9 +1,11 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectEffect : Cf3MapObjectBase  
 {
         protected const float PI=3.141592653589793238f;
-        protected static set<Cf3MapObjectEffect*> m_EffectList;
+        protected static HashSet<Cf3MapObjectEffect> m_EffectList = new HashSet<Cf3MapObjectEffect>();
         //	CDIB32* m_Graphic;
         protected static RECT m_GraphicRect[4 * 16] = {
 	{ 0,0, 5,5}, { 0,5, 5,10}, { 0,10, 5,15}, { 0,15, 5,20},
@@ -54,10 +56,10 @@ protected int m_StarNum;
 	if (!n) Kill();
 }
         public static void OnPreDrawAll() {
-	for(set<Cf3MapObjectEffect*>::iterator it = m_EffectList.begin();it!=m_EffectList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnPreDraw();
-	}
-}
+            foreach (var it in m_EffectList) {
+                if (it.IsValid()) it.OnPreDraw();
+            }
+        }
         public static void OnDrawAll(CDIB32* lp) {
 	int sx, sy, ex, ey;
 	sx = sy = 0;
@@ -76,7 +78,7 @@ protected int m_StarNum;
 	,m_Star(NULL)
 	,m_nEffectType(EffectType)
 {
-	m_EffectList.insert(this);
+	m_EffectList.Add(this);
 //	m_Graphic = ResourceManager.Get(RID_EFFECT);
 	SetPos(x,y);
 	if (EffectType==0) {
@@ -114,7 +116,7 @@ protected int m_StarNum;
 }
         public ~Cf3MapObjectEffect()
 {
-	m_EffectList.erase(this);
+	m_EffectList.Remove(this);
 	DELETEPTR_SAFE(m_Star);
 }
 };

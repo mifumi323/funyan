@@ -1,4 +1,6 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectmrframe : Cf3MapObjectBase 
 {
@@ -15,33 +17,32 @@ public class Cf3MapObjectmrframe : Cf3MapObjectBase
 {
 	return m_funya->IsFrozen();
 }
-        public static set<Cf3MapObjectmrframe*> m_EnemyList;
+        public static HashSet<Cf3MapObjectmrframe> m_EnemyList = new HashSet<Cf3MapObjectmrframe>();
         public static void OnDrawAll(CDIB32* lp)
 {
-	for(set<Cf3MapObjectmrframe*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnDraw(lp);
+	foreach(var it in m_EnemyList){
+		if (it.IsValid()) it.OnDraw(lp);
 	}
 }
         public static void OnPreDrawAll()
 {
-	for(set<Cf3MapObjectmrframe*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnPreDraw();
+	foreach(var it in m_EnemyList){
+		if (it.IsValid()) it.OnPreDraw();
 	}
 }
         public static void SynergyAll()
 {
-	for(set<Cf3MapObjectmrframe*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it)->IsValid()) (*it)->Synergy();
+	foreach(var it in m_EnemyList){
+		if (it.IsValid()) it.Synergy();
 	}
 }
         public static void OnMoveAll()
 {
-	for(set<Cf3MapObjectmrframe*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnMove();
+	foreach(var it in m_EnemyList){
+		if (it.IsValid()) it.OnMove();
 	}
 }
-        public static set<Cf3MapObjectmrframe*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
-        public static set<Cf3MapObjectmrframe*>::iterator IteratorEnd() { return m_EnemyList.end(); }
+        public static IEnumerable<Cf3MapObjectmrframe> All() { return m_EnemyList; }
         public void Synergy()
 {
 	m_funya->Synergy();
@@ -126,7 +127,7 @@ public class Cf3MapObjectmrframe : Cf3MapObjectBase
         public Cf3MapObjectmrframe(int nCX, int nCY)
 	:Cf3MapObjectBase(MOT_FUNYA)
 {
-	m_EnemyList.insert(this);
+	m_EnemyList.Add(this);
 	m_funya = new Cf3MapObjectfunya(nCX,nCY);
 	RemoveCharaFromList(m_funya);
 	m_funya->m_bOriginal = false;
@@ -136,7 +137,7 @@ public class Cf3MapObjectmrframe : Cf3MapObjectBase
 }
         public virtual ~Cf3MapObjectmrframe()
 {
-	m_EnemyList.erase(this);
+	m_EnemyList.Remove(this);
 	delete m_funya;
 }
 

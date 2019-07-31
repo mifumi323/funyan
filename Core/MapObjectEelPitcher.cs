@@ -1,4 +1,6 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectEelPitcher : Cf3MapObjectBase  
 {
@@ -14,7 +16,7 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
 	m_Direction = (d==1?DIR_RIGHT:(d==2?DIR_LEFT:((CApp::random(2))?DIR_LEFT:DIR_RIGHT)));
 }
         //	CDIB32* m_Graphic;
-        private static map<int, Cf3MapObjectEelPitcher*> m_EnemyList;
+        private static Dictionary<int, Cf3MapObjectEelPitcher> m_EnemyList = new Dictionary<int, Cf3MapObjectEelPitcher>();
 
         private f3MapObjectDirection m_Direction;
         private int m_Level;                        // 最大高さ
@@ -34,31 +36,30 @@ private float m_DX, m_DY;
 
         public bool IsLeaf() { return m_State == EELLEAF || m_State == EELFROZEN; }
         public static void OnDrawAll(CDIB32* lp)
-{
-	for(map<int, Cf3MapObjectEelPitcher*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it).second->IsValid()) (*it).second->OnDraw(lp);
-	}
-}
+        {
+            foreach (var it in m_EnemyList) {
+                if (it.Value.IsValid()) it.Value.OnDraw(lp);
+            }
+        }
         public static void OnPreDrawAll()
-{
-	for(map<int, Cf3MapObjectEelPitcher*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it).second->IsValid()) (*it).second->OnPreDraw();
-	}
-}
+        {
+            foreach (var it in m_EnemyList) {
+                if (it.Value.IsValid()) it.Value.OnPreDraw();
+            }
+        }
         public static void SynergyAll()
-{
-	for(map<int, Cf3MapObjectEelPitcher*>::iterator it=m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it).second->IsValid()) (*it).second->Synergy();
-	}
-}
+        {
+            foreach (var it in m_EnemyList) {
+                if (it.Value.IsValid()) it.Value.Synergy();
+            }
+        }
         public static void OnMoveAll()
-{
-	for(map<int, Cf3MapObjectEelPitcher*>::iterator it=m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it).second->IsValid()) (*it).second->OnMove();
-	}
-}
-        public static map<int, Cf3MapObjectEelPitcher*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
-        public static map<int, Cf3MapObjectEelPitcher*>::iterator IteratorEnd() { return m_EnemyList.end(); }
+        {
+            foreach (var it in m_EnemyList) {
+                if (it.Value.IsValid()) it.Value.OnMove();
+            }
+        }
+        public static Dictionary<int, Cf3MapObjectEelPitcher> All() { return m_EnemyList; }
         public void Reaction(Cf3MapObjectBase* obj)
 {
 	if (obj==NULL||obj==this) return;
@@ -287,14 +288,14 @@ private float m_DX, m_DY;
 	,m_State(EELSEED)
 	,m_bBlinking(false)
 {
-	m_EnemyList.insert(pair<int, Cf3MapObjectEelPitcher*>(GetID(), this));
+	m_EnemyList.Add(GetID(), this);
 //	m_Graphic = ResourceManager.Get(RID_EELPITCHER);
 	SetPos(nCX*32+16,nCY*32+16);
 }
         public ~Cf3MapObjectEelPitcher()
-{
-	m_EnemyList.erase(GetID());
-}
+        {
+            m_EnemyList.Remove(GetID());
+        }
 
 };
 }

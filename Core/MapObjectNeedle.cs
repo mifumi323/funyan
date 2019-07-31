@@ -1,4 +1,6 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectNeedle : Cf3MapObjectBase  
 {
@@ -24,7 +26,7 @@ public class Cf3MapObjectNeedle : Cf3MapObjectBase
 	}
 }
         protected CDIB32* m_Graphic;
-        protected static set<Cf3MapObjectNeedle*> m_EnemyList;
+        protected static HashSet<Cf3MapObjectNeedle> m_EnemyList = new HashSet<Cf3MapObjectNeedle>();
 
         protected float m_StartY;
         protected float m_Speed;
@@ -59,30 +61,26 @@ m_State;
 	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx, sy, ex, ey, MOT_NEEDLE); (*it)!=NULL; it++) {
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
-/*	for(set<Cf3MapObjectNeedle*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it)->m_bValid) (*it)->OnDraw(lp);
-	}*/
 }
         public static void OnPreDrawAll()
-{
-	for(set<Cf3MapObjectNeedle*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnPreDraw();
-	}
-}
+        {
+            foreach (var it in m_EnemyList) {
+                if (it.IsValid()) it.OnPreDraw();
+            }
+        }
         public static void SynergyAll()
-{
-	for(set<Cf3MapObjectNeedle*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it)->IsValid()) (*it)->Synergy();
-	}
-}
+        {
+            foreach (var it in m_EnemyList) {
+                if (it.IsValid()) it.Synergy();
+            }
+        }
         public static void OnMoveAll()
-{
-	for(set<Cf3MapObjectNeedle*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnMove();
-	}
-}
-        public static set<Cf3MapObjectNeedle*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
-        public static set<Cf3MapObjectNeedle*>::iterator IteratorEnd() { return m_EnemyList.end(); }
+        {
+            foreach (var it in m_EnemyList) {
+                if (it.IsValid()) it.OnMove();
+            }
+        }
+        public static IEnumerable<Cf3MapObjectNeedle> All() { return m_EnemyList; }
         public void Synergy()
 {
 	if (!IsValid()) return;
@@ -192,7 +190,7 @@ m_State;
         public Cf3MapObjectNeedle(int nCX, int nCY, int nType = 0)
 	:Cf3MapObjectBase(MOT_NEEDLE)
 {
-	m_EnemyList.insert(this);
+	m_EnemyList.Add(this);
 	m_Graphic = ResourceManager.Get(RID_NEEDLE);
 	SetPos(nCX*32+16,nCY*32+17);
 	switch(nType){
@@ -217,7 +215,7 @@ m_State;
 }
         public virtual ~Cf3MapObjectNeedle()
 {
-	m_EnemyList.erase(this);
+	m_EnemyList.Remove(this);
 }
 
 };

@@ -1,9 +1,11 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectFire : Cf3MapObjectIceBase  
 {
         private const int PHASEMAX = 32;
-        private static set<Cf3MapObjectFire*> m_FireList;
+        private static HashSet<Cf3MapObjectFire> m_FireList = new HashSet<Cf3MapObjectFire>();
 
         private int m_Phase;
         private int m_Size;
@@ -34,8 +36,7 @@ public class Cf3MapObjectFire : Cf3MapObjectIceBase
 	}
 }
         public bool IsActive() { return m_Delay == 0; }
-        public static set<Cf3MapObjectFire*>::iterator IteratorBegin() { return m_FireList.begin(); }
-        public static set<Cf3MapObjectFire*>::iterator IteratorEnd() { return m_FireList.end(); }
+        public static IEnumerable<Cf3MapObjectFire> All() { return m_FireList; }
         public void OnPreDraw()
 {
 	if (CApp::random(40)) { m_Phase++; m_Phase%=PHASEMAX; }
@@ -61,23 +62,23 @@ public class Cf3MapObjectFire : Cf3MapObjectIceBase
 	return s;
 }
         public static void SynergyAll()
-{
-	for(set<Cf3MapObjectFire*>::iterator it = m_FireList.begin();it!=m_FireList.end();it++){
-		if ((*it)->IsValid()) (*it)->Synergy();
-	}
-}
+        {
+            foreach (var it in m_FireList) {
+                if (it.IsValid()) it.Synergy();
+            }
+        }
         public static void OnPreDrawAll()
-{
-	for(set<Cf3MapObjectFire*>::iterator it = m_FireList.begin();it!=m_FireList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnPreDraw();
-	}
-}
+        {
+            foreach (var it in m_FireList) {
+                if (it.IsValid()) it.OnPreDraw();
+            }
+        }
         public static void OnMoveAll()
-{
-	for(set<Cf3MapObjectFire*>::iterator it = m_FireList.begin();it!=m_FireList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnMove();
-	}
-}
+        {
+            foreach (var it in m_FireList) {
+                if (it.IsValid()) it.OnMove();
+            }
+        }
         public static void OnDrawAll(CDIB32* lp)
 {
 	int sx, sy, ex, ey;
@@ -95,14 +96,14 @@ public class Cf3MapObjectFire : Cf3MapObjectIceBase
 	:Cf3MapObjectIceBase(MOT_FIRE)
 	,m_Delay(0)
 {
-	m_FireList.insert(this);
+	m_FireList.Add(this);
 	SetPos(x*32+16,y*32+16);
 	m_Phase = CApp::random(PHASEMAX);
 	m_Size = GetSize();
 }
         public virtual ~Cf3MapObjectFire()
 {
-	m_FireList.erase(this);
+	m_FireList.Remove(this);
 }
 
 };

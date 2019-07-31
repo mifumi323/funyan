@@ -1,8 +1,10 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectWind : Cf3MapObjectBase  
 {
-        protected static set<Cf3MapObjectWind*> m_WindList;
+        protected static HashSet<Cf3MapObjectWind> m_WindList = new HashSet<Cf3MapObjectWind>();
 
         protected struct tagWindParticle
 {
@@ -45,21 +47,21 @@ protected int m_ParticleCount;
 	}
 }
         public static void OnPreDrawAll()
-{
-	for(set<Cf3MapObjectWind*>::iterator it = m_WindList.begin();it!=m_WindList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnPreDraw();
-	}
-}
+        {
+            foreach (var it in m_WindList) {
+                if (it.IsValid()) it.OnPreDraw();
+            }
+        }
         public static void OnDrawAll(CDIB32* lp)
 {
-	for(set<Cf3MapObjectWind*>::iterator it = m_WindList.begin();it!=m_WindList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnDraw(lp);
+	foreach (var it in m_WindList){
+		if (it.IsValid()) it.OnDraw(lp);
 	}
 }
         public Cf3MapObjectWind(int x, int y, int w, float s)
 	:Cf3MapObjectBase(MOT_EFFECT)
 {
-	m_WindList.insert(this);
+	m_WindList.Add(this);
 	if (!m_bGraphicInitialize) {
 		m_Graphic[0].CreateSurface(1,1,false);
 		m_Graphic[0].SetPixel(0,0,0);
@@ -82,9 +84,9 @@ protected int m_ParticleCount;
 	}
 }
         public virtual ~Cf3MapObjectWind()
-{
-	m_WindList.erase(this);
-}
+        {
+            m_WindList.Remove(this);
+        }
 
 };
 }

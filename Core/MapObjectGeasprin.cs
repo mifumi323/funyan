@@ -1,4 +1,6 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectGeasprin : Cf3MapObjectBase  
 {
@@ -49,8 +51,7 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 	m_Direction = (m_Direction==DIR_LEFT?DIR_RIGHT:DIR_LEFT);
 }
         protected CDIB32* m_Graphic;
-        protected static map<int, Cf3MapObjectGeasprin*> m_EnemyList;
-        //	static set<Cf3MapObjectGeasprin*> m_EnemyList;
+        protected static Dictionary<int, Cf3MapObjectGeasprin> m_EnemyList = new Dictionary<int, Cf3MapObjectGeasprin>();
 
         protected enum f3GeasprinState
 {
@@ -99,30 +100,26 @@ m_State;
 	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx-1, sy-1, ex+1, ey+1, MOT_GEASPRIN); (*it)!=NULL; it++) {
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
-/*	for(set<Cf3MapObjectGeasprin*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it)->m_bValid) (*it)->OnDraw(lp);
-	}*/
 }
         public static void OnPreDrawAll()
-{
-	for(map<int, Cf3MapObjectGeasprin*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it).second->IsValid()) (*it).second->OnPreDraw();
-	}
-}
+        {
+            foreach (var it in m_EnemyList) {
+                if (it.Value.IsValid()) it.Value.OnPreDraw();
+            }
+        }
         public static void SynergyAll()
-{
-	for(map<int, Cf3MapObjectGeasprin*>::iterator it = m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it).second->IsValid()) (*it).second->Synergy();
-	}
-}
+        {
+            foreach (var it in m_EnemyList) {
+                if (it.Value.IsValid()) it.Value.Synergy();
+            }
+        }
         public static void OnMoveAll()
-{
-	for(map<int, Cf3MapObjectGeasprin*>::iterator it=m_EnemyList.begin();it!=m_EnemyList.end();it++){
-		if ((*it).second->IsValid()) (*it).second->OnMove();
-	}
-}
-        public static map<int, Cf3MapObjectGeasprin*>::iterator IteratorBegin() { return m_EnemyList.begin(); }
-        public static map<int, Cf3MapObjectGeasprin*>::iterator IteratorEnd() { return m_EnemyList.end(); }
+        {
+            foreach (var it in m_EnemyList) {
+                if (it.Value.IsValid()) it.Value.OnMove();
+            }
+        }
+        public static Dictionary<int, Cf3MapObjectGeasprin> All() { return m_EnemyList; }
         public void Reaction(Cf3MapObjectBase* obj)
 {
 	if (obj==NULL) return;
@@ -394,7 +391,7 @@ m_State;
         public Cf3MapObjectGeasprin(int nCX, int nCY, f3MapObjectDirection direction = DIR_LEFT)
 	:Cf3MapObjectBase(MOT_GEASPRIN)
 {
-	m_EnemyList.insert(pair<int, Cf3MapObjectGeasprin*>(GetID(), this));
+	m_EnemyList.Add(GetID(), this);
 	m_Graphic = ResourceManager.Get(RID_GEASPRIN);
 	SetPos(nCX*32+16,nCY*32+16);
 	m_Direction = direction;
@@ -402,9 +399,9 @@ m_State;
 	Stop();
 }
         public virtual ~Cf3MapObjectGeasprin()
-{
-	m_EnemyList.erase(GetID());
-}
+        {
+            m_EnemyList.Remove(GetID());
+        }
 
 };
 }

@@ -1,4 +1,6 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System.Collections.Generic;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectIce : Cf3MapObjectIceBase  
 {
@@ -6,7 +8,7 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
         protected const float FRICTION = 0.026f;
         protected const float REFRECTION = 0.9f;
         protected const int LIFE = 160;
-        protected static set<Cf3MapObjectIce*> Cf3MapObjectIce::m_IceList;
+        protected static HashSet<Cf3MapObjectIce> m_IceList = new HashSet<Cf3MapObjectIce>();
 
         protected float m_DX, m_DY;
         protected int m_Life;
@@ -15,26 +17,25 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
 {
 	return 16*m_Life/LIFE;
 }
-        public static set<Cf3MapObjectIce*>::iterator IteratorBegin() { return m_IceList.begin(); }
-        public static set<Cf3MapObjectIce*>::iterator IteratorEnd() { return m_IceList.end(); }
+        public static IEnumerable<Cf3MapObjectIce> All() { return m_IceList; }
         public static void OnPreDrawAll()
-{
-	for(set<Cf3MapObjectIce*>::iterator it = m_IceList.begin();it!=m_IceList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnPreDraw();
-	}
-}
+        {
+            foreach (var it in m_IceList) {
+                if (it.IsValid()) it.OnPreDraw();
+            }
+        }
         public static void SynergyAll()
-{
-	for(set<Cf3MapObjectIce*>::iterator it = m_IceList.begin();it!=m_IceList.end();it++){
-		if ((*it)->IsValid()) (*it)->Synergy();
-	}
-}
+        {
+            foreach (var it in m_IceList) {
+                if (it.IsValid()) it.Synergy();
+            }
+        }
         public static void OnMoveAll()
-{
-	for(set<Cf3MapObjectIce*>::iterator it = m_IceList.begin();it!=m_IceList.end();it++){
-		if ((*it)->IsValid()) (*it)->OnMove();
-	}
-}
+        {
+            foreach (var it in m_IceList) {
+                if (it.IsValid()) it.OnMove();
+            }
+        }
         public static void OnDrawAll(CDIB32* lp)
 {
 	int sx, sy, ex, ey;
@@ -113,15 +114,15 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
         public Cf3MapObjectIce(float x, float y, float dx, float dy)
 	:Cf3MapObjectIceBase(MOT_ICE)
 {
-	m_IceList.insert(this);
+	m_IceList.Add(this);
 	SetPos(x,y);
 	m_DX = dx; m_DY = dy;
 	m_Life=LIFE;
 }
         public virtual ~Cf3MapObjectIce()
-{
-	m_IceList.erase(this);
-}
+        {
+            m_IceList.Remove(this);
+        }
 
 };
 }
