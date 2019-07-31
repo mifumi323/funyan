@@ -13,7 +13,7 @@ namespace MifuminSoft.funyan.Core
 
     public class Cf3Map
 {
-        private CDIB32* m_MapChip[3];
+        private CDIB32[] m_MapChip = new CDIB32[3];
         private BYTE* m_MapData[3];
         private BYTE m_Width[3], m_Height[3];
         private BYTE m_Hit[240];
@@ -650,9 +650,9 @@ namespace MifuminSoft.funyan.Core
         DELETEPTR_SAFE(m_MapData[2]);
         DELETEPTR_SAFE(m_MapData[1]);
         DELETEPTR_SAFE(m_MapData[0]);
-        DELETE_SAFE(m_MapChip[2]);
-        DELETE_SAFE(m_MapChip[1]);
-        DELETE_SAFE(m_MapChip[0]);
+        m_MapChip[2].Dispose();
+        m_MapChip[1].Dispose();
+        m_MapChip[0].Dispose();
         DELETE_SAFE(m_pDIBBuf);
     }
 
