@@ -71,7 +71,7 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
 	int s=GetSize();
 	if (m_DX>0) {
 		// 右側当たり判定
-		if (m_pParent->GetHit(floor((m_X+s)/32),floor(m_Y/32),HIT_LEFT)) {
+		if (m_pParent->GetHit(floor((m_X+s)/32),floor(m_Y/32), HIT.HIT_LEFT)) {
 			if (floor((m_X+s)/32)!=floor((m_X+s-m_DX)/32)) {
 				m_DX*=-REFRECTION;
 				m_X = floor((m_X+s)/32)*32-s;
@@ -81,7 +81,7 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
 	}
         else if (m_DX<0) {
 		// 左側当たり判定
-		if (m_pParent->GetHit(floor((m_X-s)/32),floor(m_Y/32),HIT_RIGHT)) {
+		if (m_pParent->GetHit(floor((m_X-s)/32),floor(m_Y/32), HIT.HIT_RIGHT)) {
 			if (floor((m_X-s)/32)!=floor((m_X-s-m_DX)/32)) {
 				m_DX*=-REFRECTION;
 				m_X = floor(m_X/32)*32+s;
@@ -92,7 +92,7 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
 	m_Y += m_DY;
 	if (m_DY>0) {
 		// 下側当たり判定
-		if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+s)/32),HIT_TOP)) {
+		if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+s)/32), HIT.HIT_TOP)) {
 			if (floor((m_Y+s)/32)!=floor((m_Y+s-m_DY)/32)) {
 				m_DY*=-REFRECTION;
 				m_Y = floor((m_Y+s)/32)*32-s;
@@ -102,7 +102,7 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
 	}
         else if (m_DY<0) {
 		// 上側当たり判定
-		if (m_pParent->GetHit(floor(m_X/32),floor((m_Y-s)/32),HIT_BOTTOM)) {
+		if (m_pParent->GetHit(floor(m_X/32),floor((m_Y-s)/32), HIT.HIT_BOTTOM)) {
 			if (floor((m_Y-s)/32)!=floor((m_Y-s-m_DY)/32)) {
 				m_DY*=-REFRECTION;
 				m_Y = floor(m_Y/32)*32+s;

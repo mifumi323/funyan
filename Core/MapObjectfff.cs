@@ -56,7 +56,7 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 		CB=floor((m_Y+14)/32);
 	if (m_DX>=0) {	// 右へ
 		if (CR!=CX) {
-			if (m_pParent->GetHit(CR,CY,HIT_LEFT)) {
+			if (m_pParent->GetHit(CR,CY, HIT.HIT_LEFT)) {
 				m_X = 18+32*CX;
 				m_DX = 0;
 			}
@@ -64,7 +64,7 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 	}
 	if(m_DX<=0) {	// 左へ
 		if (CL!=CX) {
-			if (m_pParent->GetHit(CL,CY,HIT_RIGHT)) {
+			if (m_pParent->GetHit(CL,CY, HIT.HIT_RIGHT)) {
 				m_X = 14+32*CX;
 				m_DX = 0;
 			}
@@ -72,7 +72,7 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 	}
 	if (m_DY>=0) {	// 落ちるとき
 		if (CB!=CY) {
-			if (m_pParent->GetHit(CX,CB,HIT_TOP)) {
+			if (m_pParent->GetHit(CX,CB, HIT.HIT_TOP)) {
 				m_Y = 18+32*CY;
 				m_DY = 0;
 			}
@@ -80,13 +80,13 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 	}
         else if (m_DY<0){	// 飛ぶとき
 		if (CT!=CY) {
-			if (m_pParent->GetHit(CX,CT,HIT_BOTTOM)) {
+			if (m_pParent->GetHit(CX,CT, HIT.HIT_BOTTOM)) {
 				m_Y = 14+32*CY;
 				m_DY = 0;
 			}
 		}
 	}
-	if (m_pParent->GetHit(CX,CY,HIT_DEATH)) Die();
+	if (m_pParent->GetHit(CX,CY, HIT.HIT_DEATH)) Die();
 	if (m_Y+14 < 0) Die();
 	if (m_Y-14 > mh) Die();
 }

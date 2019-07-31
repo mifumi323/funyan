@@ -11,8 +11,8 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
 	m_State = m_Delay?EELBUD:EELLEAF;
 	m_RootX = m_X;
 	m_RootY = floor(m_Y/32)*32;
-	if (m_pParent->GetHit(floor((m_X-14)/32),floor(m_Y/32),HIT_TOP)) d|=1;
-	if (m_pParent->GetHit(floor((m_X+14)/32),floor(m_Y/32),HIT_TOP)) d|=2;
+	if (m_pParent->GetHit(floor((m_X-14)/32),floor(m_Y/32), HIT.HIT_TOP)) d|=1;
+	if (m_pParent->GetHit(floor((m_X+14)/32),floor(m_Y/32), HIT.HIT_TOP)) d|=2;
 	m_Direction = (d==1?DIR_RIGHT:(d==2?DIR_LEFT:((CApp::random(2))?DIR_LEFT:DIR_RIGHT)));
 }
         //	CDIB32* m_Graphic;
@@ -161,11 +161,11 @@ private float m_DX, m_DY;
 		m_DX = m_DX + (m_pParent->GetWind(floor(m_X/32),floor(m_Y/32))-m_DX)*m_Level*0.1+(m_RootX-m_X)*0.025;
             TL.Saturate(-14.0f,ref m_DX,14.0f);
 		m_X += m_DX;
-		if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32),HIT_RIGHT)) {
+		if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32), HIT.HIT_RIGHT)) {
 			m_DX = 0;
 			m_X = floor(m_X/32)*32+16;
 		}
-            else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32),HIT_LEFT)) {
+            else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32), HIT.HIT_LEFT)) {
 			m_DX = 0;
 			m_X = floor(m_X/32)*32+16;
 		}
@@ -183,26 +183,26 @@ private float m_DX, m_DY;
 		m_DX = m_DX + (m_pParent->GetWind(floor(m_X/32),floor(m_Y/32))-m_DX)*0.2;
             TL.Saturate(-14.0f,ref m_DX,14.0f);
 		m_X += m_DX;
-		if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32),HIT_RIGHT)) {
+		if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32), HIT.HIT_RIGHT)) {
 			m_DX = 0;
 			m_X = floor(m_X/32)*32+16;
 		}
-            else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32),HIT_LEFT)) {
+            else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32), HIT.HIT_LEFT)) {
 			m_DX = 0;
 			m_X = floor(m_X/32)*32+16;
 		}
 		m_Y += m_DY;
 		if (floor(m_Y/32)!=floor((m_Y-m_DY)/32)) {
 			// 32ドット境界をまたいだ！！
-			if (m_pParent->GetHit(floor(m_X/32),floor(m_Y/32),HIT_TOP)
+			if (m_pParent->GetHit(floor(m_X/32),floor(m_Y/32), HIT.HIT_TOP)
 				|| floor(m_Y/32)>=m_pParent->GetHeight()) {
 				Seed();
 			}else {
-				if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32),HIT_RIGHT)) {
+				if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32), HIT.HIT_RIGHT)) {
 					m_DX = 0;
 					m_X = floor(m_X/32)*32+16;
 				}
-                    else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32),HIT_LEFT)) {
+                    else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32), HIT.HIT_LEFT)) {
 					m_DX = 0;
 					m_X = floor(m_X/32)*32+16;
 				}

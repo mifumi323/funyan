@@ -301,13 +301,13 @@ namespace MifuminSoft.funyan.Core
         if (level<0 || 2<level || x<0 || m_Width[level]<=x || y<0 || m_Height[level]<=y) return 0;
         return m_MapData[level][GetIndex(level, x, y)];
     }
-        public bool GetHit(int x, int y, BYTE hit)
-    {
-        if (x<0 || m_Width[1]<=x) return (0x0f&hit)!=0;
-        if (y<0) return GetHit(x,0,hit);
-        if (y>=m_Height[1]) return GetHit(x,m_Height[1]-1,hit);
-        return (m_Hit[GetMapData(1,x,y)]&hit)!=0;
-    }
+        public bool GetHit(int x, int y, HIT hit)
+        {
+            if (x < 0 || m_Width[1] <= x) return ((HIT)0x0f & hit) != 0;
+            if (y < 0) return GetHit(x, 0, hit);
+            if (y >= m_Height[1]) return GetHit(x, m_Height[1] - 1, hit);
+            return (m_Hit[GetMapData(1, x, y)] & hit) != 0;
+        }
         public void OnDraw(CDIB32* lp) { OnDraw(lp, false); }
         public void OnDraw(CDIB32* lp, bool bShowHit)
     {
@@ -367,7 +367,7 @@ namespace MifuminSoft.funyan.Core
                     else lp->BltFast(m_MapChip[1],vx,vy,&r);
                     if (bShowHit) {
                         // 当たり判定表示
-                        if (GetHit(x, y, HIT_TOP)) {
+                        if (GetHit(x, y, HIT.HIT_TOP)) {
                             int f=m_Hit[GetMapData(1,x,y)]&~0x1f;
                             r.left = f;
                             r.top = 0;
@@ -375,28 +375,28 @@ namespace MifuminSoft.funyan.Core
                             r.bottom = 32;
                             lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
                         }
-                        if (GetHit(x, y, HIT_BOTTOM)) {
+                        if (GetHit(x, y, HIT.HIT_BOTTOM)) {
                             r.left = 256;
                             r.top = 0;
                             r.right = 288;
                             r.bottom = 32;
                             lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
                         }
-                        if (GetHit(x, y, HIT_LEFT)) {
+                        if (GetHit(x, y, HIT.HIT_LEFT)) {
                             r.left = 288;
                             r.top = 0;
                             r.right = 320;
                             r.bottom = 32;
                             lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
                         }
-                        if (GetHit(x, y, HIT_RIGHT)) {
+                        if (GetHit(x, y, HIT.HIT_RIGHT)) {
                             r.left = 320;
                             r.top = 0;
                             r.right = 352;
                             r.bottom = 32;
                             lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
                         }
-                        if (GetHit(x, y, HIT_DEATH)) {
+                        if (GetHit(x, y, HIT.HIT_DEATH)) {
                             r.left = 352;
                             r.top = 0;
                             r.right = 384;
@@ -584,8 +584,8 @@ namespace MifuminSoft.funyan.Core
                         }
                         m_MapData[1][z] = 0;
                     }else{
-                        if (GetHit(x,y,HIT_LEFT)) windmap[z]=0x4; else windmap[z] = 0;
-                        if (GetHit(x,y,HIT_RIGHT)) windmap[z]|=0x8;
+                        if (GetHit(x,y, HIT.HIT_LEFT)) windmap[z]=0x4; else windmap[z] = 0;
+                        if (GetHit(x,y, HIT.HIT_RIGHT)) windmap[z]|=0x8;
                     }
                     z++;
                 }
