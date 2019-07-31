@@ -8,8 +8,8 @@ public class Cf3GameInput
 
 extern public class Cf3GameInputKey : Cf3GameInput
 {
-        public bool GetKeyPushed(int key) { return f3Input.GetKeyPushed(key); }
-        public bool GetKeyPressed(int key) { return f3Input.GetKeyPressed(key); }
+        public bool GetKeyPushed(int key) { return Cf3Input.f3Input.GetKeyPushed(key); }
+        public bool GetKeyPressed(int key) { return Cf3Input.f3Input.GetKeyPressed(key); }
 } KeyInput;
 
 extern public class Cf3GameInputReplay : Cf3GameInput

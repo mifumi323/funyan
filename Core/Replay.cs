@@ -138,8 +138,8 @@ public class Cf3Replay
 {
 	(*m_iPointer).pressed[m_nPointer]=(*m_iPointer).pushed[m_nPointer]=0;
 	for (int i=0; i<8; i++) {
-		if (f3Input.GetKeyPressed(i+1))	(*m_iPointer).pressed	[m_nPointer] |= (1<<i);
-		if (f3Input.GetKeyPushed(i+1))	(*m_iPointer).pushed	[m_nPointer] |= (1<<i);
+		if (Cf3Input.f3Input.GetKeyPressed(i+1))	(*m_iPointer).pressed	[m_nPointer] |= (1<<i);
+		if (Cf3Input.f3Input.GetKeyPushed(i+1))	(*m_iPointer).pushed	[m_nPointer] |= (1<<i);
 	}
 	Progress();
 	m_nSize++;
