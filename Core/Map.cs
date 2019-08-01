@@ -146,9 +146,9 @@ namespace MifuminSoft.funyan.Core
         public byte GetWidth(int level = 1) { return m_Width[level]; }
         public bool ItemCompleted() { return m_nGotBanana == m_nTotalBanana; }
         public static void SetEffect(int effect) { m_nEffect = effect; }
-        public void GetMainCharaCPos(int &x, int &y)
+        public void GetMainCharaCPos(out int x, out int y)
         {
-            m_MainChara->GetCPos(x, y);
+            m_MainChara.GetCPos(out x, out y);
         }
         public int SetMapData(int level, int x, int y, byte data)
         {

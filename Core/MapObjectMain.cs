@@ -33,10 +33,10 @@ public abstract class Cf3MapObjectMain : Cf3MapObjectBase
         public virtual bool IsFrozen() { return false; }
         public virtual void Die() { }
         public virtual bool IsDied() { return IsValid(); }
-        public virtual void GetViewPos(int &vx, int &vy)
+        public virtual void GetViewPos(out int vx, out int vy)
         {
-            vx = m_X;
-            vy = m_Y;
+            vx = (int)m_X;
+            vy = (int)m_Y;
         }
         public Cf3MapObjectMain(f3MapObjectType eType) : base(eType) { }
     }

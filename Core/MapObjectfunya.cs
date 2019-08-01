@@ -294,7 +294,7 @@ public bool IsDied()
 {
 	return m_State==DEAD;
 }
-public void GetViewPos(int &vx, int &vy)
+public void GetViewPos(out int vx, out int vy)
 {
 	if (m_pParent->IsPlayable()) {
 		int ox=0,oy=0,tx=0,ty=0;
