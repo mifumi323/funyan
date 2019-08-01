@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
-    public class Cf3MapObjectIceSource : Cf3MapObjectIceBase
+    public class Cf3MapObjectIceSource : Cf3MapObjectIceBase, IDisposable
     {
         protected const int PHASEMAX = 32;
         protected static HashSet<Cf3MapObjectIceSource> m_IceList = new HashSet<Cf3MapObjectIceSource>();
@@ -55,9 +56,10 @@ namespace MifuminSoft.funyan.Core
             m_Phase = CApp::random(PHASEMAX);
             m_Size = GetSize();
         }
-        public virtual ~Cf3MapObjectIceSource()
+        public override void Dispose()
         {
             m_IceList.Remove(this);
+            base.Dispose();
         }
 
     }

@@ -1,6 +1,8 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System;
+
+namespace MifuminSoft.funyan.Core
 {
-public class Cf3Replay
+public class Cf3Replay : IDisposable
 {
         protected const int REPLAYBUFFER = 4096;
         protected class CKeyState
@@ -14,29 +16,30 @@ public class Cf3Replay
         protected int m_nPointer;
         protected int m_nProgress;
         protected int m_nSize;
-        protected class Cf3ReplayPlayerState
-    {
-		public Cf3ReplayPlayerState()
+        protected class Cf3ReplayPlayerState : IDisposable
         {
-            stage = null;
-            map = null;
-            oldgravity = theSetting->m_Gravity;
-            oldhyper = theSetting->m_Hyper;
+            public Cf3ReplayPlayerState()
+            {
+                stage = null;
+                map = null;
+                oldgravity = theSetting->m_Gravity;
+                oldhyper = theSetting->m_Hyper;
+            }
+            public void Dispose()
+            {
+                DELETE_SAFE(stage);
+                DELETE_SAFE(map);
+                theSetting->m_Gravity = oldgravity;
+                theSetting->m_Hyper = oldhyper;
+            }
+            public Cf3StageFile* stage;
+            public Cf3Map* map;
+            public string stagetitle;
+            public string maptitle;
+            public long oldgravity;
+            public long oldhyper;
         }
-        public virtual ~Cf3ReplayPlayerState()
-        {
-            DELETE_SAFE(stage);
-            DELETE_SAFE(map);
-            theSetting->m_Gravity = oldgravity;
-            theSetting->m_Hyper = oldhyper;
-        }
-        public Cf3StageFile* stage;
-        public Cf3Map* map;
-        public string stagetitle;
-        public string maptitle;
-        public long oldgravity;
-        public long oldhyper;
-    }*m_pPlayerState;
+        protected Cf3ReplayPlayerState m_pPlayerState;
 	    protected string m_FileName;
 
         // 共通
@@ -76,10 +79,10 @@ public class Cf3Replay
 	m_pPlayerState= null;
 	Reset();
 }
-        public virtual ~Cf3Replay()
-{
-	DELETE_SAFE(m_pPlayerState);
-}
+        public void Dispose()
+        {
+            DELETE_SAFE(m_pPlayerState);
+        }
 
         // Recorder
         public void Save(Cf3StageFile* stage, int map)
@@ -183,5 +186,5 @@ public void Replay()
     void OnDraw(CDIB32* lp) { m_pPlayerState->map->OnDraw(lp); }
     Cf3Map* GetMap() { return m_pPlayerState->map; }
 
-};
+}
 }

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
-    public class Cf3MapObjectWind : Cf3MapObjectBase
+    public class Cf3MapObjectWind : Cf3MapObjectBase, IDisposable
     {
         protected static HashSet<Cf3MapObjectWind> m_WindList = new HashSet<Cf3MapObjectWind>();
 
@@ -91,9 +92,10 @@ namespace MifuminSoft.funyan.Core
                 m_Particle[i].dx = m_Strength * (0.5f + (float)CApp::random(4096) / 4096);
             }
         }
-        public virtual ~Cf3MapObjectWind()
+        public override void Dispose()
         {
             m_WindList.Remove(this);
+            base.Dispose();
         }
 
     }

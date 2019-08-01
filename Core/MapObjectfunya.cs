@@ -776,7 +776,6 @@ public Cf3MapObjectfunya(int nCX, int nCY)	:base(f3MapObjectType.MOT_FUNYA)
 	m_PoseCounter2=0;
 	m_BananaDistance = 0.0f;
 }
-public virtual ~Cf3MapObjectfunya() { }
 
 }
 }

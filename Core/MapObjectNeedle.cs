@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
-    public class Cf3MapObjectNeedle : Cf3MapObjectBase
+    public class Cf3MapObjectNeedle : Cf3MapObjectBase, IDisposable
     {
         protected void Reaction(Cf3MapObjectBase* obj)
         {
@@ -254,9 +254,10 @@ namespace MifuminSoft.funyan.Core
             }
             m_Speed = 0;
         }
-        public virtual ~Cf3MapObjectNeedle()
+        public override void Dispose()
         {
             m_EnemyList.Remove(this);
+            base.Dispose();
         }
 
     }

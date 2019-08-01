@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
-    public class Cf3MapObjectEffect : Cf3MapObjectBase
+    public class Cf3MapObjectEffect : Cf3MapObjectBase, IDisposable
     {
         protected const float PI = 3.141592653589793238f;
         protected static HashSet<Cf3MapObjectEffect> m_EffectList = new HashSet<Cf3MapObjectEffect>();
@@ -129,10 +130,11 @@ namespace MifuminSoft.funyan.Core
                 m_Star[i].r = CApp::random(4 * 16);
             }
         }
-        public ~Cf3MapObjectEffect()
+        public override void Dispose()
         {
             m_EffectList.Remove(this);
             DELETEPTR_SAFE(m_Star);
+            base.Dispose();
         }
     }
 }

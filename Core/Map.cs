@@ -12,8 +12,8 @@ namespace MifuminSoft.funyan.Core
         HIT_DEATH = 0x10,
     }
 
-    public class Cf3Map
-{
+    public class Cf3Map : IDisposable
+    {
         private CDIB32[] m_MapChip = new CDIB32[3];
         private byte[][] m_MapData = new byte[3][];
         private byte[] m_Width = new byte[3], m_Height = new byte[3];
@@ -57,55 +57,55 @@ namespace MifuminSoft.funyan.Core
 
         private Cf3MapObjectMain m_MainChara;
 
-        private static int m_nEffect=0;
+        private static int m_nEffect = 0;
         private CDIB32 m_pDIBBuf;
 
         public Cf3MapObjectBase** GetMapObjects(int x1, int y1, int x2, int y2, f3MapObjectType eType)
-    {
-        if (x1<0) x1 = 0;
-        if (y1<0) y1 = 0;
-        if (x2>=m_Width[1]) x2 = m_Width[1]-1;
-        if (y2>=m_Height[1]) y2 = m_Height[1]-1;
-        if (m_NearObject.size()<=Cf3MapObjectBase.Count())
-            m_NearObject.resize(Cf3MapObjectBase.Count()+1);
-        int i=0;
-        m_NearObject[0] = null;
-        Cf3MapObjectBase* o;
-        for (int x=x1; x<=x2; x++) {
-            for (int y=y1; y<=y2; y++) {
-                o = m_pObject[GetIndex(x, y)];
-                while (o!= null) {
-                    if (o->GetMapObjectType()==eType&&o->IsValid()) {
-                        m_NearObject[i++] = o;
-                        m_NearObject[i] = null;
+        {
+            if (x1 < 0) x1 = 0;
+            if (y1 < 0) y1 = 0;
+            if (x2 >= m_Width[1]) x2 = m_Width[1] - 1;
+            if (y2 >= m_Height[1]) y2 = m_Height[1] - 1;
+            if (m_NearObject.size() <= Cf3MapObjectBase.Count())
+                m_NearObject.resize(Cf3MapObjectBase.Count() + 1);
+            int i = 0;
+            m_NearObject[0] = null;
+            Cf3MapObjectBase* o;
+            for (int x = x1; x <= x2; x++) {
+                for (int y = y1; y <= y2; y++) {
+                    o = m_pObject[GetIndex(x, y)];
+                    while (o != null) {
+                        if (o->GetMapObjectType() == eType && o->IsValid()) {
+                            m_NearObject[i++] = o;
+                            m_NearObject[i] = null;
+                        }
+                        o = o->m_pNext;
                     }
-                    o = o->m_pNext;
                 }
             }
+            return &m_NearObject.front();
         }
-        return &m_NearObject.front();
-    }
         public int GetIndex(int level, int x, int y) { return x + y * m_Width[level]; }
         public int GetIndex(int x, int y) { return x + y * m_Width[1]; }
         public void AddMapObject(int x, int y, Cf3MapObjectBase p)
-    {
-        if (p==null) return;
-        TL.Saturate(0, ref x, m_Width[1]-1);
-            TL.Saturate(0, ref y, m_Height[1]-1);
-        int i = GetIndex(x, y);
-        Cf3MapObjectBase* o=m_pObject[i];
-        if (o== null) {
-            m_pObject[i] = p;
-            return;
-        }
-        while (o!=p) {
-            if (o->m_pNext== null) {
-                o->m_pNext = p;
+        {
+            if (p == null) return;
+            TL.Saturate(0, ref x, m_Width[1] - 1);
+            TL.Saturate(0, ref y, m_Height[1] - 1);
+            int i = GetIndex(x, y);
+            Cf3MapObjectBase* o = m_pObject[i];
+            if (o == null) {
+                m_pObject[i] = p;
                 return;
             }
-            o = o->m_pNext;
+            while (o != p) {
+                if (o->m_pNext == null) {
+                    o->m_pNext = p;
+                    return;
+                }
+                o = o->m_pNext;
+            }
         }
-    }
         public void RemoveMapObject(int x, int y, Cf3MapObjectBase p)
         {
             if (p == null) return;
@@ -121,35 +121,35 @@ namespace MifuminSoft.funyan.Core
             p.m_pNext = null;
         }
         public CDIB32* ReadMapChip(Cf3StageFile* lp, int level)
-    {
-        BYTE* buf;
-        DWORD s;
-        CDIB32*dib = new CDIB32;
-        // ステージ内部データを読み込む
-        if ((buf = lp->GetStageData(CT.CT_MCD0|(CT)(level<<24),&s))!= null) {
-            char fn2[256];
-            ::wsprintf(fn2,"!%x,%x",buf,s);
-            if (dib->Load(fn2,false)==0) return dib;
+        {
+            BYTE* buf;
+            DWORD s;
+            CDIB32* dib = new CDIB32;
+            // ステージ内部データを読み込む
+            if ((buf = lp->GetStageData(CT.CT_MCD0 | (CT)(level << 24), &s)) != null) {
+                char fn2[256];
+            ::wsprintf(fn2, "!%x,%x", buf, s);
+                if (dib->Load(fn2, false) == 0) return dib;
+            }
+            // 駄目だったそうなのでファイル名から読み込む
+            if ((buf = lp->GetStageData(CT.CT_MCF0 | (CT)(level << 24), &s)) != null) {
+                char fn[256];
+                CopyMemory(fn, buf, s);
+                fn[s] = '\0';
+                if (dib->Load(fn, false) == 0) return dib;
+            }
+            dib->Load("resource/Cave.bmp", false);
+            return dib;
         }
-        // 駄目だったそうなのでファイル名から読み込む
-        if ((buf = lp->GetStageData(CT.CT_MCF0 |(CT)(level<<24),&s))!= null) {
-            char fn[256];
-            CopyMemory(fn,buf,s);
-            fn[s]='\0';
-            if (dib->Load(fn,false)==0) return dib;
-        }
-        dib->Load("resource/Cave.bmp",false);
-        return dib;
-    }
         public bool IsPlayable() { return m_bPlayable; }
         public byte GetHeight(int level = 1) { return m_Height[level]; }
         public byte GetWidth(int level = 1) { return m_Width[level]; }
         public bool ItemCompleted() { return m_nGotBanana == m_nTotalBanana; }
         public static void SetEffect(int effect) { m_nEffect = effect; }
         public void GetMainCharaCPos(int &x, int &y)
-    {
-        m_MainChara->GetCPos(x,y);
-    }
+        {
+            m_MainChara->GetCPos(x, y);
+        }
         public int SetMapData(int level, int x, int y, byte data)
         {
             if (level < 0 || 2 < level || x < 0 || m_Width[level] <= x || y < 0 || m_Height[level] <= y || data >= 0xf0) return 1;
@@ -157,69 +157,69 @@ namespace MifuminSoft.funyan.Core
             return 0;
         }
         public void CreateTemparatureMap(CDIB32* dib)
-    {
-        float objX, objY, dX, dY, fX, fY, power=0.0f;
-        DWORD*pixel=dib->GetPtr();
-        float offx = m_ScrollRX-320/2, offy = m_ScrollRY-224/2-2;
-            TL.Saturate(0.0f,ref offx,m_Width[1]*32-320.0f);
-            TL.Saturate(0.0f,ref offy,m_Height[1]*32-224.0f);
-        for (int y=0; y<224; y++) {
-            for (int x=0; x<320; x++) {
-                fX=x+offx; fY=y+offy;	// GetViewPosとオフセットの掛け方が逆
-                power = 0.0f;
-                // 氷ゾーン
-                foreach(var is_ in Cf3MapObjectIceSource.All()){
-                        is_.GetPos(objX,objY);
-                        dX = objX-fX; dY = objY-fY;
-                        power += 1.0f/(dX*dX+dY*dY);
-                }
-                // 炎ゾーン
-                foreach(var fr in Cf3MapObjectFire.All()){
-                    if (fr.IsActive()) {
-                        fr.GetPos(objX,objY);
-                        dX = objX-fX; dY = objY-fY;
-                        power -= 1.0f/(dX*dX+dY*dY);
+        {
+            float objX, objY, dX, dY, fX, fY, power = 0.0f;
+            DWORD* pixel = dib->GetPtr();
+            float offx = m_ScrollRX - 320 / 2, offy = m_ScrollRY - 224 / 2 - 2;
+            TL.Saturate(0.0f, ref offx, m_Width[1] * 32 - 320.0f);
+            TL.Saturate(0.0f, ref offy, m_Height[1] * 32 - 224.0f);
+            for (int y = 0; y < 224; y++) {
+                for (int x = 0; x < 320; x++) {
+                    fX = x + offx; fY = y + offy;   // GetViewPosとオフセットの掛け方が逆
+                    power = 0.0f;
+                    // 氷ゾーン
+                    foreach (var is_ in Cf3MapObjectIceSource.All()) {
+                        is_.GetPos(objX, objY);
+                        dX = objX - fX; dY = objY - fY;
+                        power += 1.0f / (dX * dX + dY * dY);
                     }
+                    // 炎ゾーン
+                    foreach (var fr in Cf3MapObjectFire.All()) {
+                        if (fr.IsActive()) {
+                            fr.GetPos(objX, objY);
+                            dX = objX - fX; dY = objY - fY;
+                            power -= 1.0f / (dX * dX + dY * dY);
+                        }
+                    }
+                    if (power > 1.0f / 256.0f) {
+                        // 凍りつくゾーン
+                        *pixel = 0x008080;
+                    }
+                    else if (power > 1.0f / 4096.0f) {
+                        // パワーアップゾーン
+                        *pixel = 0x00ffff;
+                    }
+                    else if (power < -1.0f / 256.0f) {
+                        // 致死ゾーン
+                        *pixel = 0x800000;
+                    }
+                    else if (power < -1.0f / 4096.0f) {
+                        // 制限ゾーン
+                        *pixel = 0xff0000;
+                    } else {
+                        // 普通ゾーン
+                        *pixel = 0x000000;
+                    }
+                    pixel++;
                 }
-                if (power>1.0f/256.0f) {
-                    // 凍りつくゾーン
-                    *pixel = 0x008080;
-                }
-                    else if (power>1.0f/4096.0f) {
-                    // パワーアップゾーン
-                    *pixel = 0x00ffff;
-                }
-                    else if (power<-1.0f/256.0f) {
-                    // 致死ゾーン
-                    *pixel = 0x800000;
-                }
-                    else if (power<-1.0f/4096.0f) {
-                    // 制限ゾーン
-                    *pixel = 0xff0000;
-                }else{
-                    // 普通ゾーン
-                    *pixel = 0x000000;
-                }
-                pixel++;
             }
+            CDIB32* lpSrc = dib, *lpDst = m_pDIBBuf;
+            if (m_nEffect & 1) {
+                CPlaneTransBlt.MirrorBlt1(lpDst, lpSrc, 0, 0, 128);
+                swap(lpSrc, lpDst);
+            }
+            if (m_nEffect & 2) {
+                CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0, 128);
+                RECT rc = { 0, 16, 320, 240 };
+                lpSrc->BltFast(lpDst, 0, 0, &rc);
+            }
+            if (lpDst == dib) lpDst->BltFast(lpSrc, 0, 0);
         }
-        CDIB32 *lpSrc=dib, *lpDst=m_pDIBBuf;
-        if (m_nEffect&1) {
-            CPlaneTransBlt.MirrorBlt1(lpDst, lpSrc,0,0,128);
-            swap(lpSrc, lpDst);
-        }
-        if (m_nEffect&2) {
-            CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc,0,0,128);
-            RECT rc={0,16,320,240};
-            lpSrc->BltFast(lpDst,0,0,&rc);
-        }
-        if (lpDst==dib)  lpDst->BltFast(lpSrc,0,0);
-    }
         public float GetWind(int x, int y)
-    {
-        if (m_Wind== null || x<0 || m_Width[1]<=x || y<0 || m_Height[1]<=y) return 0.0f;
-        return m_Wind[GetIndex(x, y)];
-    }
+        {
+            if (m_Wind == null || x < 0 || m_Width[1] <= x || y < 0 || m_Height[1] <= y) return 0.0f;
+            return m_Wind[GetIndex(x, y)];
+        }
         public Cf3MapObjectMain* GetMainChara() { return m_MainChara; }
         public BGMNumber GetBGM() { return m_BGMNumber; }
         public static CT GetChunkType(CT type, int stage)
@@ -230,47 +230,47 @@ namespace MifuminSoft.funyan.Core
             return (CT)((uint)type + (r << 24) + (l << 12));
         }
         public bool IsMainCharaDied()
-    {
-        return m_MainChara!= null && m_MainChara->IsDied();
-    }
+        {
+            return m_MainChara != null && m_MainChara->IsDied();
+        }
         public string GetTitle() { return m_Title; }
         public long GetTotalBanana() { return m_nTotalBanana; }
         public long GetGotBanana() { return m_nGotBanana; }
         public void KillAllMapObject()
-    {
-        Cf3MapObjectBase.KillAll();
-    }
+        {
+            Cf3MapObjectBase.KillAll();
+        }
         public void GarbageMapObject()
-    {
-        if (m_MainChara!= null && !m_MainChara->IsValid()){
-            m_MainChara= null;
+        {
+            if (m_MainChara != null && !m_MainChara->IsValid()) {
+                m_MainChara = null;
+            }
+            Cf3MapObjectBase.Garbage();
         }
-        Cf3MapObjectBase.Garbage();
-    }
         public void OnPreDraw()
-    {
-        if (m_MainChara != null) {
-            m_MainChara->OnPreDraw();
+        {
+            if (m_MainChara != null) {
+                m_MainChara->OnPreDraw();
+            }
+            Cf3MapObjectBanana.OnPreDrawAll();
+            Cf3MapObjectEelPitcher.OnPreDrawAll();
+            Cf3MapObjectGeasprin.OnPreDrawAll();
+            Cf3MapObjectmrframe.OnPreDrawAll();
+            Cf3MapObjectNeedle.OnPreDrawAll();
+            Cf3MapObjectIce.OnPreDrawAll();
+            Cf3MapObjectIceSource.OnPreDrawAll();
+            Cf3MapObjectFire.OnPreDrawAll();
+            Cf3MapObjectEffect.OnPreDrawAll();
+            Cf3MapObjectWind.OnPreDrawAll();
+            if (m_MainChara != null) m_MainChara->GetViewPos(m_ScrollX, m_ScrollY);
+            m_ScrollRX = (m_ScrollRX + m_ScrollX) / 2;
+            m_ScrollRY = (m_ScrollRY + m_ScrollY) / 2;
         }
-        Cf3MapObjectBanana.OnPreDrawAll();
-        Cf3MapObjectEelPitcher.OnPreDrawAll();
-        Cf3MapObjectGeasprin.OnPreDrawAll();
-        Cf3MapObjectmrframe.OnPreDrawAll();
-        Cf3MapObjectNeedle.OnPreDrawAll();
-        Cf3MapObjectIce.OnPreDrawAll();
-        Cf3MapObjectIceSource.OnPreDrawAll();
-        Cf3MapObjectFire.OnPreDrawAll();
-        Cf3MapObjectEffect.OnPreDrawAll();
-        Cf3MapObjectWind.OnPreDrawAll();
-        if (m_MainChara!= null) m_MainChara->GetViewPos(m_ScrollX,m_ScrollY);
-        m_ScrollRX = (m_ScrollRX+m_ScrollX)/2;
-        m_ScrollRY = (m_ScrollRY+m_ScrollY)/2;
-    }
         public float GetFriction(int x, int y)
-    {
-        if (x<0 || m_Width[1]<=x || y<0 || m_Height[1]<=y) return 0.0f;
-        return m_Friction[m_Hit[GetMapData(1,x,y)]>>5];
-    }
+        {
+            if (x < 0 || m_Width[1] <= x || y < 0 || m_Height[1] <= y) return 0.0f;
+            return m_Friction[m_Hit[GetMapData(1, x, y)] >> 5];
+        }
         public void GetViewPos(ref int x, ref int y, float scrollx = 1.0f, float scrolly = 1.0f)
         {
             int offx = (int)(m_ScrollRX - 320 / 2), offy = (int)(m_ScrollRY - 224 / 2 - 2);
@@ -279,24 +279,24 @@ namespace MifuminSoft.funyan.Core
             x -= (int)(offx * scrollx); y -= (int)(offy * scrolly);
         }
         public void OnMove()
-    {
-        if (m_MainChara != null) m_MainChara->OnMove();
-        Cf3MapObjectEelPitcher.OnMoveAll();
-        Cf3MapObjectGeasprin.OnMoveAll();
-        Cf3MapObjectmrframe.OnMoveAll();
-        Cf3MapObjectNeedle.OnMoveAll();
-        Cf3MapObjectIce.OnMoveAll();
-        Cf3MapObjectFire.OnMoveAll();
-        Cf3MapObjectBase.UpdateCPosAll();
-        if (m_MainChara != null) m_MainChara->Synergy();
-        Cf3MapObjectBanana.SynergyAll();
-        Cf3MapObjectEelPitcher.SynergyAll();
-        Cf3MapObjectGeasprin.SynergyAll();
-        Cf3MapObjectmrframe.SynergyAll();
-        Cf3MapObjectNeedle.SynergyAll();
-        Cf3MapObjectIce.SynergyAll();
-        Cf3MapObjectFire.SynergyAll();
-    }
+        {
+            if (m_MainChara != null) m_MainChara->OnMove();
+            Cf3MapObjectEelPitcher.OnMoveAll();
+            Cf3MapObjectGeasprin.OnMoveAll();
+            Cf3MapObjectmrframe.OnMoveAll();
+            Cf3MapObjectNeedle.OnMoveAll();
+            Cf3MapObjectIce.OnMoveAll();
+            Cf3MapObjectFire.OnMoveAll();
+            Cf3MapObjectBase.UpdateCPosAll();
+            if (m_MainChara != null) m_MainChara->Synergy();
+            Cf3MapObjectBanana.SynergyAll();
+            Cf3MapObjectEelPitcher.SynergyAll();
+            Cf3MapObjectGeasprin.SynergyAll();
+            Cf3MapObjectmrframe.SynergyAll();
+            Cf3MapObjectNeedle.SynergyAll();
+            Cf3MapObjectIce.SynergyAll();
+            Cf3MapObjectFire.SynergyAll();
+        }
         public byte GetMapData(int level, int x, int y)
         {
             if (level < 0 || 2 < level || x < 0 || m_Width[level] <= x || y < 0 || m_Height[level] <= y) return 0;
@@ -311,351 +311,351 @@ namespace MifuminSoft.funyan.Core
         }
         public void OnDraw(CDIB32* lp) { OnDraw(lp, false); }
         public void OnDraw(CDIB32* lp, bool bShowHit)
-    {
-        int x,y,z;
-        int vx,vy;
-        int sx, sy, ex, ey;
-        RECT r;
-        lp->Clear(0);
-        if (m_MapData[0]) {
-            float mx = 1;
-            if (m_Width[1]-10>0) mx = (float)(m_Width[0]-10)/(float)(m_Width[1]-10);
-            float my = 1;
-            if (m_Height[1]-7>0) my = (float)(m_Height[0]-7)/(float)(m_Height[1]-7);
-            sx = sy = 0;
-            GetViewPos(sx,sy,mx,my);
-            sx = (-sx)>>5; sy = (-sy)>>5;
-            ex = sx+320/32; ey = sy+224/32;
-                TL.Saturate(sx,ref ex,m_Width[0]-1);
-                TL.Saturate(sy,ref ey,m_Height[0]-1);
-            for (y=sy; y<=ey; y++) {
-                for (x=sx; x<=ex; x++) {
-                    z = y*m_Width[0]+x;
-                    r.left = (m_MapData[0][z]&0xf)*32;
-                    r.top = (m_MapData[0][z]>>4)*32;
-                    r.bottom = r.top + 32;
-                    r.right = r.left+32;
-                    vx = x*32; vy = y*32;
-                    GetViewPos(vx,vy,mx,my);
-                    lp->BltFast(m_MapChip[0],vx,vy,&r);
-                }
-            }
-        }
-        if (m_MapData[1]) {
-            CDIB32* pHit;
-            if (bShowHit) {
-                pHit = new CDIB32;
-                pHit->CreateSurface(384, 32);
-                pHit->BltFast(ResourceManager.Get(RID_HIT), 0, 0);
-                pHit->SubColorFast(theApp->random(0x1000000));
-            }
-            sx = sy = 0;
-            GetViewPos(sx,sy);
-            sx = (-sx)>>5; sy = (-sy)>>5;
-            ex = sx+320/32; ey = sy+224/32;
-                TL.Saturate(sx,ref ex,m_Width[1]-1);
-                TL.Saturate(sy,ref ey,m_Height[1]-1);
-            for (y=sy; y<=ey; y++) {
-                for (x=sx; x<=ex; x++) {
-                    z = y*m_Width[1]+x;
-                    r.left = (m_MapData[1][z]&0xf)*32;
-                    r.top = (m_MapData[1][z]>>4)*32;
-                    r.bottom = r.top + 32;
-                    r.right = r.left+32;
-                    vx = x*32; vy = y*32;
-                    GetViewPos(vx,vy);
-                    if (m_MapData[0]) lp->Blt(m_MapChip[1],vx,vy,&r);
-                    else lp->BltFast(m_MapChip[1],vx,vy,&r);
-                    if (bShowHit) {
-                        // 当たり判定表示
-                        if (GetHit(x, y, HIT.HIT_TOP)) {
-                            int f=m_Hit[GetMapData(1,x,y)]&~0x1f;
-                            r.left = f;
-                            r.top = 0;
-                            r.right = f+32;
-                            r.bottom = 32;
-                            lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
-                        }
-                        if (GetHit(x, y, HIT.HIT_BOTTOM)) {
-                            r.left = 256;
-                            r.top = 0;
-                            r.right = 288;
-                            r.bottom = 32;
-                            lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
-                        }
-                        if (GetHit(x, y, HIT.HIT_LEFT)) {
-                            r.left = 288;
-                            r.top = 0;
-                            r.right = 320;
-                            r.bottom = 32;
-                            lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
-                        }
-                        if (GetHit(x, y, HIT.HIT_RIGHT)) {
-                            r.left = 320;
-                            r.top = 0;
-                            r.right = 352;
-                            r.bottom = 32;
-                            lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
-                        }
-                        if (GetHit(x, y, HIT.HIT_DEATH)) {
-                            r.left = 352;
-                            r.top = 0;
-                            r.right = 384;
-                            r.bottom = 32;
-                            lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
-                        }
+        {
+            int x, y, z;
+            int vx, vy;
+            int sx, sy, ex, ey;
+            RECT r;
+            lp->Clear(0);
+            if (m_MapData[0]) {
+                float mx = 1;
+                if (m_Width[1] - 10 > 0) mx = (float)(m_Width[0] - 10) / (float)(m_Width[1] - 10);
+                float my = 1;
+                if (m_Height[1] - 7 > 0) my = (float)(m_Height[0] - 7) / (float)(m_Height[1] - 7);
+                sx = sy = 0;
+                GetViewPos(sx, sy, mx, my);
+                sx = (-sx) >> 5; sy = (-sy) >> 5;
+                ex = sx + 320 / 32; ey = sy + 224 / 32;
+                TL.Saturate(sx, ref ex, m_Width[0] - 1);
+                TL.Saturate(sy, ref ey, m_Height[0] - 1);
+                for (y = sy; y <= ey; y++) {
+                    for (x = sx; x <= ex; x++) {
+                        z = y * m_Width[0] + x;
+                        r.left = (m_MapData[0][z] & 0xf) * 32;
+                        r.top = (m_MapData[0][z] >> 4) * 32;
+                        r.bottom = r.top + 32;
+                        r.right = r.left + 32;
+                        vx = x * 32; vy = y * 32;
+                        GetViewPos(vx, vy, mx, my);
+                        lp->BltFast(m_MapChip[0], vx, vy, &r);
                     }
                 }
             }
-            if (bShowHit) {
-                delete pHit;
-            }
-        }
-        Cf3MapObjectBanana.OnDrawAll(lp);
-        Cf3MapObjectmrframe.OnDrawAll(lp);
-        if (m_MainChara != null) m_MainChara->OnDraw(lp);
-        Cf3MapObjectGeasprin.OnDrawAll(lp);
-        Cf3MapObjectNeedle.OnDrawAll(lp);
-        Cf3MapObjectEelPitcher.OnDrawAll(lp);
-        Cf3MapObjectIceSource.OnDrawAll(lp);
-        Cf3MapObjectFire.OnDrawAll(lp);
-        Cf3MapObjectIce.OnDrawAll(lp);
-        Cf3MapObjectEffect.OnDrawAll(lp);
-        Cf3MapObjectWind.OnDrawAll(lp);
-        if (m_MapData[2]) {
-            float mx = 1.0f;
-            if (m_Width[1]-10>0) mx = (float)(m_Width[2]-10)/(m_Width[1]-10);
-            float my = 1.0f;
-            if (m_Height[1]-7>0) my = (float)(m_Height[2]-7)/(m_Height[1]-7);
-            sx = sy = 0;
-            GetViewPos(sx,sy,mx,my);
-            sx = (-sx)>>5; sy = (-sy)>>5;
-            ex = sx+320/32; ey = sy+224/32;
-                TL.Saturate(sx,ref ex,m_Width[2]-1);
-                TL.Saturate(sy,ref ey,m_Height[2]-1);
-            for (y=sy; y<=ey; y++) {
-                for (x=sx; x<=ex; x++) {
-                    z = y*m_Width[2]+x;
-                    r.left = (m_MapData[2][z]&0xf)*32;
-                    r.top = (m_MapData[2][z]>>4)*32;
-                    r.bottom = r.top + 32;
-                    r.right = r.left+32;
-                    vx = x*32*mx; vy = y*32*my;
-                    GetViewPos(vx,vy,mx,my);
-                    lp->Blt(m_MapChip[2],vx,vy,&r);
+            if (m_MapData[1]) {
+                CDIB32* pHit;
+                if (bShowHit) {
+                    pHit = new CDIB32;
+                    pHit->CreateSurface(384, 32);
+                    pHit->BltFast(ResourceManager.Get(RID_HIT), 0, 0);
+                    pHit->SubColorFast(theApp->random(0x1000000));
+                }
+                sx = sy = 0;
+                GetViewPos(sx, sy);
+                sx = (-sx) >> 5; sy = (-sy) >> 5;
+                ex = sx + 320 / 32; ey = sy + 224 / 32;
+                TL.Saturate(sx, ref ex, m_Width[1] - 1);
+                TL.Saturate(sy, ref ey, m_Height[1] - 1);
+                for (y = sy; y <= ey; y++) {
+                    for (x = sx; x <= ex; x++) {
+                        z = y * m_Width[1] + x;
+                        r.left = (m_MapData[1][z] & 0xf) * 32;
+                        r.top = (m_MapData[1][z] >> 4) * 32;
+                        r.bottom = r.top + 32;
+                        r.right = r.left + 32;
+                        vx = x * 32; vy = y * 32;
+                        GetViewPos(vx, vy);
+                        if (m_MapData[0]) lp->Blt(m_MapChip[1], vx, vy, &r);
+                        else lp->BltFast(m_MapChip[1], vx, vy, &r);
+                        if (bShowHit) {
+                            // 当たり判定表示
+                            if (GetHit(x, y, HIT.HIT_TOP)) {
+                                int f = m_Hit[GetMapData(1, x, y)] & ~0x1f;
+                                r.left = f;
+                                r.top = 0;
+                                r.right = f + 32;
+                                r.bottom = 32;
+                                lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
+                            }
+                            if (GetHit(x, y, HIT.HIT_BOTTOM)) {
+                                r.left = 256;
+                                r.top = 0;
+                                r.right = 288;
+                                r.bottom = 32;
+                                lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
+                            }
+                            if (GetHit(x, y, HIT.HIT_LEFT)) {
+                                r.left = 288;
+                                r.top = 0;
+                                r.right = 320;
+                                r.bottom = 32;
+                                lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
+                            }
+                            if (GetHit(x, y, HIT.HIT_RIGHT)) {
+                                r.left = 320;
+                                r.top = 0;
+                                r.right = 352;
+                                r.bottom = 32;
+                                lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
+                            }
+                            if (GetHit(x, y, HIT.HIT_DEATH)) {
+                                r.left = 352;
+                                r.top = 0;
+                                r.right = 384;
+                                r.bottom = 32;
+                                lp->BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
+                            }
+                        }
+                    }
+                }
+                if (bShowHit) {
+                    delete pHit;
                 }
             }
+            Cf3MapObjectBanana.OnDrawAll(lp);
+            Cf3MapObjectmrframe.OnDrawAll(lp);
+            if (m_MainChara != null) m_MainChara->OnDraw(lp);
+            Cf3MapObjectGeasprin.OnDrawAll(lp);
+            Cf3MapObjectNeedle.OnDrawAll(lp);
+            Cf3MapObjectEelPitcher.OnDrawAll(lp);
+            Cf3MapObjectIceSource.OnDrawAll(lp);
+            Cf3MapObjectFire.OnDrawAll(lp);
+            Cf3MapObjectIce.OnDrawAll(lp);
+            Cf3MapObjectEffect.OnDrawAll(lp);
+            Cf3MapObjectWind.OnDrawAll(lp);
+            if (m_MapData[2]) {
+                float mx = 1.0f;
+                if (m_Width[1] - 10 > 0) mx = (float)(m_Width[2] - 10) / (m_Width[1] - 10);
+                float my = 1.0f;
+                if (m_Height[1] - 7 > 0) my = (float)(m_Height[2] - 7) / (m_Height[1] - 7);
+                sx = sy = 0;
+                GetViewPos(sx, sy, mx, my);
+                sx = (-sx) >> 5; sy = (-sy) >> 5;
+                ex = sx + 320 / 32; ey = sy + 224 / 32;
+                TL.Saturate(sx, ref ex, m_Width[2] - 1);
+                TL.Saturate(sy, ref ey, m_Height[2] - 1);
+                for (y = sy; y <= ey; y++) {
+                    for (x = sx; x <= ex; x++) {
+                        z = y * m_Width[2] + x;
+                        r.left = (m_MapData[2][z] & 0xf) * 32;
+                        r.top = (m_MapData[2][z] >> 4) * 32;
+                        r.bottom = r.top + 32;
+                        r.right = r.left + 32;
+                        vx = x * 32 * mx; vy = y * 32 * my;
+                        GetViewPos(vx, vy, mx, my);
+                        lp->Blt(m_MapChip[2], vx, vy, &r);
+                    }
+                }
+            }
+            CDIB32* lpSrc = lp, *lpDst = m_pDIBBuf;
+            if (m_nEffect & 1) {
+                CPlaneTransBlt.MirrorBlt1(lpDst, lpSrc, 0, 0, 128);
+                swap(lpSrc, lpDst);
+            }
+            if (m_nEffect & 2) {
+                CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0, 128);
+                RECT rc = { 0, 16, 320, 240 };
+                lpSrc->BltFast(lpDst, 0, 0, &rc);
+            }
+            if (m_nEffect & 4) {
+                CPlaneTransBlt.FlushBlt1(lpDst, lpSrc, 0, 0, 128);
+                swap(lpSrc, lpDst);
+            }
+            if (lpDst == lp) lpDst->BltFast(lpSrc, 0, 0);
         }
-        CDIB32 *lpSrc=lp, *lpDst=m_pDIBBuf;
-        if (m_nEffect&1) {
-            CPlaneTransBlt.MirrorBlt1(lpDst, lpSrc,0,0,128);
-            swap(lpSrc, lpDst);
-        }
-        if (m_nEffect&2) {
-            CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc,0,0,128);
-            RECT rc={0,16,320,240};
-            lpSrc->BltFast(lpDst,0,0,&rc);
-        }
-        if (m_nEffect&4) {
-            CPlaneTransBlt.FlushBlt1(lpDst, lpSrc,0,0,128);
-            swap(lpSrc, lpDst);
-        }
-        if (lpDst==lp)  lpDst->BltFast(lpSrc,0,0);
-    }
         public Cf3Map(Cf3StageFile* lp, int stage, bool playable = true)
-    {
-        BYTE* buf;
-        DWORD s;
-        DWORD bgm[(int)BGMNumber.BGMN_SIZE] = {0};
-        m_pDIBBuf = new CDIB32;
-        m_pDIBBuf->CreateSurface(320,240);
-        m_Stage = stage;
-        m_bPlayable = playable;
-        Cf3MapObjectBase.SetParent(this);
-        m_nGotBanana = m_nTotalBanana = 0;
-        m_Wind = null;
-        m_pObject = null;
-        // キャラ
-        m_MainChara = null;
-        // タイトル
-        m_Title = "";
-        if ((buf = lp->GetStageData(GetChunkType(CT.CT_TL00,stage),&s))!= null) {
-            char tl[256];
-            s = min(s,255);
-            CopyMemory(tl,buf,s);
-            tl[s]='\0';
-            m_Title = tl;
-        }
-        // マップチップ
-        m_MapChip[0] = ReadMapChip(lp, 0);
-        m_MapChip[1] = ReadMapChip(lp, 1);
-        m_MapChip[2] = ReadMapChip(lp, 2);
-        // 当たり判定
-        CopyMemory(m_Hit,m_defHit,240);
-        if ((buf = lp->GetStageData(CT.CT_HITS,&s))!= null) {
-            if (s>240) s=240;
-            CopyMemory(m_Hit,buf,s);
-        }
-        // マップデータ(下層)
-        if ((buf = lp->GetStageData(GetChunkType(CT.CT_M000,stage),&s))!= null) {
-            m_Width[0] = *buf;
-            m_Height[0] = *(buf+1);
-            m_MapData[0] = new byte[m_Width[0]*m_Height[0]];
-            CopyMemory(m_MapData[0],buf+2,m_Width[0]*m_Height[0]);
-        }else{
-            m_MapData[0] = null;
-        }
-        // マップデータ(中層)
-        if ((buf = lp->GetStageData(GetChunkType(CT.CT_M100,stage),&s))!= null) {
-            m_Width[1] = *buf;
-            m_Height[1] = *(buf+1);
-            DWORD stagesize = m_Width[1]*m_Height[1];
-            m_MapData[1] = new byte[stagesize];
-            m_Wind = new float[stagesize];
-            m_pObject = new Cf3MapObjectBase*[stagesize];
-            ZeroMemory(m_pObject, stagesize*sizeof(Cf3MapObjectBase*));
-            var windmap = new byte[stagesize];
-            CopyMemory(m_MapData[1],buf+2,stagesize);
-            int x,y,z,n;
-            z=0;
-            for (y=0; y<m_Height[1]; y++) {
-                for (x=0; x<m_Width[1]; x++) {
-                    windmap[z]=0;
-                    n=m_MapData[1][z];
-                    if (n>=0xf0) {
-                        if (n==0xf0){	// 主人公
-                            if (m_MainChara== null) m_MainChara = Cf3MapObjectMain.Create(x,y);
-                            bgm[(int)BGMNumber.BGMN_GAMEFUNYA]+=99;
-                        }
-                            else if (n==0xf1){	// バナナ
-                            new Cf3MapObjectBanana(x,y);
-                            bgm[(int)BGMNumber.BGMN_GAMEBANANA]+=1;
-                            m_nTotalBanana++;
-                        }
-                            else if (n==0xf2){	// とげとげ
-                            new Cf3MapObjectNeedle(x,y);
-                            bgm[(int)BGMNumber.BGMN_GAMENEEDLE]+=4;
-                        }
-                            else if (n==0xf3){	// ギヤバネ左向き
-                            new Cf3MapObjectGeasprin(x,y,DIR_LEFT);
-                            bgm[(int)BGMNumber.BGMN_GAMEGEASPRIN]+=10;
-                        }
-                            else if (n==0xf4){	// ギヤバネ右向き
-                            new Cf3MapObjectGeasprin(x,y,DIR_RIGHT);
-                            bgm[(int)BGMNumber.BGMN_GAMEGEASPRIN]+=10;
-                        }
-                            else if (n==0xf5){	// 風ストップ
-                            windmap[z]=0xC;
-                        }
-                            else if (n==0xf6){	// 風左向き
-                            windmap[z]=0x1;
-                            bgm[(int)BGMNumber.BGMN_GAMEWIND]+=1;
-                        }
-                            else if (n==0xf7){	// 風右向き
-                            windmap[z]=0x2;
-                            bgm[(int)BGMNumber.BGMN_GAMEWIND]+=1;
-                        }
-                            else if (n==0xf8){	// ミスター・フレーム
-                            new Cf3MapObjectmrframe(x,y);
-                            bgm[(int)BGMNumber.BGMN_GAMEMRFRAME]+=40;
-                        }
-                            else if (n==0xf9){	// ウナギカズラ
-                            new Cf3MapObjectEelPitcher(x,y);
-                            bgm[(int)BGMNumber.BGMN_GAMEEELPITCHER]+=5;
-                        }
-                            else if (n==0xfa){	// 氷
-                            new Cf3MapObjectIceSource(x,y);
-                            bgm[(int)BGMNumber.BGMN_GAMEICE]+=8;
-                        }
-                            else if (n==0xfb){	// 火
-                            new Cf3MapObjectFire(x,y);
-                            bgm[(int)BGMNumber.BGMN_GAMEFIRE]+=8;
-                        }
-                            else if (n==0xfc){	// とげとげ
-                            new Cf3MapObjectNeedle(x,y,1);
-                            bgm[(int)BGMNumber.BGMN_GAMENEEDLE]+=4;
-                        }
-                            else if (n==0xfd){	// とげとげ
-                            new Cf3MapObjectNeedle(x,y,2);
-                            bgm[(int)BGMNumber.BGMN_GAMENEEDLE]+=4;
-                        }
-                            else if (n==0xfe){	// とげとげ
-                            new Cf3MapObjectNeedle(x,y,3);
-                            bgm[(int)BGMNumber.BGMN_GAMENEEDLE]+=4;
-                        }
-                        m_MapData[1][z] = 0;
-                    }else{
-                        if (GetHit(x,y, HIT.HIT_LEFT)) windmap[z]=0x4; else windmap[z] = 0;
-                        if (GetHit(x,y, HIT.HIT_RIGHT)) windmap[z]|=0x8;
-                    }
-                    z++;
-                }
+        {
+            BYTE* buf;
+            DWORD s;
+            DWORD bgm[(int)BGMNumber.BGMN_SIZE] = { 0 };
+            m_pDIBBuf = new CDIB32;
+            m_pDIBBuf->CreateSurface(320, 240);
+            m_Stage = stage;
+            m_bPlayable = playable;
+            Cf3MapObjectBase.SetParent(this);
+            m_nGotBanana = m_nTotalBanana = 0;
+            m_Wind = null;
+            m_pObject = null;
+            // キャラ
+            m_MainChara = null;
+            // タイトル
+            m_Title = "";
+            if ((buf = lp->GetStageData(GetChunkType(CT.CT_TL00, stage), &s)) != null) {
+                char tl[256];
+                s = min(s, 255);
+                CopyMemory(tl, buf, s);
+                tl[s] = '\0';
+                m_Title = tl;
             }
-            z=0;
-            float wind;
-            int dx;
-            for (y=0; y<m_Height[1]; y++) {
-                for (x=0; x<m_Width[1]; x++) {
-                    if (windmap[z]&0x10) {
-                    }else{
-                        wind=0.0f;
-                        for (dx=0; x+dx<m_Width[1]; dx++) {
-                            if (windmap[z+dx]&0x4) break;
-                            if (windmap[z+dx]&0x1) wind-=1.0f;
-                            if (windmap[z+dx]&0x2) wind+=1.0f;
-                            windmap[z+dx]|=0x10;
-                            if (windmap[z+dx]&0x8) break;
+            // マップチップ
+            m_MapChip[0] = ReadMapChip(lp, 0);
+            m_MapChip[1] = ReadMapChip(lp, 1);
+            m_MapChip[2] = ReadMapChip(lp, 2);
+            // 当たり判定
+            CopyMemory(m_Hit, m_defHit, 240);
+            if ((buf = lp->GetStageData(CT.CT_HITS, &s)) != null) {
+                if (s > 240) s = 240;
+                CopyMemory(m_Hit, buf, s);
+            }
+            // マップデータ(下層)
+            if ((buf = lp->GetStageData(GetChunkType(CT.CT_M000, stage), &s)) != null) {
+                m_Width[0] = *buf;
+                m_Height[0] = *(buf + 1);
+                m_MapData[0] = new byte[m_Width[0] * m_Height[0]];
+                CopyMemory(m_MapData[0], buf + 2, m_Width[0] * m_Height[0]);
+            } else {
+                m_MapData[0] = null;
+            }
+            // マップデータ(中層)
+            if ((buf = lp->GetStageData(GetChunkType(CT.CT_M100, stage), &s)) != null) {
+                m_Width[1] = *buf;
+                m_Height[1] = *(buf + 1);
+                DWORD stagesize = m_Width[1] * m_Height[1];
+                m_MapData[1] = new byte[stagesize];
+                m_Wind = new float[stagesize];
+                m_pObject = new Cf3MapObjectBase*[stagesize];
+                ZeroMemory(m_pObject, stagesize * sizeof(Cf3MapObjectBase*));
+                var windmap = new byte[stagesize];
+                CopyMemory(m_MapData[1], buf + 2, stagesize);
+                int x, y, z, n;
+                z = 0;
+                for (y = 0; y < m_Height[1]; y++) {
+                    for (x = 0; x < m_Width[1]; x++) {
+                        windmap[z] = 0;
+                        n = m_MapData[1][z];
+                        if (n >= 0xf0) {
+                            if (n == 0xf0) {    // 主人公
+                                if (m_MainChara == null) m_MainChara = Cf3MapObjectMain.Create(x, y);
+                                bgm[(int)BGMNumber.BGMN_GAMEFUNYA] += 99;
+                            }
+                            else if (n == 0xf1) {   // バナナ
+                                new Cf3MapObjectBanana(x, y);
+                                bgm[(int)BGMNumber.BGMN_GAMEBANANA] += 1;
+                                m_nTotalBanana++;
+                            }
+                            else if (n == 0xf2) {   // とげとげ
+                                new Cf3MapObjectNeedle(x, y);
+                                bgm[(int)BGMNumber.BGMN_GAMENEEDLE] += 4;
+                            }
+                            else if (n == 0xf3) {   // ギヤバネ左向き
+                                new Cf3MapObjectGeasprin(x, y, DIR_LEFT);
+                                bgm[(int)BGMNumber.BGMN_GAMEGEASPRIN] += 10;
+                            }
+                            else if (n == 0xf4) {   // ギヤバネ右向き
+                                new Cf3MapObjectGeasprin(x, y, DIR_RIGHT);
+                                bgm[(int)BGMNumber.BGMN_GAMEGEASPRIN] += 10;
+                            }
+                            else if (n == 0xf5) {   // 風ストップ
+                                windmap[z] = 0xC;
+                            }
+                            else if (n == 0xf6) {   // 風左向き
+                                windmap[z] = 0x1;
+                                bgm[(int)BGMNumber.BGMN_GAMEWIND] += 1;
+                            }
+                            else if (n == 0xf7) {   // 風右向き
+                                windmap[z] = 0x2;
+                                bgm[(int)BGMNumber.BGMN_GAMEWIND] += 1;
+                            }
+                            else if (n == 0xf8) {   // ミスター・フレーム
+                                new Cf3MapObjectmrframe(x, y);
+                                bgm[(int)BGMNumber.BGMN_GAMEMRFRAME] += 40;
+                            }
+                            else if (n == 0xf9) {   // ウナギカズラ
+                                new Cf3MapObjectEelPitcher(x, y);
+                                bgm[(int)BGMNumber.BGMN_GAMEEELPITCHER] += 5;
+                            }
+                            else if (n == 0xfa) {   // 氷
+                                new Cf3MapObjectIceSource(x, y);
+                                bgm[(int)BGMNumber.BGMN_GAMEICE] += 8;
+                            }
+                            else if (n == 0xfb) {   // 火
+                                new Cf3MapObjectFire(x, y);
+                                bgm[(int)BGMNumber.BGMN_GAMEFIRE] += 8;
+                            }
+                            else if (n == 0xfc) {   // とげとげ
+                                new Cf3MapObjectNeedle(x, y, 1);
+                                bgm[(int)BGMNumber.BGMN_GAMENEEDLE] += 4;
+                            }
+                            else if (n == 0xfd) {   // とげとげ
+                                new Cf3MapObjectNeedle(x, y, 2);
+                                bgm[(int)BGMNumber.BGMN_GAMENEEDLE] += 4;
+                            }
+                            else if (n == 0xfe) {   // とげとげ
+                                new Cf3MapObjectNeedle(x, y, 3);
+                                bgm[(int)BGMNumber.BGMN_GAMENEEDLE] += 4;
+                            }
+                            m_MapData[1][z] = 0;
+                        } else {
+                            if (GetHit(x, y, HIT.HIT_LEFT)) windmap[z] = 0x4; else windmap[z] = 0;
+                            if (GetHit(x, y, HIT.HIT_RIGHT)) windmap[z] |= 0x8;
                         }
-                        if (TL.IsIn(-0.01f,wind,0.01f)) {
+                        z++;
+                    }
+                }
+                z = 0;
+                float wind;
+                int dx;
+                for (y = 0; y < m_Height[1]; y++) {
+                    for (x = 0; x < m_Width[1]; x++) {
+                        if (windmap[z] & 0x10) {
+                        } else {
                             wind = 0.0f;
-                        }else{
-                            new Cf3MapObjectWind(x,y,dx,wind);
+                            for (dx = 0; x + dx < m_Width[1]; dx++) {
+                                if (windmap[z + dx] & 0x4) break;
+                                if (windmap[z + dx] & 0x1) wind -= 1.0f;
+                                if (windmap[z + dx] & 0x2) wind += 1.0f;
+                                windmap[z + dx] |= 0x10;
+                                if (windmap[z + dx] & 0x8) break;
+                            }
+                            if (TL.IsIn(-0.01f, wind, 0.01f)) {
+                                wind = 0.0f;
+                            } else {
+                                new Cf3MapObjectWind(x, y, dx, wind);
+                            }
                         }
+                        m_Wind[z] = wind;
+                        z++;
                     }
-                    m_Wind[z] = wind;
-                    z++;
+                }
+                DELETEPTR_SAFE(windmap);
+                Cf3MapObjectBase.UpdateCPosAll();
+            } else {
+                m_MapData[1] = null;
+            }
+            // マップデータ(上層)
+            if ((buf = lp->GetStageData(GetChunkType(CT.CT_M200, stage), &s)) != null) {
+                m_Width[2] = *buf;
+                m_Height[2] = *(buf + 1);
+                m_MapData[2] = new byte[m_Width[2] * m_Height[2]];
+                CopyMemory(m_MapData[2], buf + 2, m_Width[2] * m_Height[2]);
+            } else {
+                m_MapData[2] = null;
+            }
+            // BGM
+            DWORD bgmm = 0;
+            m_BGMNumber = BGMNumber.BGMN_SIRENT;
+            for (int i = (int)BGMNumber.BGMN_SIRENT; i < (int)BGMNumber.BGMN_SIZE; i++) {
+                if (bgmm < bgm[i]) {
+                    bgmm = bgm[i];
+                    m_BGMNumber = (BGMNumber)i;
                 }
             }
-            DELETEPTR_SAFE(windmap);
-            Cf3MapObjectBase.UpdateCPosAll();
-        }else{
-            m_MapData[1] = null;
+            m_ScrollX = m_ScrollY = 0;
+            if (m_MainChara != null) m_MainChara->GetPos(m_ScrollRX, m_ScrollRY);
         }
-        // マップデータ(上層)
-        if ((buf = lp->GetStageData(GetChunkType(CT.CT_M200,stage),&s))!= null) {
-            m_Width[2] = *buf;
-            m_Height[2] = *(buf+1);
-            m_MapData[2] = new byte[m_Width[2]*m_Height[2]];
-            CopyMemory(m_MapData[2],buf+2,m_Width[2]*m_Height[2]);
-        }else{
-            m_MapData[2] = null;
+        public void Dispose()
+        {
+            KillAllMapObject();
+            GarbageMapObject();
+            DELETEPTR_SAFE(m_pObject);
+            DELETEPTR_SAFE(m_Wind);
+            DELETEPTR_SAFE(m_MapData[2]);
+            DELETEPTR_SAFE(m_MapData[1]);
+            DELETEPTR_SAFE(m_MapData[0]);
+            m_MapChip[2].Dispose();
+            m_MapChip[1].Dispose();
+            m_MapChip[0].Dispose();
+            DELETE_SAFE(m_pDIBBuf);
         }
-        // BGM
-        DWORD bgmm = 0;
-        m_BGMNumber = BGMNumber.BGMN_SIRENT;
-        for (int i= (int)BGMNumber.BGMN_SIRENT; i< (int)BGMNumber.BGMN_SIZE; i++) {
-            if (bgmm<bgm[i]) {
-                bgmm = bgm[i];
-                m_BGMNumber = (BGMNumber)i;
-            }
-        }
-        m_ScrollX = m_ScrollY = 0;
-        if (m_MainChara!= null) m_MainChara->GetPos(m_ScrollRX, m_ScrollRY);
-    }
-        public virtual ~Cf3Map()
-    {
-        KillAllMapObject();
-        GarbageMapObject();
-        DELETEPTR_SAFE(m_pObject);
-        DELETEPTR_SAFE(m_Wind);
-        DELETEPTR_SAFE(m_MapData[2]);
-        DELETEPTR_SAFE(m_MapData[1]);
-        DELETEPTR_SAFE(m_MapData[0]);
-        m_MapChip[2].Dispose();
-        m_MapChip[1].Dispose();
-        m_MapChip[0].Dispose();
-        DELETE_SAFE(m_pDIBBuf);
-    }
 
-};
+    }
 }

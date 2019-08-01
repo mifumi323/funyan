@@ -120,7 +120,7 @@ namespace MifuminSoft.funyan.Core
             m_CharaList.Add(this);
             //	m_nScrollX = m_nScrollY = 1.0f;	// 標準でスクロールに完全についてゆく
         }
-        public void Dispose()
+        public virtual void Dispose()
         {
             m_pParent.RemoveMapObject(m_nCX, m_nCY, this);
             m_CharaList.Remove(this);

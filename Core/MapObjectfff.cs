@@ -481,7 +481,5 @@ namespace MifuminSoft.funyan.Core
             SetPos(nCX * 32 + 16, nCY * 32 + 18);
             m_OldX = m_X; m_OldY = m_Y;
         }
-        public ~Cf3MapObjectfff() { }
-
     }
 }

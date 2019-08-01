@@ -486,9 +486,10 @@ namespace MifuminSoft.funyan.Core
             m_Spring[DIR_FRONT] = m_Spring[DIR_LEFT] = m_Spring[DIR_RIGHT] = m_Spring2[DIR_FRONT] = m_Spring2[DIR_LEFT] = m_Spring2[DIR_RIGHT] = 0;
             Stop();
         }
-        public virtual ~Cf3MapObjectGeasprin()
+        public override void Dispose()
         {
             m_EnemyList.Remove(GetID());
+            base.Dispose();
         }
 
     }

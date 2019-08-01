@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
-    public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
+    public class Cf3MapObjectEelPitcher : Cf3MapObjectBase, IDisposable
     {
         private void Freeze() { m_State = EELFROZEN; m_Delay = 80; }
         private void Seed()
@@ -352,9 +352,10 @@ namespace MifuminSoft.funyan.Core
             //	m_Graphic = ResourceManager.Get(RID_EELPITCHER);
             SetPos(nCX * 32 + 16, nCY * 32 + 16);
         }
-        public ~Cf3MapObjectEelPitcher()
+        public override void Dispose()
         {
             m_EnemyList.Remove(GetID());
+            base.Dispose();
         }
 
     }

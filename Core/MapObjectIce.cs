@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
-    public class Cf3MapObjectIce : Cf3MapObjectIceBase
+    public class Cf3MapObjectIce : Cf3MapObjectIceBase, IDisposable
     {
         protected const float GRAVITY = 0.2f;
         protected const float FRICTION = 0.026f;
@@ -119,9 +119,10 @@ namespace MifuminSoft.funyan.Core
             m_DX = dx; m_DY = dy;
             m_Life = LIFE;
         }
-        public virtual ~Cf3MapObjectIce()
+        public override void Dispose()
         {
             m_IceList.Remove(this);
+            base.Dispose();
         }
 
     }

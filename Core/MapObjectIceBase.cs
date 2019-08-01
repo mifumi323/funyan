@@ -8,7 +8,5 @@
         {
             m_Graphic = ResourceManager.Get(RID_ICEFIRE);
         }
-        public virtual ~Cf3MapObjectIceBase() { }
-
     }
 }

@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace MifuminSoft.funyan.Core
 {
-    public class Cf3Setting
+    public class Cf3Setting : IDisposable
     {
         protected struct tagSetting
         {
@@ -199,7 +200,7 @@ namespace MifuminSoft.funyan.Core
             m_StartTime = timeGetTime();
             theSetting = this;
         }
-        public virtual ~Cf3Setting()
+        public void Dispose()
         {
             m_PlayTime += (timeGetTime() - m_StartTime) / 1000;
             CFile file;

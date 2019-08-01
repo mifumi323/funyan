@@ -39,7 +39,5 @@ public abstract class Cf3MapObjectMain : Cf3MapObjectBase
             vy = m_Y;
         }
         public Cf3MapObjectMain(f3MapObjectType eType) : base(eType) { }
-        public virtual ~Cf3MapObjectMain() { }
-
     }
 }

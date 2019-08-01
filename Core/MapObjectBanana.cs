@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
-    public class Cf3MapObjectBanana : Cf3MapObjectBase
+    public class Cf3MapObjectBanana : Cf3MapObjectBase, IDisposable
     {
         //	CDIB32* m_Graphic;
         private static HashSet<Cf3MapObjectBanana> m_BananaList = new HashSet<Cf3MapObjectBanana>();
@@ -70,9 +71,10 @@ namespace MifuminSoft.funyan.Core
             SetPos(nCX * 32 + 16, nCY * 32 + 16);
             m_pParent->AddMapObject(m_nCX = nCX, m_nCY = nCY, this);
         }
-        public ~Cf3MapObjectBanana()
+        public override void Dispose()
         {
             m_BananaList.Remove(this);
+            base.Dispose();
         }
 
     }

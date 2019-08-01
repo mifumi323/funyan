@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
-    public class Cf3MapObjectmrframe : Cf3MapObjectBase
+    public class Cf3MapObjectmrframe : Cf3MapObjectBase, IDisposable
     {
         protected CDIB32 m_Graphic;
 
@@ -154,10 +155,11 @@ namespace MifuminSoft.funyan.Core
             SetPos(m_funya->m_X, m_funya->m_Y);
             m_nLife = 100;
         }
-        public virtual ~Cf3MapObjectmrframe()
+        public override void Dispose()
         {
             m_EnemyList.Remove(this);
             delete m_funya;
+            base.Dispose();
         }
 
     }
