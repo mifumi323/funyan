@@ -86,7 +86,8 @@ public class Cf3Replay
 {
 	if (CApp::MakeFileName(m_FileName,"f3r",theSetting->m_RecordNumber,true)) {
 		Cf3StageFile data;
-		DWORD chunk, size;
+                CT chunk;
+                uint size;
 		BYTE* ptr;
 		// キー入力情報をこーんぽたーじゅ(謎)
 		ptr = new BYTE[m_nSize*2];
@@ -96,37 +97,37 @@ public class Cf3Replay
 			ptr[m_nProgress*2+1	] = (*m_iPointer).pushed	[m_nPointer];
 			Progress();
 		}
-		data.SetStageData(CT_RPLY, m_nSize*2, ptr);
+		data.SetStageData(CT.CT_RPLY, m_nSize*2, ptr);
 		delete[]ptr;
 		// 必要なステージ情報をコピーする
-		if (ptr=stage->GetStageData(chunk=CT_TITL,&size))
+		if (ptr=stage->GetStageData(chunk= CT.CT_TITL,&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=CT_HITS,&size))
+		if (ptr=stage->GetStageData(chunk= CT.CT_HITS,&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT_TL00,map),&size))
+		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT.CT_TL00,map),&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT_M000,map),&size))
+		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT.CT_M000,map),&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT_M100,map),&size))
+		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT.CT_M100,map),&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT_M200,map),&size))
+		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT.CT_M200,map),&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=CT_MCD0|(0<<24),&size))
+		if (ptr=stage->GetStageData(chunk= CT.CT_MCD0 |(0<<24),&size))
 			data.SetStageData(chunk,size,ptr);
-                else if (ptr=stage->GetStageData(chunk=CT_MCF0|(0<<24),&size))
+                else if (ptr=stage->GetStageData(chunk= CT.CT_MCF0 |(0<<24),&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=CT_MCD0|(1<<24),&size))
+		if (ptr=stage->GetStageData(chunk= CT.CT_MCD0 |(1<<24),&size))
 			data.SetStageData(chunk,size,ptr);
-                else if (ptr=stage->GetStageData(chunk=CT_MCF0|(1<<24),&size))
+                else if (ptr=stage->GetStageData(chunk= CT.CT_MCF0 |(1<<24),&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=CT_MCD0|(2<<24),&size))
+		if (ptr=stage->GetStageData(chunk= CT.CT_MCD0 |(2<<24),&size))
 			data.SetStageData(chunk,size,ptr);
-                else if (ptr=stage->GetStageData(chunk=CT_MCF0|(2<<24),&size))
+                else if (ptr=stage->GetStageData(chunk= CT.CT_MCF0 |(2<<24),&size))
 			data.SetStageData(chunk,size,ptr);
 		// 追加の情報
-		data.SetStageData(CT_STGN, 4, &map);
-		data.SetStageData(CT_GRVT, 4, &theSetting->m_Gravity);
-		data.SetStageData(CT_HYPR, 4, &theSetting->m_Hyper);
+		data.SetStageData(CT.CT_STGN, 4, &map);
+		data.SetStageData(CT.CT_GRVT, 4, &theSetting->m_Gravity);
+		data.SetStageData(CT.CT_HYPR, 4, &theSetting->m_Hyper);
 		data.Write(m_FileName);
 	}
 }
@@ -156,9 +157,9 @@ public class Cf3Replay
 	m_pPlayerState->stage = new Cf3StageFile();
 	m_pPlayerState->stage->Read(m_FileName);
 	// シークレットの状態と入力情報も読み込む
-	theSetting->m_Gravity = *m_pPlayerState->stage->GetStageData(CT_GRVT, null);
-	theSetting->m_Hyper = *m_pPlayerState->stage->GetStageData(CT_HYPR, null);
-	ptr = m_pPlayerState->stage->GetStageData(CT_RPLY, &size);
+	theSetting->m_Gravity = *m_pPlayerState->stage->GetStageData(CT.CT_GRVT, null);
+	theSetting->m_Hyper = *m_pPlayerState->stage->GetStageData(CT.CT_HYPR, null);
+	ptr = m_pPlayerState->stage->GetStageData(CT.CT_RPLY, &size);
 	m_nSize = size>>1;
 	for (int i=0; i<m_nSize; i++) {
 		(*m_iPointer).pressed	[m_nPointer] = ptr[m_nProgress*2	];
@@ -166,7 +167,7 @@ public class Cf3Replay
 		Progress();
 	}
 	// 最後にマップを読み込む(設定を先に反映させる必要がある)
-	ptr=m_pPlayerState->stage->GetStageData(CT_STGN, null);
+	ptr=m_pPlayerState->stage->GetStageData(CT.CT_STGN, null);
 	m_pPlayerState->map = new Cf3Map(m_pPlayerState->stage, ptr?*ptr:0);
 	Seek();
 }

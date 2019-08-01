@@ -10,7 +10,7 @@
         public int packsize;
     }
 
-    public enum CT
+    public enum CT : uint
     {
         CT_TITL = 0x4C544954,
         CT_AUTH = 0x48545541,
@@ -117,14 +117,14 @@ public class Cf3StageFile
 	delete[]lpSrcAdr;
 	return 0;
 }
-        public void SetStageData(DWORD dwType, DWORD dwSize, void* lpData)
+        public void SetStageData(CT dwType, DWORD dwSize, void* lpData)
 {
 	HGLOBAL hData = ::GlobalAlloc(GMEM_FIXED | GMEM_NOCOMPACT,dwSize);
 	::CopyMemory(hData, lpData, dwSize);
 	m_Data[dwType] = hData;
 }
         // データを取得。なければNULL
-        public BYTE* GetStageData(const DWORD dwType, DWORD*dwSize=null)
+        public BYTE* GetStageData(CT dwType, DWORD*dwSize=null)
 {
 	map<DWORD,HGLOBAL>::iterator it = m_Data.find(dwType);
 	if (it!=m_Data.end()) {
@@ -176,5 +176,5 @@ public virtual ~Cf3StageFile()
 	ClearData();
 }
 
-};
+}
 }

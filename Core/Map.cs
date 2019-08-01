@@ -126,13 +126,13 @@ namespace MifuminSoft.funyan.Core
         DWORD s;
         CDIB32*dib = new CDIB32;
         // ステージ内部データを読み込む
-        if ((buf = lp->GetStageData(CT_MCD0|(level<<24),&s))!= null) {
+        if ((buf = lp->GetStageData(CT.CT_MCD0|(CT)(level<<24),&s))!= null) {
             char fn2[256];
             ::wsprintf(fn2,"!%x,%x",buf,s);
             if (dib->Load(fn2,false)==0) return dib;
         }
         // 駄目だったそうなのでファイル名から読み込む
-        if ((buf = lp->GetStageData(CT_MCF0|(level<<24),&s))!= null) {
+        if ((buf = lp->GetStageData(CT.CT_MCF0 |(CT)(level<<24),&s))!= null) {
             char fn[256];
             CopyMemory(fn,buf,s);
             fn[s]='\0';
@@ -222,13 +222,13 @@ namespace MifuminSoft.funyan.Core
     }
         public Cf3MapObjectMain* GetMainChara() { return m_MainChara; }
         public BGMNumber GetBGM() { return m_BGMNumber; }
-        public static long GetChunkType(long type, int stage)
-    {
-        long r=stage&0xf,l=stage&0xf0;
-        if (r>=0xa) r+=0x7;
-        if (l>=0xa0) l+=0x70;
-        return type + (r<<24) + (l<<12);
-    }
+        public static CT GetChunkType(CT type, int stage)
+        {
+            uint r = (uint)stage & 0xf, l = (uint)stage & 0xf0;
+            if (r >= 0xa) r += 0x7;
+            if (l >= 0xa0) l += 0x70;
+            return (CT)((uint)type + (r << 24) + (l << 12));
+        }
         public bool IsMainCharaDied()
     {
         return m_MainChara!= null && m_MainChara->IsDied();
@@ -479,7 +479,7 @@ namespace MifuminSoft.funyan.Core
         m_MainChara = null;
         // タイトル
         m_Title = "";
-        if ((buf = lp->GetStageData(GetChunkType(CT_TL00,stage),&s))!= null) {
+        if ((buf = lp->GetStageData(GetChunkType(CT.CT_TL00,stage),&s))!= null) {
             char tl[256];
             s = min(s,255);
             CopyMemory(tl,buf,s);
@@ -492,12 +492,12 @@ namespace MifuminSoft.funyan.Core
         m_MapChip[2] = ReadMapChip(lp, 2);
         // 当たり判定
         CopyMemory(m_Hit,m_defHit,240);
-        if ((buf = lp->GetStageData(CT_HITS,&s))!= null) {
+        if ((buf = lp->GetStageData(CT.CT_HITS,&s))!= null) {
             if (s>240) s=240;
             CopyMemory(m_Hit,buf,s);
         }
         // マップデータ(下層)
-        if ((buf = lp->GetStageData(GetChunkType(CT_M000,stage),&s))!= null) {
+        if ((buf = lp->GetStageData(GetChunkType(CT.CT_M000,stage),&s))!= null) {
             m_Width[0] = *buf;
             m_Height[0] = *(buf+1);
             m_MapData[0] = new byte[m_Width[0]*m_Height[0]];
@@ -506,7 +506,7 @@ namespace MifuminSoft.funyan.Core
             m_MapData[0] = null;
         }
         // マップデータ(中層)
-        if ((buf = lp->GetStageData(GetChunkType(CT_M100,stage),&s))!= null) {
+        if ((buf = lp->GetStageData(GetChunkType(CT.CT_M100,stage),&s))!= null) {
             m_Width[1] = *buf;
             m_Height[1] = *(buf+1);
             DWORD stagesize = m_Width[1]*m_Height[1];
@@ -622,7 +622,7 @@ namespace MifuminSoft.funyan.Core
             m_MapData[1] = null;
         }
         // マップデータ(上層)
-        if ((buf = lp->GetStageData(GetChunkType(CT_M200,stage),&s))!= null) {
+        if ((buf = lp->GetStageData(GetChunkType(CT.CT_M200,stage),&s))!= null) {
             m_Width[2] = *buf;
             m_Height[2] = *(buf+1);
             m_MapData[2] = new byte[m_Width[2]*m_Height[2]];
