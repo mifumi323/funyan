@@ -142,20 +142,20 @@ namespace MifuminSoft.funyan.Core
         return dib;
     }
         public bool IsPlayable() { return m_bPlayable; }
-        public BYTE GetHeight(int level = 1) { return m_Height[level]; }
-        public BYTE GetWidth(int level = 1) { return m_Width[level]; }
+        public byte GetHeight(int level = 1) { return m_Height[level]; }
+        public byte GetWidth(int level = 1) { return m_Width[level]; }
         public bool ItemCompleted() { return m_nGotBanana == m_nTotalBanana; }
         public static void SetEffect(int effect) { m_nEffect = effect; }
         public void GetMainCharaCPos(int &x, int &y)
     {
         m_MainChara->GetCPos(x,y);
     }
-        public LRESULT SetMapData(int level, int x, int y, BYTE data)
-    {
-        if (level<0 || 2<level || x<0 || m_Width[level]<=x || y<0 || m_Height[level]<=y || data>=0xf0) return 1;
-        m_MapData[level][x+y*m_Width[level]] = data;
-        return 0;
-    }
+        public int SetMapData(int level, int x, int y, byte data)
+        {
+            if (level < 0 || 2 < level || x < 0 || m_Width[level] <= x || y < 0 || m_Height[level] <= y || data >= 0xf0) return 1;
+            m_MapData[level][x + y * m_Width[level]] = data;
+            return 0;
+        }
         public void CreateTemparatureMap(CDIB32* dib)
     {
         float objX, objY, dX, dY, fX, fY, power=0.0f;
@@ -297,11 +297,11 @@ namespace MifuminSoft.funyan.Core
         Cf3MapObjectIce.SynergyAll();
         Cf3MapObjectFire.SynergyAll();
     }
-        public BYTE GetMapData(int level, int x, int y)
-    {
-        if (level<0 || 2<level || x<0 || m_Width[level]<=x || y<0 || m_Height[level]<=y) return 0;
-        return m_MapData[level][GetIndex(level, x, y)];
-    }
+        public byte GetMapData(int level, int x, int y)
+        {
+            if (level < 0 || 2 < level || x < 0 || m_Width[level] <= x || y < 0 || m_Height[level] <= y) return 0;
+            return m_MapData[level][GetIndex(level, x, y)];
+        }
         public bool GetHit(int x, int y, HIT hit)
         {
             if (x < 0 || m_Width[1] <= x) return ((HIT)0x0f & hit) != 0;
@@ -500,7 +500,7 @@ namespace MifuminSoft.funyan.Core
         if ((buf = lp->GetStageData(GetChunkType(CT_M000,stage),&s))!=NULL) {
             m_Width[0] = *buf;
             m_Height[0] = *(buf+1);
-            m_MapData[0] = new BYTE[m_Width[0]*m_Height[0]];
+            m_MapData[0] = new byte[m_Width[0]*m_Height[0]];
             CopyMemory(m_MapData[0],buf+2,m_Width[0]*m_Height[0]);
         }else{
             m_MapData[0] = NULL;
@@ -510,11 +510,11 @@ namespace MifuminSoft.funyan.Core
             m_Width[1] = *buf;
             m_Height[1] = *(buf+1);
             DWORD stagesize = m_Width[1]*m_Height[1];
-            m_MapData[1] = new BYTE[stagesize];
+            m_MapData[1] = new byte[stagesize];
             m_Wind = new float[stagesize];
             m_pObject = new Cf3MapObjectBase*[stagesize];
             ZeroMemory(m_pObject, stagesize*sizeof(Cf3MapObjectBase*));
-            BYTE *windmap = new BYTE[stagesize];
+            var windmap = new byte[stagesize];
             CopyMemory(m_MapData[1],buf+2,stagesize);
             int x,y,z,n;
             z=0;
@@ -625,7 +625,7 @@ namespace MifuminSoft.funyan.Core
         if ((buf = lp->GetStageData(GetChunkType(CT_M200,stage),&s))!=NULL) {
             m_Width[2] = *buf;
             m_Height[2] = *(buf+1);
-            m_MapData[2] = new BYTE[m_Width[2]*m_Height[2]];
+            m_MapData[2] = new byte[m_Width[2]*m_Height[2]];
             CopyMemory(m_MapData[2],buf+2,m_Width[2]*m_Height[2]);
         }else{
             m_MapData[2] = NULL;

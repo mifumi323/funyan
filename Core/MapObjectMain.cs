@@ -14,7 +14,7 @@ extern public class Cf3GameInputKey : Cf3GameInput
 
 extern public class Cf3GameInputReplay : Cf3GameInput
 {
-        public BYTE pushed, pressed;
+        public byte pushed, pressed;
         public bool GetKeyPushed(int key) { return 0 != (pushed & (1 << (key - 1))); }
         public bool GetKeyPressed(int key) { return 0 != (pressed & (1 << (key - 1))); }
 } ReplayInput;
