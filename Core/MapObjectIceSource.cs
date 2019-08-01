@@ -27,7 +27,7 @@ namespace MifuminSoft.funyan.Core
         {
             int sx, sy, ex, ey;
             sx = sy = 0;
-            m_pParent->GetViewPos(sx, sy);
+            m_pParent->GetViewPos(ref sx, ref sy);
             sx = (-sx) >> 5; sy = (-sy) >> 5;
             ex = sx + 320 / 32; ey = sy + 224 / 32;
             TL.Saturate(sx, ref ex, m_pParent->GetWidth() - 1);

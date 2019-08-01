@@ -8,8 +8,7 @@ namespace MifuminSoft.funyan.Core
         protected void Reaction(Cf3MapObjectBase* obj)
         {
             if (obj == null) return;
-            float objX, objY;
-            obj->GetPos(objX, objY);
+            obj->GetPos(out var objX, out var objY);
             switch (obj->GetMapObjectType())
             {
                 case MOT_FUNYA:
@@ -59,7 +58,7 @@ namespace MifuminSoft.funyan.Core
         {
             int sx, sy, ex, ey;
             sx = sy = 0;
-            m_pParent->GetViewPos(sx, sy);
+            m_pParent->GetViewPos(ref sx, ref sy);
             sx = (-sx) >> 5; sy = (-sy) >> 5;
             ex = sx + 320 / 32; ey = sy + 224 / 32;
             TL.Saturate(sx, ref ex, m_pParent->GetWidth() - 1);
@@ -107,8 +106,7 @@ namespace MifuminSoft.funyan.Core
             {
                 if ((*it)->IsValid())
                 {
-                    float objX, objY;
-                    (*it)->GetPos(objX, objY);
+                    (*it)->GetPos(out var objX, out var objY);
                     if (TL.IsIn(objX - 16, m_X, objX + 16))
                     {
                         if (TL.IsIn(objY, m_Y, objY + 40))

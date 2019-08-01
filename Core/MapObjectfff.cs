@@ -143,8 +143,7 @@ namespace MifuminSoft.funyan.Core
             {
                 if ((*it)->IsValid())
                 {
-                    float objX, objY;
-                    (*it)->GetPos(objX, objY);
+                    (*it)->GetPos(out var objX, out var objY);
                     if (!((Cf3MapObjectGeasprin*)(*it))->IsFrozen())
                     {
                         if (TL.IsIn(objX - 16, m_X, objX + 15))
@@ -206,8 +205,7 @@ namespace MifuminSoft.funyan.Core
             {
                 if ((*it)->IsValid())
                 {
-                    float objX, objY;
-                    (*it)->GetPos(objX, objY);
+                    (*it)->GetPos(out var objX, out var objY);
                     if ((objX - m_X) * (objX - m_X) + (objY - m_Y) * (objY - m_Y) < 256)
                     {
                         Die();
@@ -220,8 +218,7 @@ namespace MifuminSoft.funyan.Core
             {
                 if ((*it)->IsValid() && ((Cf3MapObjectEelPitcher*)(*it))->IsLeaf())
                 {
-                    float objX, objY;
-                    (*it)->GetPos(objX, objY);
+                    (*it)->GetPos(out var objX, out var objY);
                     if (TL.IsIn(objX - 16, m_X, objX + 16))
                     {
                         if (TL.IsIn(objY - 14, m_Y, objY))
@@ -242,8 +239,7 @@ namespace MifuminSoft.funyan.Core
                 {
                     if ((*it)->IsValid() && ((Cf3MapObjectIce*)(*it))->GetSize() > 10)
                     {
-                        float objX, objY;
-                        (*it)->GetPos(objX, objY);
+                        (*it)->GetPos(out var objX, out var objY);
                         if ((objX - m_X) * (objX - m_X) + (objY - m_Y) * (objY - m_Y) < 256)
                         {
                             // あたった！
@@ -254,8 +250,7 @@ namespace MifuminSoft.funyan.Core
                 // 氷ゾーン
                 foreach (var is_ in Cf3MapObjectIceSource.All())
                 {
-                    float objX, objY;
-                    is_.GetPos(objX, objY);
+                    is_.GetPos(out var objX, out var objY);
                     float dX = objX - m_X, dY = objY - m_Y,
                         p = 1.0f / (dX * dX + dY * dY), p3 = p * sqrt(p);
                     m_Power += p;
@@ -267,8 +262,7 @@ namespace MifuminSoft.funyan.Core
                 {
                     if (fr.IsActive())
                     {
-                        float objX, objY;
-                        fr.GetPos(objX, objY);
+                        fr.GetPos(out var objX, out var objY);
                         float dX = objX - m_X, dY = objY - m_Y,
                             p = 1.0f / (dX * dX + dY * dY), p3 = p * sqrt(p);
                         m_Power -= p;
@@ -307,7 +301,7 @@ namespace MifuminSoft.funyan.Core
                 {
                     if (bn.IsValid())
                     {
-                        bn.GetCPos(cx, cy);
+                        bn.GetCPos(out cx, out cy);
                         bd = (cx * 32 + 16 - m_X) * (cx * 32 + 16 - m_X) + (cy * 32 + 16 - m_Y) * (cy * 32 + 16 - m_Y);
                         if (bd < bananaDistance) bananaDistance = bd;
                         nBanana++;

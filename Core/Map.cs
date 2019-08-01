@@ -169,14 +169,14 @@ namespace MifuminSoft.funyan.Core
                     power = 0.0f;
                     // 氷ゾーン
                     foreach (var is_ in Cf3MapObjectIceSource.All()) {
-                        is_.GetPos(objX, objY);
+                        is_.GetPos(out objX, out objY);
                         dX = objX - fX; dY = objY - fY;
                         power += 1.0f / (dX * dX + dY * dY);
                     }
                     // 炎ゾーン
                     foreach (var fr in Cf3MapObjectFire.All()) {
                         if (fr.IsActive()) {
-                            fr.GetPos(objX, objY);
+                            fr.GetPos(out objX, out objY);
                             dX = objX - fX; dY = objY - fY;
                             power -= 1.0f / (dX * dX + dY * dY);
                         }
@@ -262,7 +262,7 @@ namespace MifuminSoft.funyan.Core
             Cf3MapObjectFire.OnPreDrawAll();
             Cf3MapObjectEffect.OnPreDrawAll();
             Cf3MapObjectWind.OnPreDrawAll();
-            if (m_MainChara != null) m_MainChara->GetViewPos(m_ScrollX, m_ScrollY);
+            if (m_MainChara != null) m_MainChara->GetViewPos(out m_ScrollX, out m_ScrollY);
             m_ScrollRX = (m_ScrollRX + m_ScrollX) / 2;
             m_ScrollRY = (m_ScrollRY + m_ScrollY) / 2;
         }
@@ -323,7 +323,7 @@ namespace MifuminSoft.funyan.Core
                 float my = 1;
                 if (m_Height[1] - 7 > 0) my = (float)(m_Height[0] - 7) / (float)(m_Height[1] - 7);
                 sx = sy = 0;
-                GetViewPos(sx, sy, mx, my);
+                GetViewPos(ref sx, ref sy, mx, my);
                 sx = (-sx) >> 5; sy = (-sy) >> 5;
                 ex = sx + 320 / 32; ey = sy + 224 / 32;
                 TL.Saturate(sx, ref ex, m_Width[0] - 1);
@@ -336,7 +336,7 @@ namespace MifuminSoft.funyan.Core
                         r.bottom = r.top + 32;
                         r.right = r.left + 32;
                         vx = x * 32; vy = y * 32;
-                        GetViewPos(vx, vy, mx, my);
+                        GetViewPos(ref vx, ref vy, mx, my);
                         lp->BltFast(m_MapChip[0], vx, vy, &r);
                     }
                 }
@@ -350,7 +350,7 @@ namespace MifuminSoft.funyan.Core
                     pHit->SubColorFast(theApp->random(0x1000000));
                 }
                 sx = sy = 0;
-                GetViewPos(sx, sy);
+                GetViewPos(ref sx, ref sy);
                 sx = (-sx) >> 5; sy = (-sy) >> 5;
                 ex = sx + 320 / 32; ey = sy + 224 / 32;
                 TL.Saturate(sx, ref ex, m_Width[1] - 1);
@@ -363,7 +363,7 @@ namespace MifuminSoft.funyan.Core
                         r.bottom = r.top + 32;
                         r.right = r.left + 32;
                         vx = x * 32; vy = y * 32;
-                        GetViewPos(vx, vy);
+                        GetViewPos(ref vx, ref vy);
                         if (m_MapData[0]) lp->Blt(m_MapChip[1], vx, vy, &r);
                         else lp->BltFast(m_MapChip[1], vx, vy, &r);
                         if (bShowHit) {
@@ -428,7 +428,7 @@ namespace MifuminSoft.funyan.Core
                 float my = 1.0f;
                 if (m_Height[1] - 7 > 0) my = (float)(m_Height[2] - 7) / (m_Height[1] - 7);
                 sx = sy = 0;
-                GetViewPos(sx, sy, mx, my);
+                GetViewPos(ref sx, ref sy, mx, my);
                 sx = (-sx) >> 5; sy = (-sy) >> 5;
                 ex = sx + 320 / 32; ey = sy + 224 / 32;
                 TL.Saturate(sx, ref ex, m_Width[2] - 1);
@@ -441,7 +441,7 @@ namespace MifuminSoft.funyan.Core
                         r.bottom = r.top + 32;
                         r.right = r.left + 32;
                         vx = x * 32 * mx; vy = y * 32 * my;
-                        GetViewPos(vx, vy, mx, my);
+                        GetViewPos(ref vx, ref vy, mx, my);
                         lp->Blt(m_MapChip[2], vx, vy, &r);
                     }
                 }
@@ -640,7 +640,7 @@ namespace MifuminSoft.funyan.Core
                 }
             }
             m_ScrollX = m_ScrollY = 0;
-            if (m_MainChara != null) m_MainChara->GetPos(m_ScrollRX, m_ScrollRY);
+            if (m_MainChara != null) m_MainChara->GetPos(out m_ScrollRX, out m_ScrollRY);
         }
         public void Dispose()
         {

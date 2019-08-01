@@ -20,7 +20,7 @@ namespace MifuminSoft.funyan.Core
         {
             int sx, sy, ex, ey;
             sx = sy = 0;
-            m_pParent->GetViewPos(sx, sy);
+            m_pParent->GetViewPos(ref sx, ref sy);
             sx = (-sx) >> 5; sy = (-sy) >> 5;
             ex = sx + 320 / 32; ey = sy + 224 / 32;
             TL.Saturate(sx, ref ex, m_pParent->GetWidth() - 1);
@@ -35,9 +35,8 @@ namespace MifuminSoft.funyan.Core
             if (!IsValid()) return;
             switch (obj->GetMapObjectType()) {
                 case MOT_FUNYA: {
-                        int cx1, cy1, cx2, cy2;
-                        GetCPos(cx1, cy1);
-                        obj->GetCPos(cx2, cy2);
+                        GetCPos(out var cx1, out var cy1);
+                        obj->GetCPos(out var cx2, out var cy2);
                         if (cx1 == cx2 && cy1 == cy2) {
                             m_pParent->m_nGotBanana++;
                             Kill();

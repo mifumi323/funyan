@@ -68,8 +68,7 @@ namespace MifuminSoft.funyan.Core
         public void Reaction(Cf3MapObjectBase* obj)
         {
             if (obj == null || obj == this) return;
-            float objX, objY;
-            obj->GetPos(objX, objY);
+            obj->GetPos(out var objX, out var objY);
             switch (obj->GetMapObjectType())
             {
                 case MOT_FUNYA:
@@ -107,8 +106,7 @@ namespace MifuminSoft.funyan.Core
         {
             if (!IsValid()) return;
             m_bBlinking = false;
-            int cx, cy;
-            GetCPos(cx, cy);
+            GetCPos(out var cx, out var cy);
             Cf3MapObjectBase** it;
             if (m_State == EELLEAF)
             {
@@ -122,8 +120,7 @@ namespace MifuminSoft.funyan.Core
                     {
                         if ((*it)->IsValid())
                         {
-                            float objX, objY;
-                            (*it)->GetPos(objX, objY);
+                            (*it)->GetPos(out var objX, out var objY);
                             if (TL.IsIn(m_X - 16, objX, m_X + 16))
                             {
                                 if (TL.IsIn(m_Y, objY, m_Y + 40))
@@ -139,8 +136,7 @@ namespace MifuminSoft.funyan.Core
             {
                 if ((*it)->IsValid() && (*it) != this)
                 {
-                    float objX, objY;
-                    (*it)->GetPos(objX, objY);
+                    (*it)->GetPos(out var objX, out var objY);
                     if (m_State == EELLEAF || m_State == EELFROZEN)
                     {
                         if (TL.IsIn(m_X - 16, objX, m_X + 16))

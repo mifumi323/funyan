@@ -99,7 +99,7 @@ namespace MifuminSoft.funyan.Core
         {
             int sx, sy, ex, ey;
             sx = sy = 0;
-            m_pParent->GetViewPos(sx, sy);
+            m_pParent->GetViewPos(ref sx, ref sy);
             sx = (-sx) >> 5; sy = (-sy) >> 5;
             ex = sx + 320 / 32; ey = sy + 224 / 32;
             TL.Saturate(sx, ref ex, m_pParent->GetWidth() - 1);
@@ -134,8 +134,7 @@ namespace MifuminSoft.funyan.Core
         public void Reaction(Cf3MapObjectBase* obj)
         {
             if (obj == null) return;
-            float objX, objY;
-            obj->GetPos(objX, objY);
+            obj->GetPos(out var objX, out var objY);
             switch (obj->GetMapObjectType())
             {
                 case MOT_FUNYA:
@@ -187,8 +186,7 @@ namespace MifuminSoft.funyan.Core
             {
                 if ((*it)->IsValid())
                 {
-                    float objX, objY;
-                    (*it)->GetPos(objX, objY);
+                    (*it)->GetPos(out var objX, out var objY);
                     if (TL.IsIn(objX - 16, m_X, objX + 16))
                     {
                         if (TL.IsIn(objY, m_Y, objY + 40))
@@ -213,8 +211,7 @@ namespace MifuminSoft.funyan.Core
                 {
                     if ((*it) != this && (*it)->IsValid())
                     {
-                        float objX, objY;
-                        (*it)->GetPos(objX, objY);
+                        (*it)->GetPos(out var objX, out var objY);
                         if (TL.IsIn(m_X - 8, objX, m_X + 8))
                         {
                             if (TL.IsIn(m_Y - 32, objY, m_Y))
@@ -281,8 +278,7 @@ namespace MifuminSoft.funyan.Core
                 {
                     if ((*it)->IsValid())
                     {
-                        float objX, objY;
-                        (*it)->GetPos(objX, objY);
+                        (*it)->GetPos(out var objX, out var objY);
                         if ((objX - m_X) * (objX - m_X) + (objY - m_Y) * (objY - m_Y) < 256)
                         {
                             // あたった！

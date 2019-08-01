@@ -22,8 +22,7 @@ namespace MifuminSoft.funyan.Core
                 {
                     if ((*it)->IsValid() && ((Cf3MapObjectMain*)(*it))->IsFrozen())
                     {
-                        float objX, objY;
-                        (*it)->GetPos(objX, objY);
+                        (*it)->GetPos(out var objX, out var objY);
                         // あたった！
                         if ((objX - m_X) * (objX - m_X) + (objY - m_Y) * (objY - m_Y) < 256) m_Delay = 200;
                     }
@@ -33,8 +32,7 @@ namespace MifuminSoft.funyan.Core
                 {
                     if ((*it)->IsValid())
                     {
-                        float objX, objY;
-                        (*it)->GetPos(objX, objY);
+                        (*it)->GetPos(out var objX, out var objY);
                         // あたった！
                         if ((objX - m_X) * (objX - m_X) + (objY - m_Y) * (objY - m_Y) < 256) m_Delay = 200;
                     }
@@ -92,7 +90,7 @@ namespace MifuminSoft.funyan.Core
         {
             int sx, sy, ex, ey;
             sx = sy = 0;
-            m_pParent->GetViewPos(sx, sy);
+            m_pParent->GetViewPos(ref sx, ref sy);
             sx = (-sx) >> 5; sy = (-sy) >> 5;
             ex = sx + 320 / 32; ey = sy + 224 / 32;
             TL.Saturate(sx, ref ex, m_pParent->GetWidth() - 1);
