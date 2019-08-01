@@ -125,7 +125,7 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 	m_Power = m_PowerX = m_PowerY = 0.0f;
 	Cf3MapObjectBase**it;
 	// ギヤバネ
-	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_GEASPRIN); (*it)!=NULL; it++){
+	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_GEASPRIN); (*it)!= null; it++){
 		if ((*it)->IsValid()) {
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
@@ -171,7 +171,7 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 		}
 	}
 	// とげとげ
-	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_NEEDLE); (*it)!=NULL; it++){
+	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_NEEDLE); (*it)!= null; it++){
 		if ((*it)->IsValid()) {
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
@@ -182,7 +182,7 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 		}
 	}
 	// ウナギカズラ
-	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_EELPITCHER); (*it)!=NULL; it++){
+	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_EELPITCHER); (*it)!= null; it++){
 		if ((*it)->IsValid()&&((Cf3MapObjectEelPitcher*)(*it))->IsLeaf()) {
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
@@ -198,7 +198,7 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 	}
 	if (m_State!=FROZEN) {
 		// 氷
-		for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_ICE); (*it)!=NULL; it++){
+		for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_ICE); (*it)!= null; it++){
 			if ((*it)->IsValid()&&((Cf3MapObjectIce*)(*it))->GetSize()>10) {
 				float objX, objY;
 				(*it)->GetPos(objX,objY);

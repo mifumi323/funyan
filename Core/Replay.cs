@@ -18,8 +18,8 @@ public class Cf3Replay
     {
 		public Cf3ReplayPlayerState()
         {
-            stage = NULL;
-            map = NULL;
+            stage = null;
+            map = null;
             oldgravity = theSetting->m_Gravity;
             oldhyper = theSetting->m_Hyper;
         }
@@ -73,7 +73,7 @@ public class Cf3Replay
 }
         public Cf3Replay()
 {
-	m_pPlayerState=NULL;
+	m_pPlayerState= null;
 	Reset();
 }
         public virtual ~Cf3Replay()
@@ -156,8 +156,8 @@ public class Cf3Replay
 	m_pPlayerState->stage = new Cf3StageFile();
 	m_pPlayerState->stage->Read(m_FileName);
 	// シークレットの状態と入力情報も読み込む
-	theSetting->m_Gravity = *m_pPlayerState->stage->GetStageData(CT_GRVT, NULL);
-	theSetting->m_Hyper = *m_pPlayerState->stage->GetStageData(CT_HYPR, NULL);
+	theSetting->m_Gravity = *m_pPlayerState->stage->GetStageData(CT_GRVT, null);
+	theSetting->m_Hyper = *m_pPlayerState->stage->GetStageData(CT_HYPR, null);
 	ptr = m_pPlayerState->stage->GetStageData(CT_RPLY, &size);
 	m_nSize = size>>1;
 	for (int i=0; i<m_nSize; i++) {
@@ -166,7 +166,7 @@ public class Cf3Replay
 		Progress();
 	}
 	// 最後にマップを読み込む(設定を先に反映させる必要がある)
-	ptr=m_pPlayerState->stage->GetStageData(CT_STGN, NULL);
+	ptr=m_pPlayerState->stage->GetStageData(CT_STGN, null);
 	m_pPlayerState->map = new Cf3Map(m_pPlayerState->stage, ptr?*ptr:0);
 	Seek();
 }

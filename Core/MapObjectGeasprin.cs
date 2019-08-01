@@ -98,7 +98,7 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 	ex = sx+320/32; ey = sy+224/32;
         TL.Saturate(sx,ref ex,m_pParent->GetWidth()-1);
         TL.Saturate(sy,ref ey,m_pParent->GetHeight()-1);
-	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx-1, sy-1, ex+1, ey+1, MOT_GEASPRIN); (*it)!=NULL; it++) {
+	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx-1, sy-1, ex+1, ey+1, MOT_GEASPRIN); (*it)!= null; it++) {
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }
@@ -123,7 +123,7 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
         public static Dictionary<int, Cf3MapObjectGeasprin> All() { return m_EnemyList; }
         public void Reaction(Cf3MapObjectBase* obj)
 {
-	if (obj==NULL) return;
+	if (obj== null) return;
 	float objX, objY;
 	obj->GetPos(objX,objY);
 	switch(obj->GetMapObjectType()) {
@@ -164,7 +164,7 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 	if (!IsValid()) return;
 	Cf3MapObjectBase**it;
 	// ウナギカズラ
-	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_EELPITCHER); (*it)!=NULL; it++){
+	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_EELPITCHER); (*it)!= null; it++){
 		if ((*it)->IsValid()) {
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
@@ -180,11 +180,11 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 	}
 	if (!IsFrozen()) {
 		// ふにゃ
-		for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_FUNYA); (*it)!=NULL; it++){
+		for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_FUNYA); (*it)!= null; it++){
 			if ((*it)->IsValid()) Reaction((*it));
 		}
 		// ギヤバネ
-		for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_GEASPRIN); (*it)!=NULL; it++){
+		for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_GEASPRIN); (*it)!= null; it++){
 			if ((*it)!=this&&(*it)->IsValid()) {
 				float objX, objY;
 				(*it)->GetPos(objX,objY);
@@ -234,7 +234,7 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 			}
 		}
 		// 氷
-		for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_ICE); (*it)!=NULL; it++){
+		for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_ICE); (*it)!= null; it++){
 			if ((*it)->IsValid()) {
 				float objX, objY;
 				(*it)->GetPos(objX,objY);

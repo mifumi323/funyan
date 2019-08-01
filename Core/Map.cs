@@ -69,15 +69,15 @@ namespace MifuminSoft.funyan.Core
         if (m_NearObject.size()<=Cf3MapObjectBase.Count())
             m_NearObject.resize(Cf3MapObjectBase.Count()+1);
         int i=0;
-        m_NearObject[0] = NULL;
+        m_NearObject[0] = null;
         Cf3MapObjectBase* o;
         for (int x=x1; x<=x2; x++) {
             for (int y=y1; y<=y2; y++) {
                 o = m_pObject[GetIndex(x, y)];
-                while (o!=NULL) {
+                while (o!= null) {
                     if (o->GetMapObjectType()==eType&&o->IsValid()) {
                         m_NearObject[i++] = o;
-                        m_NearObject[i] = NULL;
+                        m_NearObject[i] = null;
                     }
                     o = o->m_pNext;
                 }
@@ -89,17 +89,17 @@ namespace MifuminSoft.funyan.Core
         public int GetIndex(int x, int y) { return x + y * m_Width[1]; }
         public void AddMapObject(int x, int y, Cf3MapObjectBase p)
     {
-        if (p==NULL) return;
+        if (p==null) return;
         TL.Saturate(0, ref x, m_Width[1]-1);
             TL.Saturate(0, ref y, m_Height[1]-1);
         int i = GetIndex(x, y);
         Cf3MapObjectBase* o=m_pObject[i];
-        if (o==NULL) {
+        if (o== null) {
             m_pObject[i] = p;
             return;
         }
         while (o!=p) {
-            if (o->m_pNext==NULL) {
+            if (o->m_pNext== null) {
                 o->m_pNext = p;
                 return;
             }
@@ -126,13 +126,13 @@ namespace MifuminSoft.funyan.Core
         DWORD s;
         CDIB32*dib = new CDIB32;
         // ステージ内部データを読み込む
-        if ((buf = lp->GetStageData(CT_MCD0|(level<<24),&s))!=NULL) {
+        if ((buf = lp->GetStageData(CT_MCD0|(level<<24),&s))!= null) {
             char fn2[256];
             ::wsprintf(fn2,"!%x,%x",buf,s);
             if (dib->Load(fn2,false)==0) return dib;
         }
         // 駄目だったそうなのでファイル名から読み込む
-        if ((buf = lp->GetStageData(CT_MCF0|(level<<24),&s))!=NULL) {
+        if ((buf = lp->GetStageData(CT_MCF0|(level<<24),&s))!= null) {
             char fn[256];
             CopyMemory(fn,buf,s);
             fn[s]='\0';
@@ -217,7 +217,7 @@ namespace MifuminSoft.funyan.Core
     }
         public float GetWind(int x, int y)
     {
-        if (m_Wind==NULL || x<0 || m_Width[1]<=x || y<0 || m_Height[1]<=y) return 0.0f;
+        if (m_Wind== null || x<0 || m_Width[1]<=x || y<0 || m_Height[1]<=y) return 0.0f;
         return m_Wind[GetIndex(x, y)];
     }
         public Cf3MapObjectMain* GetMainChara() { return m_MainChara; }
@@ -231,7 +231,7 @@ namespace MifuminSoft.funyan.Core
     }
         public bool IsMainCharaDied()
     {
-        return m_MainChara!=NULL&&m_MainChara->IsDied();
+        return m_MainChara!= null && m_MainChara->IsDied();
     }
         public string GetTitle() { return m_Title; }
         public long GetTotalBanana() { return m_nTotalBanana; }
@@ -242,14 +242,14 @@ namespace MifuminSoft.funyan.Core
     }
         public void GarbageMapObject()
     {
-        if (m_MainChara!=NULL&&!m_MainChara->IsValid()){
-            m_MainChara=NULL;
+        if (m_MainChara!= null && !m_MainChara->IsValid()){
+            m_MainChara= null;
         }
         Cf3MapObjectBase.Garbage();
     }
         public void OnPreDraw()
     {
-        if (m_MainChara != NULL) {
+        if (m_MainChara != null) {
             m_MainChara->OnPreDraw();
         }
         Cf3MapObjectBanana.OnPreDrawAll();
@@ -262,7 +262,7 @@ namespace MifuminSoft.funyan.Core
         Cf3MapObjectFire.OnPreDrawAll();
         Cf3MapObjectEffect.OnPreDrawAll();
         Cf3MapObjectWind.OnPreDrawAll();
-        if (m_MainChara!=NULL) m_MainChara->GetViewPos(m_ScrollX,m_ScrollY);
+        if (m_MainChara!= null) m_MainChara->GetViewPos(m_ScrollX,m_ScrollY);
         m_ScrollRX = (m_ScrollRX+m_ScrollX)/2;
         m_ScrollRY = (m_ScrollRY+m_ScrollY)/2;
     }
@@ -280,7 +280,7 @@ namespace MifuminSoft.funyan.Core
         }
         public void OnMove()
     {
-        if (m_MainChara != NULL) m_MainChara->OnMove();
+        if (m_MainChara != null) m_MainChara->OnMove();
         Cf3MapObjectEelPitcher.OnMoveAll();
         Cf3MapObjectGeasprin.OnMoveAll();
         Cf3MapObjectmrframe.OnMoveAll();
@@ -288,7 +288,7 @@ namespace MifuminSoft.funyan.Core
         Cf3MapObjectIce.OnMoveAll();
         Cf3MapObjectFire.OnMoveAll();
         Cf3MapObjectBase.UpdateCPosAll();
-        if (m_MainChara != NULL) m_MainChara->Synergy();
+        if (m_MainChara != null) m_MainChara->Synergy();
         Cf3MapObjectBanana.SynergyAll();
         Cf3MapObjectEelPitcher.SynergyAll();
         Cf3MapObjectGeasprin.SynergyAll();
@@ -413,7 +413,7 @@ namespace MifuminSoft.funyan.Core
         }
         Cf3MapObjectBanana.OnDrawAll(lp);
         Cf3MapObjectmrframe.OnDrawAll(lp);
-        if (m_MainChara != NULL) m_MainChara->OnDraw(lp);
+        if (m_MainChara != null) m_MainChara->OnDraw(lp);
         Cf3MapObjectGeasprin.OnDrawAll(lp);
         Cf3MapObjectNeedle.OnDrawAll(lp);
         Cf3MapObjectEelPitcher.OnDrawAll(lp);
@@ -473,13 +473,13 @@ namespace MifuminSoft.funyan.Core
         m_bPlayable = playable;
         Cf3MapObjectBase.SetParent(this);
         m_nGotBanana = m_nTotalBanana = 0;
-        m_Wind = NULL;
-        m_pObject = NULL;
+        m_Wind = null;
+        m_pObject = null;
         // キャラ
-        m_MainChara = NULL;
+        m_MainChara = null;
         // タイトル
         m_Title = "";
-        if ((buf = lp->GetStageData(GetChunkType(CT_TL00,stage),&s))!=NULL) {
+        if ((buf = lp->GetStageData(GetChunkType(CT_TL00,stage),&s))!= null) {
             char tl[256];
             s = min(s,255);
             CopyMemory(tl,buf,s);
@@ -492,21 +492,21 @@ namespace MifuminSoft.funyan.Core
         m_MapChip[2] = ReadMapChip(lp, 2);
         // 当たり判定
         CopyMemory(m_Hit,m_defHit,240);
-        if ((buf = lp->GetStageData(CT_HITS,&s))!=NULL) {
+        if ((buf = lp->GetStageData(CT_HITS,&s))!= null) {
             if (s>240) s=240;
             CopyMemory(m_Hit,buf,s);
         }
         // マップデータ(下層)
-        if ((buf = lp->GetStageData(GetChunkType(CT_M000,stage),&s))!=NULL) {
+        if ((buf = lp->GetStageData(GetChunkType(CT_M000,stage),&s))!= null) {
             m_Width[0] = *buf;
             m_Height[0] = *(buf+1);
             m_MapData[0] = new byte[m_Width[0]*m_Height[0]];
             CopyMemory(m_MapData[0],buf+2,m_Width[0]*m_Height[0]);
         }else{
-            m_MapData[0] = NULL;
+            m_MapData[0] = null;
         }
         // マップデータ(中層)
-        if ((buf = lp->GetStageData(GetChunkType(CT_M100,stage),&s))!=NULL) {
+        if ((buf = lp->GetStageData(GetChunkType(CT_M100,stage),&s))!= null) {
             m_Width[1] = *buf;
             m_Height[1] = *(buf+1);
             DWORD stagesize = m_Width[1]*m_Height[1];
@@ -524,7 +524,7 @@ namespace MifuminSoft.funyan.Core
                     n=m_MapData[1][z];
                     if (n>=0xf0) {
                         if (n==0xf0){	// 主人公
-                            if (m_MainChara==NULL) m_MainChara = Cf3MapObjectMain.Create(x,y);
+                            if (m_MainChara== null) m_MainChara = Cf3MapObjectMain.Create(x,y);
                             bgm[(int)BGMNumber.BGMN_GAMEFUNYA]+=99;
                         }
                             else if (n==0xf1){	// バナナ
@@ -619,16 +619,16 @@ namespace MifuminSoft.funyan.Core
             DELETEPTR_SAFE(windmap);
             Cf3MapObjectBase.UpdateCPosAll();
         }else{
-            m_MapData[1] = NULL;
+            m_MapData[1] = null;
         }
         // マップデータ(上層)
-        if ((buf = lp->GetStageData(GetChunkType(CT_M200,stage),&s))!=NULL) {
+        if ((buf = lp->GetStageData(GetChunkType(CT_M200,stage),&s))!= null) {
             m_Width[2] = *buf;
             m_Height[2] = *(buf+1);
             m_MapData[2] = new byte[m_Width[2]*m_Height[2]];
             CopyMemory(m_MapData[2],buf+2,m_Width[2]*m_Height[2]);
         }else{
-            m_MapData[2] = NULL;
+            m_MapData[2] = null;
         }
         // BGM
         DWORD bgmm = 0;
@@ -640,7 +640,7 @@ namespace MifuminSoft.funyan.Core
             }
         }
         m_ScrollX = m_ScrollY = 0;
-        if (m_MainChara!=NULL) m_MainChara->GetPos(m_ScrollRX, m_ScrollRY);
+        if (m_MainChara!= null) m_MainChara->GetPos(m_ScrollRX, m_ScrollRY);
     }
         public virtual ~Cf3Map()
     {

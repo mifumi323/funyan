@@ -46,7 +46,7 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
 	ex = sx+320/32; ey = sy+224/32;
         TL.Saturate(sx,ref ex,m_pParent->GetWidth()-1);
         TL.Saturate(sy,ref ey,m_pParent->GetHeight()-1);
-	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx-1, sy-1, ex+1, ey+1, MOT_ICE); (*it)!=NULL; it++) {
+	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx-1, sy-1, ex+1, ey+1, MOT_ICE); (*it)!= null; it++) {
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }

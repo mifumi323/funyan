@@ -7,7 +7,7 @@ public class Cf3MapObjectNeedle : Cf3MapObjectBase
 {
         protected void Reaction(Cf3MapObjectBase* obj)
 {
-	if (obj==NULL) return;
+	if (obj== null) return;
 	float objX, objY;
 	obj->GetPos(objX,objY);
 	switch(obj->GetMapObjectType()) {
@@ -59,7 +59,7 @@ public class Cf3MapObjectNeedle : Cf3MapObjectBase
 	ex = sx+320/32; ey = sy+224/32;
         TL.Saturate(sx,ref ex,m_pParent->GetWidth()-1);
         TL.Saturate(sy,ref ey,m_pParent->GetHeight()-1);
-	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx, sy, ex, ey, MOT_NEEDLE); (*it)!=NULL; it++) {
+	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx, sy, ex, ey, MOT_NEEDLE); (*it)!= null; it++) {
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }
@@ -86,13 +86,13 @@ public class Cf3MapObjectNeedle : Cf3MapObjectBase
 {
 	if (!IsValid()) return;
 	Cf3MapObjectBase**it;
-	for(it=m_pParent->GetMapObjects(m_nCX-1, m_nCY, m_nCX+1, m_nCY+10, MOT_FUNYA); (*it)!=NULL; it++){
+	for(it=m_pParent->GetMapObjects(m_nCX-1, m_nCY, m_nCX+1, m_nCY+10, MOT_FUNYA); (*it)!= null; it++){
 		if ((*it)->IsValid()) Reaction((*it));
 	}
-	for(it=m_pParent->GetMapObjects(m_nCX-1, m_nCY, m_nCX+1, m_nCY+10, MOT_GEASPRIN); (*it)!=NULL; it++){
+	for(it=m_pParent->GetMapObjects(m_nCX-1, m_nCY, m_nCX+1, m_nCY+10, MOT_GEASPRIN); (*it)!= null; it++){
 		if ((*it)->IsValid()) Reaction((*it));
 	}
-	for(it=m_pParent->GetMapObjects(m_nCX-1, m_nCY-1, m_nCX+1, m_nCY+1, MOT_EELPITCHER); (*it)!=NULL; it++){
+	for(it=m_pParent->GetMapObjects(m_nCX-1, m_nCY-1, m_nCX+1, m_nCY+1, MOT_EELPITCHER); (*it)!= null; it++){
 		if ((*it)->IsValid()) {
 			float objX, objY;
 			(*it)->GetPos(objX,objY);

@@ -63,7 +63,7 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
         public static Dictionary<int, Cf3MapObjectEelPitcher> All() { return m_EnemyList; }
         public void Reaction(Cf3MapObjectBase* obj)
 {
-	if (obj==NULL||obj==this) return;
+	if (obj== null || obj==this) return;
 	float objX, objY;
 	obj->GetPos(objX,objY);
 	switch(obj->GetMapObjectType()) {
@@ -99,11 +99,11 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
 	GetCPos(cx, cy);
 	Cf3MapObjectBase**it;
 	if (m_State==EELLEAF) {
-		for(it=m_pParent->GetMapObjects(cx-2, cy-2, cx+2, cy+2, MOT_FUNYA); (*it)!=NULL; it++){
+		for(it=m_pParent->GetMapObjects(cx-2, cy-2, cx+2, cy+2, MOT_FUNYA); (*it)!= null; it++){
 			if ((*it)->IsValid()) Reaction((*it));
 		}
 		if (m_RootY-m_Y>16) {
-			for(it=m_pParent->GetMapObjects(cx-1, cy-1, cx+1, cy+1, MOT_ICE); (*it)!=NULL; it++){
+			for(it=m_pParent->GetMapObjects(cx-1, cy-1, cx+1, cy+1, MOT_ICE); (*it)!= null; it++){
 				if ((*it)->IsValid()) {
 					float objX, objY;
 					(*it)->GetPos(objX,objY);
@@ -116,7 +116,7 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
 			}
 		}
 	}
-	for(it=m_pParent->GetMapObjects(cx-1, cy-1, cx+1, cy+1, MOT_EELPITCHER); (*it)!=NULL; it++){
+	for(it=m_pParent->GetMapObjects(cx-1, cy-1, cx+1, cy+1, MOT_EELPITCHER); (*it)!= null; it++){
 		if ((*it)->IsValid()&&(*it)!=this) {
 			float objX, objY;
 			(*it)->GetPos(objX,objY);
@@ -148,10 +148,10 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
 			}
 		}
 	}
-	for(it=m_pParent->GetMapObjects(cx-2, cy-2, cx+2, cy+2, MOT_GEASPRIN); (*it)!=NULL; it++){
+	for(it=m_pParent->GetMapObjects(cx-2, cy-2, cx+2, cy+2, MOT_GEASPRIN); (*it)!= null; it++){
 		if ((*it)->IsValid()) Reaction((*it));
 	}
-	for(it=m_pParent->GetMapObjects(cx-1, cy-1, cx+1, cy+1, MOT_NEEDLE); (*it)!=NULL; it++){
+	for(it=m_pParent->GetMapObjects(cx-1, cy-1, cx+1, cy+1, MOT_NEEDLE); (*it)!= null; it++){
 		if ((*it)->IsValid()) Reaction((*it));
 	}
 }

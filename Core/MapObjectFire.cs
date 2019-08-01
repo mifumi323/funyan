@@ -16,7 +16,7 @@ public class Cf3MapObjectFire : Cf3MapObjectIceBase
 	if (m_Delay==0) {
 		// ふにゃ
 		Cf3MapObjectBase**it;
-		for(it=m_pParent->GetMapObjects(m_nCX-1, m_nCY-1, m_nCX+1, m_nCY+1, MOT_FUNYA); (*it)!=NULL; it++){
+		for(it=m_pParent->GetMapObjects(m_nCX-1, m_nCY-1, m_nCX+1, m_nCY+1, MOT_FUNYA); (*it)!= null; it++){
 			if ((*it)->IsValid()&&((Cf3MapObjectMain*)(*it))->IsFrozen()) {
 				float objX, objY;
 				(*it)->GetPos(objX,objY);
@@ -25,7 +25,7 @@ public class Cf3MapObjectFire : Cf3MapObjectIceBase
 			}
 		}
 		// 氷
-		for(it=m_pParent->GetMapObjects(m_nCX-1, m_nCY-1, m_nCX+1, m_nCY+1, MOT_ICE); (*it)!=NULL; it++){
+		for(it=m_pParent->GetMapObjects(m_nCX-1, m_nCY-1, m_nCX+1, m_nCY+1, MOT_ICE); (*it)!= null; it++){
 			if ((*it)->IsValid()) {
 				float objX, objY;
 				(*it)->GetPos(objX,objY);
@@ -88,7 +88,7 @@ public class Cf3MapObjectFire : Cf3MapObjectIceBase
 	ex = sx+320/32; ey = sy+224/32;
         TL.Saturate(sx,ref ex,m_pParent->GetWidth()-1);
         TL.Saturate(sy,ref ey,m_pParent->GetHeight()-1);
-	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx-1, sy-1, ex+1, ey+1, MOT_FIRE); (*it)!=NULL; it++) {
+	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx-1, sy-1, ex+1, ey+1, MOT_FIRE); (*it)!= null; it++) {
 		if ((*it)->IsValid()) (*it)->OnDraw(lp);
 	}
 }

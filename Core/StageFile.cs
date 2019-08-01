@@ -86,7 +86,7 @@ public class Cf3StageFile
 	}
 
 	// おもむろに圧縮(←「おもむろに」の使い方間違ってる)
-	BYTE* lpDstAdr=NULL;
+	BYTE* lpDstAdr= null;
 	CLZSS lzss;
 	DWORD dwDstSize;
 	if (lzss.Encode(lpSrcAdr,lpDstAdr,dwSrcSize,dwDstSize)) {
@@ -97,19 +97,19 @@ public class Cf3StageFile
 
 	// やーとこさ書き込みジャー
 	HANDLE hFile = ::CreateFile(filename.c_str(),
-		GENERIC_WRITE,0,NULL,TRUNCATE_EXISTING,FILE_ATTRIBUTE_NORMAL,NULL
-	);
+		GENERIC_WRITE,0, null, TRUNCATE_EXISTING,FILE_ATTRIBUTE_NORMAL, null
+    );
 	if (hFile == INVALID_HANDLE_VALUE) { // あかんやん！
 		hFile = ::CreateFile(filename.c_str(),
-			GENERIC_WRITE,0,NULL,CREATE_NEW,FILE_ATTRIBUTE_NORMAL,NULL
-		);
+			GENERIC_WRITE,0, null, CREATE_NEW,FILE_ATTRIBUTE_NORMAL, null
+        );
 		if (hFile == INVALID_HANDLE_VALUE) return 3; // Open失敗		
 	}
 	DWORD NumberOfBytesWritten=0;
-	WriteFile(hFile, (LPVOID)"funya3s1", strlen("funya3s1"), &NumberOfBytesWritten, NULL);
-	WriteFile(hFile, (LPVOID)&dwSrcSize, sizeof(dwSrcSize), &NumberOfBytesWritten, NULL);
-	WriteFile(hFile, (LPVOID)&dwDstSize, sizeof(dwDstSize), &NumberOfBytesWritten, NULL);
-	WriteFile(hFile, (LPVOID)lpDstAdr, dwDstSize, &NumberOfBytesWritten, NULL);
+	WriteFile(hFile, (LPVOID)"funya3s1", strlen("funya3s1"), &NumberOfBytesWritten, null);
+	WriteFile(hFile, (LPVOID)&dwSrcSize, sizeof(dwSrcSize), &NumberOfBytesWritten, null);
+	WriteFile(hFile, (LPVOID)&dwDstSize, sizeof(dwDstSize), &NumberOfBytesWritten, null);
+	WriteFile(hFile, (LPVOID)lpDstAdr, dwDstSize, &NumberOfBytesWritten, null);
 	// 例によってクローズ
 	CloseHandle(hFile);
 
@@ -124,14 +124,14 @@ public class Cf3StageFile
 	m_Data[dwType] = hData;
 }
         // データを取得。なければNULL
-        public BYTE* GetStageData(const DWORD dwType, DWORD*dwSize=NULL)
+        public BYTE* GetStageData(const DWORD dwType, DWORD*dwSize=null)
 {
 	map<DWORD,HGLOBAL>::iterator it = m_Data.find(dwType);
 	if (it!=m_Data.end()) {
-		if (dwSize != NULL) *dwSize = ::GlobalSize((*it).second);
+		if (dwSize != null) *dwSize = ::GlobalSize((*it).second);
 		return (BYTE*)((*it).second);
 	}
-	return NULL;
+	return null;
 }
 // ステージファイルを読み込みメモリに格納する
 public LRESULT Read(string filename)
