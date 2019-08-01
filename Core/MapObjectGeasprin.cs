@@ -125,7 +125,7 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 	if (obj==NULL) return;
 	float objX, objY;
 	obj->GetPos(objX,objY);
-	switch(obj->GetType()) {
+	switch(obj->GetMapObjectType()) {
 	case MOT_FUNYA:{
 		if (TL.IsIn(m_X-16,objX,m_X+16)) {
 			if (TL.IsIn(m_Y-32,objY,m_Y)) {

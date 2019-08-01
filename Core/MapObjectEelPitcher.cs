@@ -65,7 +65,7 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
 	if (obj==NULL||obj==this) return;
 	float objX, objY;
 	obj->GetPos(objX,objY);
-	switch(obj->GetType()) {
+	switch(obj->GetMapObjectType()) {
 	case MOT_FUNYA:{
 		if (TL.IsIn(m_X-16,objX,m_X+16)) {
 			if (TL.IsIn(m_Y-16,objY,m_Y)) {

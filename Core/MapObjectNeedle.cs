@@ -9,7 +9,7 @@ public class Cf3MapObjectNeedle : Cf3MapObjectBase
 	if (obj==NULL) return;
 	float objX, objY;
 	obj->GetPos(objX,objY);
-	switch(obj->GetType()) {
+	switch(obj->GetMapObjectType()) {
 	case MOT_FUNYA:
 	case MOT_GEASPRIN:{
 		if (m_Type!=NDT_VERTICAL || m_State!=NDS_STOP || m_Speed!=0) return;

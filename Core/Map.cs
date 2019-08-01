@@ -75,7 +75,7 @@ namespace MifuminSoft.funyan.Core
             for (int y=y1; y<=y2; y++) {
                 o = m_pObject[GetIndex(x, y)];
                 while (o!=NULL) {
-                    if (o->GetType()==eType&&o->IsValid()) {
+                    if (o->GetMapObjectType()==eType&&o->IsValid()) {
                         m_NearObject[i++] = o;
                         m_NearObject[i] = NULL;
                     }
@@ -87,7 +87,7 @@ namespace MifuminSoft.funyan.Core
     }
         public int GetIndex(int level, int x, int y) { return x + y * m_Width[level]; }
         public int GetIndex(int x, int y) { return x + y * m_Width[1]; }
-        public void AddMapObject(int x, int y, Cf3MapObjectBase* p)
+        public void AddMapObject(int x, int y, Cf3MapObjectBase p)
     {
         if (p==NULL) return;
         TL.Saturate(0, ref x, m_Width[1]-1);
@@ -106,20 +106,20 @@ namespace MifuminSoft.funyan.Core
             o = o->m_pNext;
         }
     }
-        public void RemoveMapObject(int x, int y, Cf3MapObjectBase* p)
-    {
-        if (p==NULL) return;
-            TL.Saturate(0, ref x, m_Width[1]-1);
-            TL.Saturate(0, ref y, m_Height[1]-1);
-        int i = GetIndex(x, y);
-        Cf3MapObjectBase* o=m_pObject[i];
-        if (o==p) o = m_pObject[i] = p->m_pNext;
-        while (o!=NULL) {
-            if (o->m_pNext==p) o->m_pNext = p->m_pNext;
-            o = o->m_pNext;
+        public void RemoveMapObject(int x, int y, Cf3MapObjectBase p)
+        {
+            if (p == null) return;
+            TL.Saturate(0, ref x, m_Width[1] - 1);
+            TL.Saturate(0, ref y, m_Height[1] - 1);
+            int i = GetIndex(x, y);
+            var o = m_pObject[i];
+            if (o == p) o = m_pObject[i] = p.m_pNext;
+            while (o != null) {
+                if (o.m_pNext == p) o.m_pNext = p.m_pNext;
+                o = o.m_pNext;
+            }
+            p.m_pNext = null;
         }
-        p->m_pNext = NULL;
-    }
         public CDIB32* ReadMapChip(Cf3StageFile* lp, int level)
     {
         BYTE* buf;
@@ -271,13 +271,13 @@ namespace MifuminSoft.funyan.Core
         if (x<0 || m_Width[1]<=x || y<0 || m_Height[1]<=y) return 0.0f;
         return m_Friction[m_Hit[GetMapData(1,x,y)]>>5];
     }
-        public void GetViewPos(int &x, int &y, float scrollx = 1.0f, float scrolly = 1.0f)
-    {
-        int offx = m_ScrollRX-320/2, offy = m_ScrollRY-224/2-2;
-            TL.Saturate(0,ref offx,m_Width[1]*32-320);
-            TL.Saturate(0,ref offy,m_Height[1]*32-224);
-        x -=(int)(offx*scrollx); y -= (int)(offy*scrolly);
-    }
+        public void GetViewPos(ref int x, ref int y, float scrollx = 1.0f, float scrolly = 1.0f)
+        {
+            int offx = (int)(m_ScrollRX - 320 / 2), offy = (int)(m_ScrollRY - 224 / 2 - 2);
+            TL.Saturate(0, ref offx, m_Width[1] * 32 - 320);
+            TL.Saturate(0, ref offy, m_Height[1] * 32 - 224);
+            x -= (int)(offx * scrollx); y -= (int)(offy * scrolly);
+        }
         public void OnMove()
     {
         if (m_MainChara != NULL) m_MainChara->OnMove();

@@ -32,7 +32,7 @@ namespace MifuminSoft.funyan.Core
         public void Reaction(Cf3MapObjectBase* obj)
 {
 	if (!IsValid()) return;
-	switch(obj->GetType()) {
+	switch(obj->GetMapObjectType()) {
 	case MOT_FUNYA:{
 		int cx1,cy1,cx2,cy2;
 		GetCPos(cx1,cy1);
