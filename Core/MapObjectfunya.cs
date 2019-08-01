@@ -283,7 +283,7 @@ protected int m_PoseCounter, m_PoseCounter2, m_Sleepy;
 protected int m_VOffsetX, m_VOffsetY;
 protected int m_VOffsetToX, m_VOffsetToY;
 
-public float GetGravity() { int g = theSetting->m_Gravity; return g == 1 ? 0.2f : (g == 2 ? 0.05f : 0.1f); }
+public float GetGravity() { int g = Cf3Setting.theSetting.m_Gravity; return g == 1 ? 0.2f : (g == 2 ? 0.05f : 0.1f); }
 public bool IsFrozen() { return m_State == FROZEN; }
 public void Die()
 {
@@ -498,7 +498,7 @@ public void OnPreDraw()
     else if (m_State==SLEEPING) {
 		++m_PoseCounter %= 40;
 		m_PoseCounter2 = m_PoseCounter-1;
-		theSetting->m_SleepTime++;
+        Cf3Setting.theSetting.m_SleepTime++;
 	}
     else if (m_State==BLINKING) {
 	}
@@ -513,7 +513,7 @@ public void OnMove()
 	float Friction = m_pParent->GetFriction((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+14)/32));
 	float Gravity = GetGravity();
 	if (m_pParent->ItemCompleted()) Smile();
-	if (theSetting->m_Hyper) m_nPower=4;
+	if (Cf3Setting.theSetting.m_Hyper) m_nPower=4;
 	// 動かしま～す
 	if (m_State==STANDING||m_State==SLEEPING||m_State==BLINKING) {
 		// 立ってるとき

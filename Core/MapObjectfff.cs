@@ -326,7 +326,7 @@ namespace MifuminSoft.funyan.Core
             float Wind = m_pParent->GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32));
             if (m_pParent->ItemCompleted()) Smile();
             float ADX = m_X - m_OldX, ADY = m_Y - m_OldY, ADDX = m_DX - m_OldDX, ADDY = m_DY - m_OldDY;
-            if (theSetting->m_Hyper) m_nPower = 16;
+            if (Cf3Setting.theSetting.m_Hyper != 0) m_nPower = 16;
             m_DAngle += (ADX * ADDY - ADY * ADDX) * ROTATEACCEL;
             m_DAngle -= m_DAngle * ROTATEFRICTION;
             m_Angle += m_DAngle;

@@ -22,15 +22,15 @@ public class Cf3Replay : IDisposable
             {
                 stage = null;
                 map = null;
-                oldgravity = theSetting->m_Gravity;
-                oldhyper = theSetting->m_Hyper;
+                oldgravity = Cf3Setting.theSetting.m_Gravity;
+                oldhyper = Cf3Setting.theSetting.m_Hyper;
             }
             public void Dispose()
             {
                 DELETE_SAFE(stage);
                 DELETE_SAFE(map);
-                theSetting->m_Gravity = oldgravity;
-                theSetting->m_Hyper = oldhyper;
+                Cf3Setting.theSetting.m_Gravity = oldgravity;
+                Cf3Setting.theSetting.m_Hyper = oldhyper;
             }
             public Cf3StageFile* stage;
             public Cf3Map* map;
@@ -87,7 +87,7 @@ public class Cf3Replay : IDisposable
         // Recorder
         public void Save(Cf3StageFile* stage, int map)
 {
-	if (CApp::MakeFileName(m_FileName,"f3r",theSetting->m_RecordNumber,true)) {
+	if (CApp::MakeFileName(m_FileName,"f3r", Cf3Setting.theSetting.m_RecordNumber,true)) {
 		Cf3StageFile data;
                 CT chunk;
                 uint size;
@@ -129,8 +129,8 @@ public class Cf3Replay : IDisposable
 			data.SetStageData(chunk,size,ptr);
 		// 追加の情報
 		data.SetStageData(CT.CT_STGN, 4, &map);
-		data.SetStageData(CT.CT_GRVT, 4, &theSetting->m_Gravity);
-		data.SetStageData(CT.CT_HYPR, 4, &theSetting->m_Hyper);
+		data.SetStageData(CT.CT_GRVT, 4, &Cf3Setting.theSetting.m_Gravity);
+		data.SetStageData(CT.CT_HYPR, 4, &Cf3Setting.theSetting.m_Hyper);
 		data.Write(m_FileName);
 	}
 }
@@ -159,9 +159,9 @@ public class Cf3Replay : IDisposable
 	m_pPlayerState = new Cf3ReplayPlayerState();
 	m_pPlayerState->stage = new Cf3StageFile();
 	m_pPlayerState->stage->Read(m_FileName);
-	// シークレットの状態と入力情報も読み込む
-	theSetting->m_Gravity = *m_pPlayerState->stage->GetStageData(CT.CT_GRVT, null);
-	theSetting->m_Hyper = *m_pPlayerState->stage->GetStageData(CT.CT_HYPR, null);
+        // シークレットの状態と入力情報も読み込む
+        Cf3Setting.theSetting.m_Gravity = *m_pPlayerState->stage->GetStageData(CT.CT_GRVT, null);
+        Cf3Setting.theSetting.m_Hyper = *m_pPlayerState->stage->GetStageData(CT.CT_HYPR, null);
 	ptr = m_pPlayerState->stage->GetStageData(CT.CT_RPLY, &size);
 	m_nSize = size>>1;
 	for (int i=0; i<m_nSize; i++) {

@@ -198,7 +198,6 @@ namespace MifuminSoft.funyan.Core
             // 存在しないファイルの進行状況を消す
             m_Progress = m_Progress.Where(it => File.Exists(it.Key)).ToDictionary(it => it.Key,it => it.Value);
             m_StartTime = timeGetTime();
-            theSetting = this;
         }
         public void Dispose()
         {

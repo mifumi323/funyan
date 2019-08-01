@@ -26,7 +26,7 @@ public abstract class Cf3MapObjectMain : Cf3MapObjectBase
         public static SetInput(Cf3GameInput* pInput) { m_pInput = pInput; }
         public static Cf3MapObjectMain* Create(int x, int y)
         {
-            return (theSetting->m_Gravity != 3 ?
+            return (Cf3Setting.theSetting.m_Gravity != 3 ?
                 (Cf3MapObjectMain*)new Cf3MapObjectfunya(x, y) :
                 (Cf3MapObjectMain*)new Cf3MapObjectfff(x, y));
         }
