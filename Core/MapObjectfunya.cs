@@ -757,8 +757,7 @@ public virtual void OnDraw(CDIB32* lp)
 		lp->BltNatural(m_Graphic,m_nVX-16,m_nVY,&rc);
 	}
 }
-public Cf3MapObjectfunya(int nCX, int nCY)
-	:Cf3MapObjectMain(MOT_FUNYA)
+public Cf3MapObjectfunya(int nCX, int nCY)	:base(f3MapObjectType.MOT_FUNYA)
 {
 	m_Graphic = ResourceManager.Get(RID_MAIN);
 	m_Graphic2 = ResourceManager.Get(RID_MAINICY);
@@ -779,5 +778,5 @@ public Cf3MapObjectfunya(int nCX, int nCY)
 }
 public virtual ~Cf3MapObjectfunya() { }
 
-};
+}
 }

@@ -3,9 +3,9 @@ using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
-public class Cf3MapObjectEffect : Cf3MapObjectBase  
-{
-        protected const float PI=3.141592653589793238f;
+    public class Cf3MapObjectEffect : Cf3MapObjectBase
+    {
+        protected const float PI = 3.141592653589793238f;
         protected static HashSet<Cf3MapObjectEffect> m_EffectList = new HashSet<Cf3MapObjectEffect>();
         //	CDIB32* m_Graphic;
         protected static readonly Rectangle[] m_GraphicRect = new Rectangle[4 * 16]{
@@ -36,90 +36,103 @@ public class Cf3MapObjectEffect : Cf3MapObjectBase
         protected int m_StarNum;
 
         public void OnDraw(CDIB32* lp)
-{
-	CDIB32* graphic = ResourceManager.Get(RID_EFFECT);
-	for (int i=0; i<m_StarNum; i++) {
-		if (m_Star[i].n) {
-			SetViewPos(m_Star[i].x,m_Star[i].y);
-			lp->Blt(graphic,m_nVX,m_nVY,&m_GraphicRect[m_Star[i].r]);
-		}
-	}
-}
+        {
+            CDIB32* graphic = ResourceManager.Get(RID_EFFECT);
+            for (int i = 0; i < m_StarNum; i++)
+            {
+                if (m_Star[i].n)
+                {
+                    SetViewPos(m_Star[i].x, m_Star[i].y);
+                    lp->Blt(graphic, m_nVX, m_nVY, &m_GraphicRect[m_Star[i].r]);
+                }
+            }
+        }
         public void OnPreDraw()
-{
-	int n=m_StarNum;
-	for (int i=0; i<m_StarNum; i++) {
-		if (m_Star[i].n) m_Star[i].n--; else n--;
-		m_Star[i].dx*=m_Star[i].f;
-		m_Star[i].dy*=m_Star[i].f;
-		m_Star[i].x +=m_Star[i].dx;
-		m_Star[i].y +=m_Star[i].dy;
-	}
-	if (!n) Kill();
-}
-        public static void OnPreDrawAll() {
-            foreach (var it in m_EffectList) {
+        {
+            int n = m_StarNum;
+            for (int i = 0; i < m_StarNum; i++)
+            {
+                if (m_Star[i].n) m_Star[i].n--; else n--;
+                m_Star[i].dx *= m_Star[i].f;
+                m_Star[i].dy *= m_Star[i].f;
+                m_Star[i].x += m_Star[i].dx;
+                m_Star[i].y += m_Star[i].dy;
+            }
+            if (!n) Kill();
+        }
+        public static void OnPreDrawAll()
+        {
+            foreach (var it in m_EffectList)
+            {
                 if (it.IsValid()) it.OnPreDraw();
             }
         }
-        public static void OnDrawAll(CDIB32* lp) {
-	int sx, sy, ex, ey;
-	sx = sy = 0;
-	m_pParent->GetViewPos(sx,sy);
-	sx = (-sx)>>5; sy = (-sy)>>5;
-	ex = sx+320/32; ey = sy+224/32;
-        TL.Saturate(sx,ref ex,m_pParent->GetWidth()-1);
-        TL.Saturate(sy,ref ey,m_pParent->GetHeight()-1);
-	for (Cf3MapObjectBase**it=m_pParent->GetMapObjects(sx-3, sy-3, ex+3, ey+3, MOT_EFFECT); (*it)!= null; it++) {
-		if ((*it)->IsValid()) (*it)->OnDraw(lp);
-	}
-}
-        public Cf3MapObjectEffect(float x, float y, int EffectType)
-	:Cf3MapObjectBase(MOT_EFFECT)
-	,m_StarNum(0)
-	,m_Star(null)
-	,m_nEffectType(EffectType)
-{
-	m_EffectList.Add(this);
-//	m_Graphic = ResourceManager.Get(RID_EFFECT);
-	SetPos(x,y);
-	if (EffectType==0) {
-		m_StarNum = 12;
-		m_Star = new tagStar[m_StarNum];
-		for (int i=0; i<m_StarNum; i++) {
-			float rad=2.0*PI*i/m_StarNum;
-			m_Star[i].dx=4.0f*cos(rad)*(0.5+0.5/4096.0*CApp::random(4096));
-			m_Star[i].dy=4.0f*sin(rad)*(0.5+0.5/4096.0*CApp::random(4096));
-			m_Star[i].x =0;
-			m_Star[i].y =0;
-			m_Star[i].f =0.9f;
-			m_Star[i].n =40;
-		}
-	}
-        else if (EffectType==1) {
-		m_StarNum = 12;
-		m_Star = new tagStar[m_StarNum];
-		for (int i=0; i<m_StarNum; i++) {
-			float rad=2.0*PI*i/m_StarNum;
-			m_Star[i].dx=0;
-			m_Star[i].dy=-16.0f*(0.5+0.5/4096.0*CApp::random(4096));
-			m_Star[i].x =32*(-0.5+1.0/4096.0*CApp::random(4096));
-			m_Star[i].y =0;
-			m_Star[i].f =0.9f;
-			m_Star[i].n =35+CApp::random(10);
-		}
-	}else{
-		Kill();
-		return;
-	}
-	for (int i=0; i<m_StarNum; i++) {
-		m_Star[i].r = CApp::random(4*16);
-	}
-}
+        public static void OnDrawAll(CDIB32* lp)
+        {
+            int sx, sy, ex, ey;
+            sx = sy = 0;
+            m_pParent->GetViewPos(sx, sy);
+            sx = (-sx) >> 5; sy = (-sy) >> 5;
+            ex = sx + 320 / 32; ey = sy + 224 / 32;
+            TL.Saturate(sx, ref ex, m_pParent->GetWidth() - 1);
+            TL.Saturate(sy, ref ey, m_pParent->GetHeight() - 1);
+            for (Cf3MapObjectBase** it = m_pParent->GetMapObjects(sx - 3, sy - 3, ex + 3, ey + 3, MOT_EFFECT); (*it) != null; it++)
+            {
+                if ((*it)->IsValid()) (*it)->OnDraw(lp);
+            }
+        }
+        public Cf3MapObjectEffect(float x, float y, int EffectType) : base(f3MapObjectType.MOT_EFFECT)
+        {
+            m_StarNum = 0;
+            m_Star = null;
+            m_nEffectType = EffectType;
+            m_EffectList.Add(this);
+            //	m_Graphic = ResourceManager.Get(RID_EFFECT);
+            SetPos(x, y);
+            if (EffectType == 0)
+            {
+                m_StarNum = 12;
+                m_Star = new tagStar[m_StarNum];
+                for (int i = 0; i < m_StarNum; i++)
+                {
+                    float rad = 2.0 * PI * i / m_StarNum;
+                    m_Star[i].dx = 4.0f * cos(rad) * (0.5 + 0.5 / 4096.0 * CApp::random(4096));
+                    m_Star[i].dy = 4.0f * sin(rad) * (0.5 + 0.5 / 4096.0 * CApp::random(4096));
+                    m_Star[i].x = 0;
+                    m_Star[i].y = 0;
+                    m_Star[i].f = 0.9f;
+                    m_Star[i].n = 40;
+                }
+            }
+            else if (EffectType == 1)
+            {
+                m_StarNum = 12;
+                m_Star = new tagStar[m_StarNum];
+                for (int i = 0; i < m_StarNum; i++)
+                {
+                    float rad = 2.0 * PI * i / m_StarNum;
+                    m_Star[i].dx = 0;
+                    m_Star[i].dy = -16.0f * (0.5 + 0.5 / 4096.0 * CApp::random(4096));
+                    m_Star[i].x = 32 * (-0.5 + 1.0 / 4096.0 * CApp::random(4096));
+                    m_Star[i].y = 0;
+                    m_Star[i].f = 0.9f;
+                    m_Star[i].n = 35 + CApp::random(10);
+                }
+            }
+            else
+            {
+                Kill();
+                return;
+            }
+            for (int i = 0; i < m_StarNum; i++)
+            {
+                m_Star[i].r = CApp::random(4 * 16);
+            }
+        }
         public ~Cf3MapObjectEffect()
-{
-	m_EffectList.Remove(this);
-	DELETEPTR_SAFE(m_Star);
-}
-};
+        {
+            m_EffectList.Remove(this);
+            DELETEPTR_SAFE(m_Star);
+        }
+    }
 }
