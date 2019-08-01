@@ -190,10 +190,8 @@ protected void HitCheck()
 			}
 		}
 	}
-#if !INVINCITY
 	if (m_pParent->GetHit(CX,CY, HIT.HIT_DEATH)) Die();
 	if (m_Y-14 > 32*m_pParent->GetHeight()) Die();
-#endif
 }
 protected void Stop()
 {
@@ -375,7 +373,6 @@ public void Synergy()
 		}
 	}
 	// とげとげ
-#if !INVINCITY
 	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_NEEDLE); (*it)!=NULL; it++){
 		if ((*it)->IsValid()) {
 			float objX, objY;
@@ -386,7 +383,6 @@ public void Synergy()
 			}
 		}
 	}
-#endif
 	// ウナギカズラ
 	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_EELPITCHER); (*it)!=NULL; it++){
 		if ((*it)->IsValid()&&((Cf3MapObjectEelPitcher*)(*it))->IsLeaf()) {
@@ -405,7 +401,6 @@ public void Synergy()
 	}
 	if (m_State!=FROZEN) {
 		// 氷
-#if !INVINCITY
 		for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, MOT_ICE); (*it)!=NULL; it++){
 			if ((*it)->IsValid()&&((Cf3MapObjectIce*)(*it))->GetSize()>10) {
 				float objX, objY;
@@ -416,7 +411,6 @@ public void Synergy()
 				}
 			}
 		}
-#endif
 		// 氷ゾーン
 		foreach(var is_ in Cf3MapObjectIceSource.All()){
 			float objX, objY;
@@ -440,19 +434,15 @@ public void Synergy()
 			}
 		}
 		if (m_Power>1.0f/256.0f) {
-#if !INVINCITY
 			Freeze();
-#endif
 		}
         else if (m_Power>1.0f/4096.0f) {
 			m_nPower=4;
 			m_PowerX = m_PowerY = 0.0f;
 		}
         else if (m_Power<-1.0f/256.0f) {
-#if !INVINCITY
 			Die();
 		}else if(m_Power<-1.0f/4096.0f) {
-#endif
         }
         else
         {
