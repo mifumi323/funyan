@@ -177,8 +177,8 @@ public class Cf3Replay : IDisposable
 public void Replay()
 {
 	if (Finished()) return;
-	ReplayInput.pressed	= (*m_iPointer).pressed	[m_nPointer];
-	ReplayInput.pushed	= (*m_iPointer).pushed	[m_nPointer];
+    Cf3GameInput.ReplayInput.pressed	= (*m_iPointer).pressed	[m_nPointer];
+    Cf3GameInput.ReplayInput.pushed	= (*m_iPointer).pushed	[m_nPointer];
 	m_pPlayerState->map->OnMove();
 	m_pPlayerState->map->OnPreDraw();
 	Progress();
