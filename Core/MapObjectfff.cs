@@ -130,19 +130,19 @@ m_State;
 			if (!((Cf3MapObjectGeasprin*)(*it))->IsFrozen()) {
 				if (TL.IsIn(objX-16,m_X,objX+15)) {
 					if (TL.IsIn(objY-30,m_Y,objY+16)) {
-						theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
+						theApp->GetBGM()->MusicEffect(MENumber.MEN_GEASPRIN);
 						m_DY=-10;
 					}
 				}
                     else if (TL.IsIn(objX+16,m_X,objX+29)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
-						theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
+						theApp->GetBGM()->MusicEffect(MENumber.MEN_GEASPRIN);
 						m_DX=10;
 					}
 				}
                     else if (TL.IsIn(objX-29,m_X,objX-16)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
-						theApp->GetBGM()->MusicEffect(MEN_GEASPRIN);
+						theApp->GetBGM()->MusicEffect(MENumber.MEN_GEASPRIN);
 						m_DX=-10;
 					}
 				}
@@ -257,8 +257,8 @@ m_State;
 				nPosition += cx-m_nCX;
 			}
 		}
-		theApp->GetBGM()->MusicEffect(MEN_BANANADISTANCE, bananaDistance);
-		theApp->GetBGM()->MusicEffect(MEN_BANANAPOSITION, nBanana?(float)nPosition/nBanana:0.0f);
+		theApp->GetBGM()->MusicEffect(MENumber.MEN_BANANADISTANCE, bananaDistance);
+		theApp->GetBGM()->MusicEffect(MENumber.MEN_BANANAPOSITION, nBanana?(float)nPosition/nBanana:0.0f);
 	}
 }
         public bool IsDied() { return m_State == DEAD; }

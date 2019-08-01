@@ -465,7 +465,7 @@ namespace MifuminSoft.funyan.Core
     {
         BYTE* buf;
         DWORD s;
-        DWORD bgm[BGMN_SIZE] = {0};
+        DWORD bgm[(int)BGMNumber.BGMN_SIZE] = {0};
         m_pDIBBuf = new CDIB32;
         m_pDIBBuf->CreateSurface(320,240);
         m_Stage = stage;
@@ -524,63 +524,63 @@ namespace MifuminSoft.funyan.Core
                     if (n>=0xf0) {
                         if (n==0xf0){	// 主人公
                             if (m_MainChara==NULL) m_MainChara = Cf3MapObjectMain::Create(x,y);
-                            bgm[BGMN_GAMEFUNYA]+=99;
+                            bgm[(int)BGMNumber.BGMN_GAMEFUNYA]+=99;
                         }
                             else if (n==0xf1){	// バナナ
                             new Cf3MapObjectBanana(x,y);
-                            bgm[BGMN_GAMEBANANA]+=1;
+                            bgm[(int)BGMNumber.BGMN_GAMEBANANA]+=1;
                             m_nTotalBanana++;
                         }
                             else if (n==0xf2){	// とげとげ
                             new Cf3MapObjectNeedle(x,y);
-                            bgm[BGMN_GAMENEEDLE]+=4;
+                            bgm[(int)BGMNumber.BGMN_GAMENEEDLE]+=4;
                         }
                             else if (n==0xf3){	// ギヤバネ左向き
                             new Cf3MapObjectGeasprin(x,y,DIR_LEFT);
-                            bgm[BGMN_GAMEGEASPRIN]+=10;
+                            bgm[(int)BGMNumber.BGMN_GAMEGEASPRIN]+=10;
                         }
                             else if (n==0xf4){	// ギヤバネ右向き
                             new Cf3MapObjectGeasprin(x,y,DIR_RIGHT);
-                            bgm[BGMN_GAMEGEASPRIN]+=10;
+                            bgm[(int)BGMNumber.BGMN_GAMEGEASPRIN]+=10;
                         }
                             else if (n==0xf5){	// 風ストップ
                             windmap[z]=0xC;
                         }
                             else if (n==0xf6){	// 風左向き
                             windmap[z]=0x1;
-                            bgm[BGMN_GAMEWIND]+=1;
+                            bgm[(int)BGMNumber.BGMN_GAMEWIND]+=1;
                         }
                             else if (n==0xf7){	// 風右向き
                             windmap[z]=0x2;
-                            bgm[BGMN_GAMEWIND]+=1;
+                            bgm[(int)BGMNumber.BGMN_GAMEWIND]+=1;
                         }
                             else if (n==0xf8){	// ミスター・フレーム
                             new Cf3MapObjectmrframe(x,y);
-                            bgm[BGMN_GAMEMRFRAME]+=40;
+                            bgm[(int)BGMNumber.BGMN_GAMEMRFRAME]+=40;
                         }
                             else if (n==0xf9){	// ウナギカズラ
                             new Cf3MapObjectEelPitcher(x,y);
-                            bgm[BGMN_GAMEEELPITCHER]+=5;
+                            bgm[(int)BGMNumber.BGMN_GAMEEELPITCHER]+=5;
                         }
                             else if (n==0xfa){	// 氷
                             new Cf3MapObjectIceSource(x,y);
-                            bgm[BGMN_GAMEICE]+=8;
+                            bgm[(int)BGMNumber.BGMN_GAMEICE]+=8;
                         }
                             else if (n==0xfb){	// 火
                             new Cf3MapObjectFire(x,y);
-                            bgm[BGMN_GAMEFIRE]+=8;
+                            bgm[(int)BGMNumber.BGMN_GAMEFIRE]+=8;
                         }
                             else if (n==0xfc){	// とげとげ
                             new Cf3MapObjectNeedle(x,y,1);
-                            bgm[BGMN_GAMENEEDLE]+=4;
+                            bgm[(int)BGMNumber.BGMN_GAMENEEDLE]+=4;
                         }
                             else if (n==0xfd){	// とげとげ
                             new Cf3MapObjectNeedle(x,y,2);
-                            bgm[BGMN_GAMENEEDLE]+=4;
+                            bgm[(int)BGMNumber.BGMN_GAMENEEDLE]+=4;
                         }
                             else if (n==0xfe){	// とげとげ
                             new Cf3MapObjectNeedle(x,y,3);
-                            bgm[BGMN_GAMENEEDLE]+=4;
+                            bgm[(int)BGMNumber.BGMN_GAMENEEDLE]+=4;
                         }
                         m_MapData[1][z] = 0;
                     }else{
@@ -631,8 +631,8 @@ namespace MifuminSoft.funyan.Core
         }
         // BGM
         DWORD bgmm = 0;
-        m_BGMNumber = BGMN_SIRENT;
-        for (int i=BGMN_SIRENT; i<BGMN_SIZE; i++) {
+        m_BGMNumber = BGMNumber.BGMN_SIRENT;
+        for (int i= (int)BGMNumber.BGMN_SIRENT; i< (int)BGMNumber.BGMN_SIZE; i++) {
             if (bgmm<bgm[i]) {
                 bgmm = bgm[i];
                 m_BGMNumber = (BGMNumber)i;
