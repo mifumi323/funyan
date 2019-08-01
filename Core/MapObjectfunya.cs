@@ -239,14 +239,14 @@ protected void Jump()
 		0))));
 }
 
-protected CDIB32* m_Graphic;
-protected CDIB32* m_Graphic2;
+protected CDIB32 m_Graphic;
+protected CDIB32 m_Graphic2;
 
 protected float m_DX, m_DY;                           // 位置などの情報
 protected float m_BananaDistance;
 protected float m_ChargePower;                        // ジャンプチャージ係数(1.0f=100%から減ってゆく)
 protected float m_ChargeDec;                          // ジャンプチャージ係数減衰値(設定で変化する予定)
-protected static const f3JumpFunction m_JumpFunc[4] = {
+protected static readonly f3JumpFunction[] m_JumpFunc = new f3JumpFunction[4]{
 	4.5f, 0.994f,
 	3.6f, 0.980f,
 	2.6f, 0.940f,
@@ -271,7 +271,7 @@ protected enum f3MainCharaState
     SLEEPING,
     BLINKING,
 }
-m_State;
+protected f3MainCharaState m_State;
 	f3MapObjectDirection m_Direction;
 protected bool m_HitLeft, m_HitRight, m_HitTop, m_HitBottom, m_OnEnemy;
 protected bool m_bOriginal;

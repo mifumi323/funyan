@@ -54,23 +54,23 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
         protected static Dictionary<int, Cf3MapObjectGeasprin> m_EnemyList = new Dictionary<int, Cf3MapObjectGeasprin>();
 
         protected enum f3GeasprinState
-{
-    STANDING,   // 立ち
-    WALKING,    // 歩き
-    FALLING,    // 落ち
-    LAUGHING,   // 笑い
-    BLOWN,      // 飛び
-    BACK,       // 後ずさり
-    FROZEN,     // 凍った
-    DEAD,
-}
-m_State;
-	int m_GX, m_GY;
+        {
+            STANDING,   // 立ち
+            WALKING,    // 歩き
+            FALLING,    // 落ち
+            LAUGHING,   // 笑い
+            BLOWN,      // 飛び
+            BACK,       // 後ずさり
+            FROZEN,     // 凍った
+            DEAD,
+        }
+        protected f3GeasprinState m_State;
+        int m_GX, m_GY;
         protected int m_DY;
         protected f3MapObjectDirection m_Direction;
         protected int m_Delay;
-        protected unsigned int m_Spring[3];
-        protected unsigned int m_Spring2[3];
+        protected int[] m_Spring = new int[3];
+        protected int[] m_Spring2 = new int[3];
 
         public bool IsFrozen() { return m_State == FROZEN; }
         public void OnPreDraw()

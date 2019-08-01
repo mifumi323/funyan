@@ -25,29 +25,29 @@ public class Cf3MapObjectNeedle : Cf3MapObjectBase
 			}
 	}
 }
-        protected CDIB32* m_Graphic;
+        protected CDIB32 m_Graphic;
         protected static HashSet<Cf3MapObjectNeedle> m_EnemyList = new HashSet<Cf3MapObjectNeedle>();
 
         protected float m_StartY;
         protected float m_Speed;
         protected enum NDT
-    {
-    NDT_UNDEFINED,
-    NDT_HORIZONTAL,
-    NDT_VERTICAL,
-    NDT_DEAD,
-}
-m_Type;
-	protected enum NDS
-    {
-    NDS_WAIT,
-    NDS_STOP,
-    NDS_LEFT,
-    NDS_RIGHT,
-    NDS_DOWN,
-    NDS_UP,
-}
-m_State;
+        {
+            NDT_UNDEFINED,
+            NDT_HORIZONTAL,
+            NDT_VERTICAL,
+            NDT_DEAD,
+        }
+        protected NDT m_Type;
+        protected enum NDS
+        {
+            NDS_WAIT,
+            NDS_STOP,
+            NDS_LEFT,
+            NDS_RIGHT,
+            NDS_DOWN,
+            NDS_UP,
+        }
+        protected NDS m_State;
 
 	public static void OnDrawAll(CDIB32* lp)
 {

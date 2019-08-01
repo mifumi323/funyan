@@ -8,17 +8,18 @@ public class Cf3MapObjectWind : Cf3MapObjectBase
 
         protected struct tagWindParticle
 {
-    public float x;
-    public int y;
-    public float dx;
-    public int color;
-} * m_Particle;
-protected int m_ParticleCount;
+            public float x;
+            public int y;
+            public float dx;
+            public int color;
+}
+        protected tagWindParticle[] m_Particle;
+        protected int m_ParticleCount;
 
         protected float m_Left, m_Right;
         protected float m_Strength;
 
-        protected static CDIB32 m_Graphic[2];
+        protected static CDIB32[] m_Graphic = new CDIB32[2];
         protected static bool m_bGraphicInitialize = false;
 
         public void OnPreDraw()

@@ -99,18 +99,18 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
         private float m_Power, m_PowerX, m_PowerY;
         private int m_nPower;
         private enum f3fffState
-{
-    NORMAL,
-    BREATHEIN,
-    BREATHEOUT,
-    TIRED,
-    FROZEN,
-    DEAD,
-    SMILE,
-}
-m_State;
+        {
+            NORMAL,
+            BREATHEIN,
+            BREATHEOUT,
+            TIRED,
+            FROZEN,
+            DEAD,
+            SMILE,
+        }
+        private f3fffState m_State;
 
-	private int m_PoseCounter, m_PoseCounter2;
+        private int m_PoseCounter, m_PoseCounter2;
 
         // 表示位置調整
         private int m_VOffsetX, m_VOffsetY;

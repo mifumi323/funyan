@@ -4,9 +4,9 @@ namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectmrframe : Cf3MapObjectBase 
 {
-        protected CDIB32* m_Graphic;
+        protected CDIB32 m_Graphic;
 
-        protected Cf3MapObjectfunya* m_funya;
+        protected Cf3MapObjectfunya m_funya;
         protected int m_nLife;
 
         public void UpdateCPos()

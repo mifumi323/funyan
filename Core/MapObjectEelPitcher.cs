@@ -22,15 +22,15 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
         private int m_Level;                        // 最大高さ
         private int m_Delay;                        // 待ち時間
         private enum f3EelPitcherState
-{
-    EELSEED,
-    EELBUD,
-    EELLEAF,
-    EELFROZEN,
-    EELDEAD,
-}
-m_State;
-private float m_DX, m_DY;
+        {
+            EELSEED,
+            EELBUD,
+            EELLEAF,
+            EELFROZEN,
+            EELDEAD,
+        }
+        private f3EelPitcherState m_State;
+        private float m_DX, m_DY;
         private float m_RootX, m_RootY;         // 根元
         private bool m_bBlinking;
 

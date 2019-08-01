@@ -2,7 +2,7 @@
 {
 public class Cf3MapObjectIceBase : Cf3MapObjectBase  
 {
-        protected CDIB32* m_Graphic;
+        protected CDIB32 m_Graphic;
 
         public Cf3MapObjectIceBase(f3MapObjectType eType)
 	:Cf3MapObjectBase(eType)

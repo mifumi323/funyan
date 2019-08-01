@@ -21,7 +21,7 @@ extern public class Cf3GameInputReplay : Cf3GameInput
 
 public class Cf3MapObjectMain : Cf3MapObjectBase  
 {
-        protected static Cf3GameInput* m_pInput=NULL;
+        protected static Cf3GameInput m_pInput = null;
 
         public static SetInput(Cf3GameInput* pInput) { m_pInput = pInput; }
         public static Cf3MapObjectMain* Create(int x, int y)

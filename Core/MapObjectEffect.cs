@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -7,31 +8,32 @@ public class Cf3MapObjectEffect : Cf3MapObjectBase
         protected const float PI=3.141592653589793238f;
         protected static HashSet<Cf3MapObjectEffect> m_EffectList = new HashSet<Cf3MapObjectEffect>();
         //	CDIB32* m_Graphic;
-        protected static RECT m_GraphicRect[4 * 16] = {
-	{ 0,0, 5,5}, { 0,5, 5,10}, { 0,10, 5,15}, { 0,15, 5,20},
-	{ 5,0,10,5}, { 5,5,10,10}, { 5,10,10,15}, { 5,15,10,20},
-	{10,0,15,5}, {10,5,15,10}, {10,10,15,15}, {10,15,15,20},
-	{15,0,20,5}, {15,5,20,10}, {15,10,20,15}, {15,15,20,20},
-	{20,0,25,5}, {20,5,25,10}, {20,10,25,15}, {20,15,25,20},
-	{25,0,30,5}, {25,5,30,10}, {25,10,30,15}, {25,15,30,20},
-	{30,0,35,5}, {30,5,35,10}, {30,10,35,15}, {30,15,35,20},
-	{35,0,40,5}, {35,5,40,10}, {35,10,40,15}, {35,15,40,20},
-	{40,0,45,5}, {40,5,45,10}, {40,10,45,15}, {40,15,45,20},
-	{45,0,50,5}, {45,5,50,10}, {45,10,50,15}, {45,15,50,20},
-	{50,0,55,5}, {50,5,55,10}, {50,10,55,15}, {50,15,55,20},
-	{55,0,60,5}, {55,5,60,10}, {55,10,60,15}, {55,15,60,20},
-	{60,0,65,5}, {60,5,65,10}, {60,10,65,15}, {60,15,65,20},
-	{65,0,70,5}, {65,5,70,10}, {65,10,70,15}, {65,15,70,20},
-	{70,0,75,5}, {70,5,75,10}, {70,10,75,15}, {70,15,75,20},
-	{75,0,80,5}, {75,5,80,10}, {75,10,80,15}, {75,15,80,20},
-};
+        protected static readonly Rectangle[] m_GraphicRect = new Rectangle[4 * 16]{
+            new Rectangle( 0,0, 5,5), new Rectangle( 0,5, 5,10), new Rectangle( 0,10, 5,15), new Rectangle( 0,15, 5,20),
+            new Rectangle( 5,0,10,5), new Rectangle( 5,5,10,10), new Rectangle( 5,10,10,15), new Rectangle( 5,15,10,20),
+            new Rectangle(10,0,15,5), new Rectangle(10,5,15,10), new Rectangle(10,10,15,15), new Rectangle(10,15,15,20),
+            new Rectangle(15,0,20,5), new Rectangle(15,5,20,10), new Rectangle(15,10,20,15), new Rectangle(15,15,20,20),
+            new Rectangle(20,0,25,5), new Rectangle(20,5,25,10), new Rectangle(20,10,25,15), new Rectangle(20,15,25,20),
+            new Rectangle(25,0,30,5), new Rectangle(25,5,30,10), new Rectangle(25,10,30,15), new Rectangle(25,15,30,20),
+            new Rectangle(30,0,35,5), new Rectangle(30,5,35,10), new Rectangle(30,10,35,15), new Rectangle(30,15,35,20),
+            new Rectangle(35,0,40,5), new Rectangle(35,5,40,10), new Rectangle(35,10,40,15), new Rectangle(35,15,40,20),
+            new Rectangle(40,0,45,5), new Rectangle(40,5,45,10), new Rectangle(40,10,45,15), new Rectangle(40,15,45,20),
+            new Rectangle(45,0,50,5), new Rectangle(45,5,50,10), new Rectangle(45,10,50,15), new Rectangle(45,15,50,20),
+            new Rectangle(50,0,55,5), new Rectangle(50,5,55,10), new Rectangle(50,10,55,15), new Rectangle(50,15,55,20),
+            new Rectangle(55,0,60,5), new Rectangle(55,5,60,10), new Rectangle(55,10,60,15), new Rectangle(55,15,60,20),
+            new Rectangle(60,0,65,5), new Rectangle(60,5,65,10), new Rectangle(60,10,65,15), new Rectangle(60,15,65,20),
+            new Rectangle(65,0,70,5), new Rectangle(65,5,70,10), new Rectangle(65,10,70,15), new Rectangle(65,15,70,20),
+            new Rectangle(70,0,75,5), new Rectangle(70,5,75,10), new Rectangle(70,10,75,15), new Rectangle(70,15,75,20),
+            new Rectangle(75,0,80,5), new Rectangle(75,5,80,10), new Rectangle(75,10,80,15), new Rectangle(75,15,80,20),
+        };
         protected int m_nEffectType;
         protected struct tagStar
-{
-    public float x, y, dx, dy, f;
-    public int n, r;
-} * m_Star;
-protected int m_StarNum;
+        {
+            public float x, y, dx, dy, f;
+            public int n, r;
+        }
+        protected tagStar[] m_Star;
+        protected int m_StarNum;
 
         public void OnDraw(CDIB32* lp)
 {

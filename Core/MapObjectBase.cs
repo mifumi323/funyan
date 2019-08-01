@@ -24,7 +24,7 @@ public class Cf3MapObjectBase
         //	float			m_nScrollX, m_nScrollY;	// スクロールにどれほど影響されるか(100%固定なので省略)
         protected int m_nCX, m_nCY;
 
-        protected static Cf3Map* m_pParent = NULL;
+        protected static Cf3Map m_pParent = null;
 
         public static int Count() { return m_CharaList.Count; }
         public static void UpdateCPosAll()
@@ -96,7 +96,7 @@ public class Cf3MapObjectBase
         m_CharaList.Remove(this);
     }
 
-    Cf3MapObjectBase* m_pNext;
+    Cf3MapObjectBase m_pNext;
 
 };
 }
