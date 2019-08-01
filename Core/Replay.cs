@@ -103,13 +103,13 @@ public class Cf3Replay
 			data.SetStageData(chunk,size,ptr);
 		if (ptr=stage->GetStageData(chunk=CT_HITS,&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=Cf3Map::GetChunkType(CT_TL00,map),&size))
+		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT_TL00,map),&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=Cf3Map::GetChunkType(CT_M000,map),&size))
+		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT_M000,map),&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=Cf3Map::GetChunkType(CT_M100,map),&size))
+		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT_M100,map),&size))
 			data.SetStageData(chunk,size,ptr);
-		if (ptr=stage->GetStageData(chunk=Cf3Map::GetChunkType(CT_M200,map),&size))
+		if (ptr=stage->GetStageData(chunk=Cf3Map.GetChunkType(CT_M200,map),&size))
 			data.SetStageData(chunk,size,ptr);
 		if (ptr=stage->GetStageData(chunk=CT_MCD0|(0<<24),&size))
 			data.SetStageData(chunk,size,ptr);
