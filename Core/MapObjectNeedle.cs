@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -110,7 +111,7 @@ public class Cf3MapObjectNeedle : Cf3MapObjectBase
 	if (!IsValid()) return;
 	if (m_Type==NDT_UNDEFINED) {
 		// このタイミングで初期化
-		if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32), HIT.HIT_TOP)) {
+		if (m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+16)/32), HIT.HIT_TOP)) {
 			m_Type = NDT_HORIZONTAL;
 			m_State=NDS_STOP;
 		}else{
@@ -123,8 +124,8 @@ public class Cf3MapObjectNeedle : Cf3MapObjectBase
 		if (m_State==NDS_STOP) {
 			TL.BringClose(ref m_Speed,0.0f,1.0f);
 			if (m_Speed==0) {
-				if (!m_pParent->GetHit(floor((m_X+15)/32),floor((m_Y+16)/32), HIT.HIT_TOP)||
-					m_pParent->GetHit(floor((m_X+15)/32),floor((m_Y)/32), HIT.HIT_LEFT)) {
+				if (!m_pParent->GetHit((int)Math.Floor((m_X+15)/32),(int)Math.Floor((m_Y+16)/32), HIT.HIT_TOP)||
+					m_pParent->GetHit((int)Math.Floor((m_X+15)/32),(int)Math.Floor((m_Y)/32), HIT.HIT_LEFT)) {
 					m_State=NDS_LEFT;
 				}else{
 					m_State=NDS_RIGHT;
@@ -133,16 +134,16 @@ public class Cf3MapObjectNeedle : Cf3MapObjectBase
 		}
             else if (m_State==NDS_LEFT) {
 			m_X-=1;
-			if (!m_pParent->GetHit(floor((m_X-16)/32),floor((m_Y+16)/32), HIT.HIT_TOP)||
-				m_pParent->GetHit(floor((m_X-16)/32),floor((m_Y)/32), HIT.HIT_RIGHT)) {
+			if (!m_pParent->GetHit((int)Math.Floor((m_X-16)/32),(int)Math.Floor((m_Y+16)/32), HIT.HIT_TOP)||
+				m_pParent->GetHit((int)Math.Floor((m_X-16)/32),(int)Math.Floor((m_Y)/32), HIT.HIT_RIGHT)) {
 				m_State=NDS_STOP;
 				m_Speed=20;
 			}
 		}
             else if (m_State==NDS_RIGHT) {
 			m_X+=1;
-			if (!m_pParent->GetHit(floor((m_X+15)/32),floor((m_Y+16)/32), HIT.HIT_TOP)||
-				m_pParent->GetHit(floor((m_X+15)/32),floor((m_Y)/32), HIT.HIT_LEFT)) {
+			if (!m_pParent->GetHit((int)Math.Floor((m_X+15)/32),(int)Math.Floor((m_Y+16)/32), HIT.HIT_TOP)||
+				m_pParent->GetHit((int)Math.Floor((m_X+15)/32),(int)Math.Floor((m_Y)/32), HIT.HIT_LEFT)) {
 				m_State=NDS_STOP;
 				m_Speed=20;
 			}
@@ -167,8 +168,8 @@ public class Cf3MapObjectNeedle : Cf3MapObjectBase
 			m_Speed+=0.2f;
                 TL.Saturate(0.0f,ref m_Speed,10.0f);
 			m_Y += m_Speed;
-			if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32), HIT.HIT_TOP)) {
-				m_Y = floor((m_Y+16)/32)*32-15;
+			if (m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+16)/32), HIT.HIT_TOP)) {
+				m_Y = (float)Math.Floor((m_Y+16)/32)*32-15;
 				m_Speed = 20;
 				m_State=NDS_STOP;
 			}

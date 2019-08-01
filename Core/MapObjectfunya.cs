@@ -1,4 +1,6 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System;
+
+namespace MifuminSoft.funyan.Core
 {
     public class Cf3MapObjectfunya : Cf3MapObjectMain  
 {
@@ -38,7 +40,7 @@
         protected void BreatheOut()
 {
 	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
-	int p=floor(m_ChargePower/40.0f)+1;
+	int p= (int)Math.Floor(m_ChargePower/40.0f)+1;
         TL.Saturate(1,ref p,m_nPower);
 	struct { float x, y, dx, dy; } s[4];
 	if (m_Direction==DIR_FRONT) {
@@ -137,12 +139,12 @@ protected void Smile()
 }
 protected void HitCheck()
 {
-	int CX=floor(m_X/32),
-		CL=floor((m_X-14)/32),
-		CR=floor((m_X+14)/32),
-		CY=floor(m_Y/32),
-		CT=floor((m_Y-14)/32),
-		CB=floor((m_Y+14)/32);
+	int CX= (int)Math.Floor(m_X/32),
+		CL= (int)Math.Floor((m_X-14)/32),
+		CR= (int)Math.Floor((m_X+14)/32),
+		CY= (int)Math.Floor(m_Y/32),
+		CT= (int)Math.Floor((m_Y-14)/32),
+		CB= (int)Math.Floor((m_Y+14)/32);
 	if (m_DX>=0) {	// 右へ
 		if (CR!=CX) {
 			if (m_pParent->GetHit(CR,CY, HIT.HIT_LEFT)) {
@@ -517,8 +519,8 @@ public void OnMove()
 	if (!IsValid()) return;
 	if (!m_pParent->IsPlayable()) return;
 	if (m_bFirst) { HitCheck(); m_bFirst = false; }
-	float Wind = m_pParent->GetWind(floor(m_X/32),floor(m_Y/32));
-	float Friction = m_pParent->GetFriction(floor(m_X/32),floor((m_Y+14)/32));
+	float Wind = m_pParent->GetWind((int)Math.Floor(m_X/32),(int)Math.Floor(m_Y/32));
+	float Friction = m_pParent->GetFriction((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+14)/32));
 	float Gravity = GetGravity();
 	if (m_pParent->ItemCompleted()) Smile();
 	if (theSetting->m_Hyper) m_nPower=4;
@@ -758,7 +760,7 @@ public virtual void OnDraw(CDIB32* lp)
 	lp->BltNatural(m_nPower==0?m_Graphic:m_Graphic2,m_nVX,m_nVY,&rc);
 	if (m_Power<-1.0f/4096.0f) {
 		rc.left=(m_PoseCounter2<20?0:64)+
-			((m_Direction!=DIR_RIGHT&&floor(m_X/32)<m_pParent->GetWidth()-1)?0:128);
+			((m_Direction!=DIR_RIGHT&& (int)Math.Floor(m_X/32)<m_pParent->GetWidth()-1)?0:128);
 		rc.top=96;
 		rc.right=rc.left+64;
 		rc.bottom=rc.top+32;

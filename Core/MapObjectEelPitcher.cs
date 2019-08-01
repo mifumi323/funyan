@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -10,9 +11,9 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
 	int d=0;
 	m_State = m_Delay?EELBUD:EELLEAF;
 	m_RootX = m_X;
-	m_RootY = floor(m_Y/32)*32;
-	if (m_pParent->GetHit(floor((m_X-14)/32),floor(m_Y/32), HIT.HIT_TOP)) d|=1;
-	if (m_pParent->GetHit(floor((m_X+14)/32),floor(m_Y/32), HIT.HIT_TOP)) d|=2;
+	m_RootY = (float)Math.Floor(m_Y/32)*32;
+	if (m_pParent->GetHit((int)Math.Floor((m_X-14)/32),(int)Math.Floor(m_Y/32), HIT.HIT_TOP)) d|=1;
+	if (m_pParent->GetHit((int)Math.Floor((m_X+14)/32),(int)Math.Floor(m_Y/32), HIT.HIT_TOP)) d|=2;
 	m_Direction = (d==1?DIR_RIGHT:(d==2?DIR_LEFT:((CApp::random(2))?DIR_LEFT:DIR_RIGHT)));
 }
         //	CDIB32* m_Graphic;
@@ -158,16 +159,16 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
 {
 	if (m_State==EELLEAF){
             TL.BringClose(ref m_Y,m_RootY-m_Level*32,4.0f);
-		m_DX = m_DX + (m_pParent->GetWind(floor(m_X/32),floor(m_Y/32))-m_DX)*m_Level*0.1+(m_RootX-m_X)*0.025;
+		m_DX = m_DX + (m_pParent->GetWind((int)Math.Floor(m_X/32),(int)Math.Floor(m_Y/32))-m_DX)*m_Level*0.1+(m_RootX-m_X)*0.025;
             TL.Saturate(-14.0f,ref m_DX,14.0f);
 		m_X += m_DX;
-		if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32), HIT.HIT_RIGHT)) {
+		if (m_pParent->GetHit((int)Math.Floor((m_X-16)/32),(int)Math.Floor(m_Y/32), HIT.HIT_RIGHT)) {
 			m_DX = 0;
-			m_X = floor(m_X/32)*32+16;
+			m_X = (int)Math.Floor(m_X/32)*32+16;
 		}
-            else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32), HIT.HIT_LEFT)) {
+            else if (m_pParent->GetHit((int)Math.Floor((m_X+16)/32),(int)Math.Floor(m_Y/32), HIT.HIT_LEFT)) {
 			m_DX = 0;
-			m_X = floor(m_X/32)*32+16;
+			m_X = (int)Math.Floor(m_X/32)*32+16;
 		}
 	}
         else if (m_State==EELFROZEN) {
@@ -180,31 +181,31 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
 	}
         else if (m_State==EELSEED) {
             TL.BringClose(ref m_DY,8.0f,1.0f);
-		m_DX = m_DX + (m_pParent->GetWind(floor(m_X/32),floor(m_Y/32))-m_DX)*0.2;
+		m_DX = m_DX + (m_pParent->GetWind((int)Math.Floor(m_X/32),(int)Math.Floor(m_Y/32))-m_DX)*0.2;
             TL.Saturate(-14.0f,ref m_DX,14.0f);
 		m_X += m_DX;
-		if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32), HIT.HIT_RIGHT)) {
+		if (m_pParent->GetHit((int)Math.Floor((m_X-16)/32),(int)Math.Floor(m_Y/32), HIT.HIT_RIGHT)) {
 			m_DX = 0;
-			m_X = floor(m_X/32)*32+16;
+			m_X = (int)Math.Floor(m_X/32)*32+16;
 		}
-            else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32), HIT.HIT_LEFT)) {
+            else if (m_pParent->GetHit((int)Math.Floor((m_X+16)/32),(int)Math.Floor(m_Y/32), HIT.HIT_LEFT)) {
 			m_DX = 0;
-			m_X = floor(m_X/32)*32+16;
+			m_X = (int)Math.Floor(m_X/32)*32+16;
 		}
 		m_Y += m_DY;
-		if (floor(m_Y/32)!=floor((m_Y-m_DY)/32)) {
+		if ((int)Math.Floor(m_Y/32)!= (int)Math.Floor((m_Y-m_DY)/32)) {
 			// 32ドット境界をまたいだ！！
-			if (m_pParent->GetHit(floor(m_X/32),floor(m_Y/32), HIT.HIT_TOP)
-				|| floor(m_Y/32)>=m_pParent->GetHeight()) {
+			if (m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor(m_Y/32), HIT.HIT_TOP)
+				|| (int)Math.Floor(m_Y/32)>=m_pParent->GetHeight()) {
 				Seed();
 			}else {
-				if (m_pParent->GetHit(floor((m_X-16)/32),floor(m_Y/32), HIT.HIT_RIGHT)) {
+				if (m_pParent->GetHit((int)Math.Floor((m_X-16)/32),(int)Math.Floor(m_Y/32), HIT.HIT_RIGHT)) {
 					m_DX = 0;
-					m_X = floor(m_X/32)*32+16;
+					m_X = (int)Math.Floor(m_X/32)*32+16;
 				}
-                    else if (m_pParent->GetHit(floor((m_X+16)/32),floor(m_Y/32), HIT.HIT_LEFT)) {
+                    else if (m_pParent->GetHit((int)Math.Floor((m_X+16)/32),(int)Math.Floor(m_Y/32), HIT.HIT_LEFT)) {
 					m_DX = 0;
-					m_X = floor(m_X/32)*32+16;
+					m_X = (int)Math.Floor(m_X/32)*32+16;
 				}
 			}
 		}
@@ -233,7 +234,7 @@ public class Cf3MapObjectEelPitcher : Cf3MapObjectBase
 		// 茎
 		if (height>16) {
 			int i, h, h2;
-			h = floor((m_RootY-m_Y)/(abs(m_RootY-m_Y)+1)+1);
+			h = (int)Math.Floor((m_RootY-m_Y)/(abs(m_RootY-m_Y)+1)+1);
 			if (h > 32) h = 32;
 			for (i=16; i<height; i+=h) {
 				h2 = h<=height-i?h:height-i;

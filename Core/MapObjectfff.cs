@@ -1,4 +1,6 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System;
+
+namespace MifuminSoft.funyan.Core
 {
 public class Cf3MapObjectfff : Cf3MapObjectMain  
 {
@@ -13,7 +15,7 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 }
         private void BreatheOut()
 {
-	int p=floor(m_ChargePower/40.0f)+1;
+	int p= (int)Math.Floor(m_ChargePower/40.0f)+1;
         TL.Saturate(1,ref p,m_nPower);
 	int start=-m_Angle+(p-1)*16,angle;
 	for (int i=0; i<p; i++) {
@@ -48,12 +50,12 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
         private void HitCheck()
 {
 	float mw=m_pParent->GetWidth()*32, mh=m_pParent->GetHeight()*32;
-	int CX=floor(m_X/32),
-		CL=floor((m_X-14)/32),
-		CR=floor((m_X+14)/32),
-		CY=floor(m_Y/32),
-		CT=floor((m_Y-14)/32),
-		CB=floor((m_Y+14)/32);
+	int CX= (int)Math.Floor(m_X/32),
+		CL= (int)Math.Floor((m_X-14)/32),
+		CR= (int)Math.Floor((m_X+14)/32),
+		CY= (int)Math.Floor(m_Y/32),
+		CT= (int)Math.Floor((m_Y-14)/32),
+		CB= (int)Math.Floor((m_Y+14)/32);
 	if (m_DX>=0) {	// 右へ
 		if (CR!=CX) {
 			if (m_pParent->GetHit(CR,CY, HIT.HIT_LEFT)) {
@@ -266,7 +268,7 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 {
 	if (!IsValid()) return;
 	if (!m_pParent->IsPlayable()) return;
-	float Wind = m_pParent->GetWind(floor(m_X/32),floor(m_Y/32));
+	float Wind = m_pParent->GetWind((int)Math.Floor(m_X/32),(int)Math.Floor(m_Y/32));
 	if (m_pParent->ItemCompleted()) Smile();
 	float ADX=m_X-m_OldX, ADY=m_Y-m_OldY, ADDX=m_DX-m_OldDX, ADDY=m_DY-m_OldDY;
 	if (theSetting->m_Hyper) m_nPower=16;
@@ -381,7 +383,7 @@ public class Cf3MapObjectfff : Cf3MapObjectMain
 	CDIB32* graphic2 = ResourceManager.Get(RID_MAINICY);
 	lp->RotateBlt(m_nPower==0?graphic:graphic2,&rc,m_nVX,m_nVY,m_Angle,65536,4);
 	if (m_Power<-1.0f/4096.0f) {
-		rc.left=(m_PoseCounter2<20?0:64)+(floor(m_X/32)<m_pParent->GetWidth()-1?0:128);
+		rc.left=(m_PoseCounter2<20?0:64)+((int)Math.Floor(m_X/32)<m_pParent->GetWidth()-1?0:128);
 		rc.top=96;
 		rc.right=rc.left+64;
 		rc.bottom=rc.top+32;

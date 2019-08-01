@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -35,7 +36,7 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 }
         protected void Stop()
 {
-	if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+17)/32), HIT.HIT_TOP)) {
+	if (m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+17)/32), HIT.HIT_TOP)) {
 		m_Delay = 40;
 		m_State = STANDING;
 	}else {
@@ -132,13 +133,13 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 				// 踏まれた！
 				Laugh();
 				m_Spring[DIR_FRONT] = 32;
-				if (!m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32), HIT.HIT_TOP)) m_GY++;
+				if (!m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+16)/32), HIT.HIT_TOP)) m_GY++;
 			}
 		}
                     else if (TL.IsIn(m_X+16,objX,m_X+29)) {
 			if (TL.IsIn(m_Y-16,objY,m_Y+16)) {
 				// 右から来た！
-				if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32), HIT.HIT_TOP)) Back(DIR_RIGHT);
+				if (m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+16)/32), HIT.HIT_TOP)) Back(DIR_RIGHT);
 				else Laugh();
 				m_Spring[DIR_RIGHT] = 32;
 			}
@@ -146,7 +147,7 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
                     else if (TL.IsIn(m_X-29,objX,m_X-16)) {
 			if (TL.IsIn(m_Y-16,objY,m_Y+16)) {
 				// 左から来た！
-				if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+16)/32), HIT.HIT_TOP)) Back(DIR_LEFT);
+				if (m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+16)/32), HIT.HIT_TOP)) Back(DIR_LEFT);
 				else Laugh();
 				m_Spring[DIR_LEFT] = 32;
 			}
@@ -248,20 +249,20 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
         public void SetPos(float x, float y)
 {
 	m_X = x; m_Y = y;
-	m_GX = floor(x/8); m_GY = floor(y*8);
+	m_GX = (int)Math.Floor(x/8); m_GY = (int)Math.Floor(y*8);
 }
         public void OnMove()
 {
 	if (!IsValid()) return;
 	if (m_Delay) m_Delay--;
 	if (m_State==WALKING) {
-		if (m_Direction==DIR_LEFT&&m_pParent->GetHit(floor((m_X-17)/32),floor(m_Y/32), HIT.HIT_RIGHT)){
+		if (m_Direction==DIR_LEFT&&m_pParent->GetHit((int)Math.Floor((m_X-17)/32),(int)Math.Floor(m_Y/32), HIT.HIT_RIGHT)){
 			Blow();
 		}
-            else if (m_Direction==DIR_RIGHT&&m_pParent->GetHit(floor((m_X+17)/32),floor(m_Y/32), HIT.HIT_LEFT)){
+            else if (m_Direction==DIR_RIGHT&&m_pParent->GetHit((int)Math.Floor((m_X+17)/32),(int)Math.Floor(m_Y/32), HIT.HIT_LEFT)){
 			Blow();
 		}
-            else if (!m_pParent->GetHit(floor((m_X+17*(m_Direction==DIR_LEFT?-1:1))/32),floor((m_Y+17)/32), HIT.HIT_TOP)){
+            else if (!m_pParent->GetHit((int)Math.Floor((m_X+17*(m_Direction==DIR_LEFT?-1:1))/32),(int)Math.Floor((m_Y+17)/32), HIT.HIT_TOP)){
 			Stop();
 		}else {
 			if (m_Delay==0) {
@@ -271,7 +272,7 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 		}
 	}
         else if (m_State==STANDING) {
-		if (!m_pParent->GetHit(floor(m_X/32),floor((m_Y+17)/32), HIT.HIT_TOP)){
+		if (!m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+17)/32), HIT.HIT_TOP)){
 			Stop();
 		}else {
 			if (m_Delay==0) {
@@ -286,11 +287,11 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 			m_GY += m_DY;
 		}
 		m_X = m_GX*8; m_Y = m_GY/8;
-		if (m_DY>0&&m_pParent->GetHit(floor(m_X/32),floor((m_Y+17)/32), HIT.HIT_TOP)){
-			m_GY=((floor((m_Y+17)/32)-1)*32+16)*8;
+		if (m_DY>0&&m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+17)/32), HIT.HIT_TOP)){
+			m_GY=(((int)Math.Floor((m_Y+17)/32)-1)*32+16)*8;
 			Laugh();
 		}
-            else if (m_DY<0&&m_pParent->GetHit(floor(m_X/32),floor((m_Y-15)/32), HIT.HIT_BOTTOM)){
+            else if (m_DY<0&&m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y-15)/32), HIT.HIT_BOTTOM)){
 			m_GY=(m_GY+127)&~127;
 			m_DY=0;
 		}
@@ -301,10 +302,10 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 		}
 	}
         else if (m_State==BLOWN) {
-		if (m_Direction==DIR_LEFT&&!m_pParent->GetHit(floor((m_X+17)/32),floor(m_Y/32), HIT.HIT_LEFT)){
+		if (m_Direction==DIR_LEFT&&!m_pParent->GetHit((int)Math.Floor((m_X+17)/32),(int)Math.Floor(m_Y/32), HIT.HIT_LEFT)){
 			m_GX++;
 		}
-            else if (m_Direction==DIR_RIGHT&&!m_pParent->GetHit(floor((m_X-17)/32),floor(m_Y/32), HIT.HIT_RIGHT)){
+            else if (m_Direction==DIR_RIGHT&&!m_pParent->GetHit((int)Math.Floor((m_X-17)/32),(int)Math.Floor(m_Y/32), HIT.HIT_RIGHT)){
 			m_GX--;
 		}
 		if (m_Delay==0) {
@@ -312,12 +313,12 @@ public class Cf3MapObjectGeasprin : Cf3MapObjectBase
 		}
 	}
         else if (m_State==BACK) {
-		if (!m_pParent->GetHit(floor((m_X+17*(m_Direction!=DIR_LEFT?-1:1))/32),floor((m_Y+17)/32), HIT.HIT_TOP)){
+		if (!m_pParent->GetHit((int)Math.Floor((m_X+17*(m_Direction!=DIR_LEFT?-1:1))/32),(int)Math.Floor((m_Y+17)/32), HIT.HIT_TOP)){
 		}
-            else if (m_Direction==DIR_LEFT&&!m_pParent->GetHit(floor((m_X+17)/32),floor(m_Y/32), HIT.HIT_LEFT)){
+            else if (m_Direction==DIR_LEFT&&!m_pParent->GetHit((int)Math.Floor((m_X+17)/32),(int)Math.Floor(m_Y/32), HIT.HIT_LEFT)){
 			m_GX++;
 		}
-            else if (m_Direction==DIR_RIGHT&&!m_pParent->GetHit(floor((m_X-17)/32),floor(m_Y/32), HIT.HIT_RIGHT)){
+            else if (m_Direction==DIR_RIGHT&&!m_pParent->GetHit((int)Math.Floor((m_X-17)/32),(int)Math.Floor(m_Y/32), HIT.HIT_RIGHT)){
 			m_GX--;
 		}
 		if (m_Delay==0) {

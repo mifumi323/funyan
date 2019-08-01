@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -61,7 +62,7 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
         public void OnMove()
 {
 	if (--m_Life<=0) Kill();
-	float Wind=m_pParent->GetWind(floor(m_X/32),floor(m_Y/32));
+	float Wind=m_pParent->GetWind((int)Math.Floor(m_X/32),(int)Math.Floor(m_Y/32));
 	m_DX -= (m_DX-Wind)*FRICTION;
 	m_DY += GRAVITY;
 	m_DY -= m_DY*FRICTION;
@@ -71,20 +72,20 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
 	int s=GetSize();
 	if (m_DX>0) {
 		// 右側当たり判定
-		if (m_pParent->GetHit(floor((m_X+s)/32),floor(m_Y/32), HIT.HIT_LEFT)) {
-			if (floor((m_X+s)/32)!=floor((m_X+s-m_DX)/32)) {
+		if (m_pParent->GetHit((int)Math.Floor((m_X+s)/32),(int)Math.Floor(m_Y/32), HIT.HIT_LEFT)) {
+			if ((int)Math.Floor((m_X+s)/32)!= (int)Math.Floor((m_X+s-m_DX)/32)) {
 				m_DX*=-REFRECTION;
-				m_X = floor((m_X+s)/32)*32-s;
+				m_X = (int)Math.Floor((m_X+s)/32)*32-s;
 				m_Life--;
 			}
 		}
 	}
         else if (m_DX<0) {
 		// 左側当たり判定
-		if (m_pParent->GetHit(floor((m_X-s)/32),floor(m_Y/32), HIT.HIT_RIGHT)) {
-			if (floor((m_X-s)/32)!=floor((m_X-s-m_DX)/32)) {
+		if (m_pParent->GetHit((int)Math.Floor((m_X-s)/32),(int)Math.Floor(m_Y/32), HIT.HIT_RIGHT)) {
+			if ((int)Math.Floor((m_X-s)/32)!= (int)Math.Floor((m_X-s-m_DX)/32)) {
 				m_DX*=-REFRECTION;
-				m_X = floor(m_X/32)*32+s;
+				m_X = (int)Math.Floor(m_X/32)*32+s;
 				m_Life--;
 			}
 		}
@@ -92,20 +93,20 @@ public class Cf3MapObjectIce : Cf3MapObjectIceBase
 	m_Y += m_DY;
 	if (m_DY>0) {
 		// 下側当たり判定
-		if (m_pParent->GetHit(floor(m_X/32),floor((m_Y+s)/32), HIT.HIT_TOP)) {
-			if (floor((m_Y+s)/32)!=floor((m_Y+s-m_DY)/32)) {
+		if (m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y+s)/32), HIT.HIT_TOP)) {
+			if (fl(int)Math.Flooroor((m_Y+s)/32)!= (int)Math.Floor((m_Y+s-m_DY)/32)) {
 				m_DY*=-REFRECTION;
-				m_Y = floor((m_Y+s)/32)*32-s;
+				m_Y = (int)Math.Floor((m_Y+s)/32)*32-s;
 				m_Life--;
 			}
 		}
 	}
         else if (m_DY<0) {
 		// 上側当たり判定
-		if (m_pParent->GetHit(floor(m_X/32),floor((m_Y-s)/32), HIT.HIT_BOTTOM)) {
-			if (floor((m_Y-s)/32)!=floor((m_Y-s-m_DY)/32)) {
+		if (m_pParent->GetHit((int)Math.Floor(m_X/32),(int)Math.Floor((m_Y-s)/32), HIT.HIT_BOTTOM)) {
+			if ((int)Math.Floor((m_Y-s)/32)!= (int)Math.Floor((m_Y-s-m_DY)/32)) {
 				m_DY*=-REFRECTION;
-				m_Y = floor(m_Y/32)*32+s;
+				m_Y = (int)Math.Floor(m_Y/32)*32+s;
 				m_Life--;
 			}
 		}
