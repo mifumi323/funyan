@@ -19,7 +19,8 @@ namespace MifuminSoft.funyan.Core
         private byte[] m_Width = new byte[3], m_Height = new byte[3];
         private byte[] m_Hit = new byte[240];
         private byte m_Stage;
-        private int m_nGotBanana, m_nTotalBanana;
+        public int m_nGotBanana;
+        private int m_nTotalBanana;
 
         private string m_Title;
 
@@ -60,30 +61,26 @@ namespace MifuminSoft.funyan.Core
         private static int m_nEffect = 0;
         private CDIB32 m_pDIBBuf;
 
-        public Cf3MapObjectBase** GetMapObjects(int x1, int y1, int x2, int y2, f3MapObjectType eType)
+        public IEnumerable<Cf3MapObjectBase> GetMapObjects(int x1, int y1, int x2, int y2, f3MapObjectType eType)
         {
             if (x1 < 0) x1 = 0;
             if (y1 < 0) y1 = 0;
             if (x2 >= m_Width[1]) x2 = m_Width[1] - 1;
             if (y2 >= m_Height[1]) y2 = m_Height[1] - 1;
-            if (m_NearObject.size() <= Cf3MapObjectBase.Count())
-                m_NearObject.resize(Cf3MapObjectBase.Count() + 1);
-            int i = 0;
-            m_NearObject[0] = null;
-            Cf3MapObjectBase* o;
+            m_NearObject.Clear();
+            Cf3MapObjectBase o;
             for (int x = x1; x <= x2; x++) {
                 for (int y = y1; y <= y2; y++) {
                     o = m_pObject[GetIndex(x, y)];
                     while (o != null) {
-                        if (o->GetMapObjectType() == eType && o->IsValid()) {
-                            m_NearObject[i++] = o;
-                            m_NearObject[i] = null;
+                        if (o.GetMapObjectType() == eType && o.IsValid()) {
+                            m_NearObject.Add(o);
                         }
-                        o = o->m_pNext;
+                        o = o.m_pNext;
                     }
                 }
             }
-            return &m_NearObject.front();
+            return m_NearObject;
         }
         public int GetIndex(int level, int x, int y) { return x + y * m_Width[level]; }
         public int GetIndex(int x, int y) { return x + y * m_Width[1]; }

@@ -17,22 +17,21 @@ namespace MifuminSoft.funyan.Core
             if (m_Delay == 0)
             {
                 // ふにゃ
-                Cf3MapObjectBase** it;
-                for (it = m_pParent->GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1,f3MapObjectType.MOT_FUNYA); (*it) != null; it++)
+                foreach (var it in m_pParent.GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1, f3MapObjectType.MOT_FUNYA))
                 {
-                    if ((*it)->IsValid() && ((Cf3MapObjectMain*)(*it))->IsFrozen())
+                    if (it.IsValid() && ((Cf3MapObjectMain)it).IsFrozen())
                     {
-                        (*it)->GetPos(out var objX, out var objY);
+                        it.GetPos(out var objX, out var objY);
                         // あたった！
                         if ((objX - m_X) * (objX - m_X) + (objY - m_Y) * (objY - m_Y) < 256) m_Delay = 200;
                     }
                 }
                 // 氷
-                for (it = m_pParent->GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1,f3MapObjectType.MOT_ICE); (*it) != null; it++)
+                foreach (var it in m_pParent.GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1, f3MapObjectType.MOT_ICE))
                 {
-                    if ((*it)->IsValid())
+                    if (it.IsValid())
                     {
-                        (*it)->GetPos(out var objX, out var objY);
+                        it.GetPos(out var objX, out var objY);
                         // あたった！
                         if ((objX - m_X) * (objX - m_X) + (objY - m_Y) * (objY - m_Y) < 256) m_Delay = 200;
                     }
@@ -86,18 +85,18 @@ namespace MifuminSoft.funyan.Core
                 if (it.IsValid()) it.OnMove();
             }
         }
-        public static void OnDrawAll(CDIB32* lp)
+        public static void OnDrawAll(CDIB32 lp)
         {
             int sx, sy, ex, ey;
             sx = sy = 0;
-            m_pParent->GetViewPos(ref sx, ref sy);
+            m_pParent.GetViewPos(ref sx, ref sy);
             sx = (-sx) >> 5; sy = (-sy) >> 5;
             ex = sx + 320 / 32; ey = sy + 224 / 32;
-            TL.Saturate(sx, ref ex, m_pParent->GetWidth() - 1);
-            TL.Saturate(sy, ref ey, m_pParent->GetHeight() - 1);
-            for (Cf3MapObjectBase** it = m_pParent->GetMapObjects(sx - 1, sy - 1, ex + 1, ey + 1,f3MapObjectType.MOT_FIRE); (*it) != null; it++)
+            TL.Saturate(sx, ref ex, m_pParent.GetWidth() - 1);
+            TL.Saturate(sy, ref ey, m_pParent.GetHeight() - 1);
+            foreach (var it in m_pParent.GetMapObjects(sx - 1, sy - 1, ex + 1, ey + 1, f3MapObjectType.MOT_FIRE))
             {
-                if ((*it)->IsValid()) (*it)->OnDraw(lp);
+                if (it.IsValid()) it.OnDraw(lp);
             }
         }
         public Cf3MapObjectFire(int x, int y) : base(f3MapObjectType.MOT_FIRE)

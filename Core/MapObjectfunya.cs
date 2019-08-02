@@ -323,13 +323,12 @@ public void Synergy()
 	if (m_State==DEAD||m_State==SMILING) return;
 	m_OnEnemy = false;
 	m_Power = m_PowerX = m_PowerY = 0.0f;
-	Cf3MapObjectBase**it;
 	// ギヤバネ
-	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2,f3MapObjectType.MOT_GEASPRIN); (*it)!= null; it++){
-		if ((*it)->IsValid()) {
+	foreach(var it in m_pParent.GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, f3MapObjectType.MOT_GEASPRIN)){
+		if (it.IsValid()) {
 			float objX, objY;
-			(*it)->GetPos(objX,objY);
-			if (!((Cf3MapObjectGeasprin*)(*it))->IsFrozen()) {
+			it.GetPos(objX,objY);
+			if (!((Cf3MapObjectGeasprin)it).IsFrozen()) {
 				if (TL.IsIn(objX-16,m_X,objX+15)) {
 					if (TL.IsIn(objY-30,m_Y,objY+16)) {
                         if (m_bOriginal) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_GEASPRIN);
@@ -373,10 +372,10 @@ public void Synergy()
 		}
 	}
 	// とげとげ
-	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2,f3MapObjectType.MOT_NEEDLE); (*it)!= null; it++){
-		if ((*it)->IsValid()) {
+	foreach(var it in m_pParent.GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, f3MapObjectType.MOT_NEEDLE)){
+		if (it.IsValid()) {
 			float objX, objY;
-			(*it)->GetPos(objX,objY);
+			it.GetPos(objX,objY);
 			if ((objX-m_X)*(objX-m_X)+(objY-m_Y)*(objY-m_Y)<256) {
 				Die();
 				return;
@@ -384,10 +383,10 @@ public void Synergy()
 		}
 	}
 	// ウナギカズラ
-	for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2,f3MapObjectType.MOT_EELPITCHER); (*it)!= null; it++){
-		if ((*it)->IsValid()&&((Cf3MapObjectEelPitcher*)(*it))->IsLeaf()) {
+	foreach(var it in m_pParent.GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, f3MapObjectType.MOT_EELPITCHER)){
+		if (it.IsValid()&&((Cf3MapObjectEelPitcher)it).IsLeaf()) {
 			float objX, objY;
-			(*it)->GetPos(objX,objY);
+			it.GetPos(objX,objY);
 			if (TL.IsIn(objX-16,m_X,objX+16)) {
 				if (TL.IsIn(objY-14,m_Y,objY)) {
 					if (m_DY>=0) {
@@ -401,10 +400,10 @@ public void Synergy()
 	}
 	if (m_State!=FROZEN) {
 		// 氷
-		for(it=m_pParent->GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2,f3MapObjectType.MOT_ICE); (*it)!= null; it++){
-			if ((*it)->IsValid()&&((Cf3MapObjectIce*)(*it))->GetSize()>10) {
+		foreach(it in m_pParent.GetMapObjects(m_nCX-2, m_nCY-2, m_nCX+2, m_nCY+2, f3MapObjectType.MOT_ICE)){
+			if (it.IsValid()&&((Cf3MapObjectIce)it).GetSize()>10) {
 				float objX, objY;
-				(*it)->GetPos(objX,objY);
+				it.GetPos(objX,objY);
 				if ((objX-m_X)*(objX-m_X)+(objY-m_Y)*(objY-m_Y)<256) {
 					// あたった！
 					Freeze(((Cf3MapObjectIce*)(*it))->GetSize());

@@ -65,7 +65,7 @@ namespace MifuminSoft.funyan.Core
             }
         }
         public static Dictionary<int, Cf3MapObjectEelPitcher> All() { return m_EnemyList; }
-        public void Reaction(Cf3MapObjectBase* obj)
+        public void Reaction(Cf3MapObjectBase obj)
         {
             if (obj == null || obj == this) return;
             obj->GetPos(out var objX, out var objY);
@@ -107,20 +107,19 @@ namespace MifuminSoft.funyan.Core
             if (!IsValid()) return;
             m_bBlinking = false;
             GetCPos(out var cx, out var cy);
-            Cf3MapObjectBase** it;
             if (m_State == EELLEAF)
             {
-                for (it = m_pParent->GetMapObjects(cx - 2, cy - 2, cx + 2, cy + 2,f3MapObjectType.MOT_FUNYA); (*it) != null; it++)
+                foreach (var it in m_pParent.GetMapObjects(cx - 2, cy - 2, cx + 2, cy + 2, f3MapObjectType.MOT_FUNYA))
                 {
-                    if ((*it)->IsValid()) Reaction((*it));
+                    if (it.IsValid()) Reaction(it);
                 }
                 if (m_RootY - m_Y > 16)
                 {
-                    for (it = m_pParent->GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1,f3MapObjectType.MOT_ICE); (*it) != null; it++)
+                    foreach (var it in m_pParent.GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1, f3MapObjectType.MOT_ICE))
                     {
-                        if ((*it)->IsValid())
+                        if (it.IsValid())
                         {
-                            (*it)->GetPos(out var objX, out var objY);
+                            it.GetPos(out var objX, out var objY);
                             if (TL.IsIn(m_X - 16, objX, m_X + 16))
                             {
                                 if (TL.IsIn(m_Y, objY, m_Y + 40))
@@ -132,21 +131,21 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
             }
-            for (it = m_pParent->GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1,f3MapObjectType.MOT_EELPITCHER); (*it) != null; it++)
+            foreach (var it in m_pParent.GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1, f3MapObjectType.MOT_EELPITCHER))
             {
-                if ((*it)->IsValid() && (*it) != this)
+                if (it.IsValid() && it != this)
                 {
-                    (*it)->GetPos(out var objX, out var objY);
+                    it.GetPos(out var objX, out var objY);
                     if (m_State == EELLEAF || m_State == EELFROZEN)
                     {
                         if (TL.IsIn(m_X - 16, objX, m_X + 16))
                         {
                             if (TL.IsIn(m_Y, objY, m_Y + 16))
                             {
-                                if (((Cf3MapObjectEelPitcher*)(*it))->m_State != EELLEAF)
+                                if (((Cf3MapObjectEelPitcher)it).m_State != EELLEAF)
                                 {
                                     // 食べちゃった！！
-                                    m_Level += ((Cf3MapObjectEelPitcher*)(*it))->m_Level;
+                                    m_Level += ((Cf3MapObjectEelPitcher)it).m_Level;
                                 }
                                 else
                                 {
@@ -162,7 +161,7 @@ namespace MifuminSoft.funyan.Core
                         {
                             if (TL.IsIn(objY, m_Y, objY + 16))
                             {
-                                if (((Cf3MapObjectEelPitcher*)(*it))->m_State != EELDEAD)
+                                if (((Cf3MapObjectEelPitcher)it).m_State != EELDEAD)
                                 {
                                     // 食べられちゃった！！
                                     m_State = EELDEAD;
@@ -170,20 +169,20 @@ namespace MifuminSoft.funyan.Core
                                 else
                                 {
                                     // 食べちゃった！！
-                                    m_Level += ((Cf3MapObjectEelPitcher*)(*it))->m_Level;
+                                    m_Level += ((Cf3MapObjectEelPitcher)it).m_Level;
                                 }
                             }
                         }
                     }
                 }
             }
-            for (it = m_pParent->GetMapObjects(cx - 2, cy - 2, cx + 2, cy + 2,f3MapObjectType.MOT_GEASPRIN); (*it) != null; it++)
+            foreach (var it in m_pParent.GetMapObjects(cx - 2, cy - 2, cx + 2, cy + 2, f3MapObjectType.MOT_GEASPRIN))
             {
-                if ((*it)->IsValid()) Reaction((*it));
+                if (it.IsValid()) Reaction(it);
             }
-            for (it = m_pParent->GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1,f3MapObjectType.MOT_NEEDLE); (*it) != null; it++)
+            foreach (var it in m_pParent.GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1, f3MapObjectType.MOT_NEEDLE))
             {
-                if ((*it)->IsValid()) Reaction((*it));
+                if (it.IsValid()) Reaction(it);
             }
         }
         public void OnMove()
