@@ -150,7 +150,7 @@ namespace MifuminSoft.funyan.Core
                         {
                             if (TL.IsIn(objY - 30, m_Y, objY + 16))
                             {
-                                theApp->GetBGM()->MusicEffect(MENumber.MEN_GEASPRIN);
+                                CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_GEASPRIN);
                                 m_DY = -10;
                             }
                         }
@@ -158,7 +158,7 @@ namespace MifuminSoft.funyan.Core
                         {
                             if (TL.IsIn(objY - 16, m_Y, objY + 15))
                             {
-                                theApp->GetBGM()->MusicEffect(MENumber.MEN_GEASPRIN);
+                                CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_GEASPRIN);
                                 m_DX = 10;
                             }
                         }
@@ -166,7 +166,7 @@ namespace MifuminSoft.funyan.Core
                         {
                             if (TL.IsIn(objY - 16, m_Y, objY + 15))
                             {
-                                theApp->GetBGM()->MusicEffect(MENumber.MEN_GEASPRIN);
+                                CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_GEASPRIN);
                                 m_DX = -10;
                             }
                         }
@@ -308,8 +308,8 @@ namespace MifuminSoft.funyan.Core
                         nPosition += cx - m_nCX;
                     }
                 }
-                theApp->GetBGM()->MusicEffect(MENumber.MEN_BANANADISTANCE, bananaDistance);
-                theApp->GetBGM()->MusicEffect(MENumber.MEN_BANANAPOSITION, nBanana ? (float)nPosition / nBanana : 0.0f);
+                CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANADISTANCE, bananaDistance);
+                CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANAPOSITION, nBanana ? (float)nPosition / nBanana : 0.0f);
             }
         }
         public bool IsDied() { return m_State == DEAD; }

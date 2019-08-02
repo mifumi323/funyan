@@ -405,9 +405,9 @@ namespace MifuminSoft.funyan.Core
             {
                 Kill();
             }
-            if (m_Spring[DIR_FRONT]) m_Spring2[DIR_FRONT] = CApp::random(m_Spring[DIR_FRONT]);
-            if (m_Spring[DIR_LEFT]) m_Spring2[DIR_LEFT] = CApp::random(m_Spring[DIR_LEFT]);
-            if (m_Spring[DIR_RIGHT]) m_Spring2[DIR_RIGHT] = CApp::random(m_Spring[DIR_RIGHT]);
+            if (m_Spring[DIR_FRONT]) m_Spring2[DIR_FRONT] = CApp.theApp.random(m_Spring[DIR_FRONT]);
+            if (m_Spring[DIR_LEFT]) m_Spring2[DIR_LEFT] = CApp.theApp.random(m_Spring[DIR_LEFT]);
+            if (m_Spring[DIR_RIGHT]) m_Spring2[DIR_RIGHT] = CApp.theApp.random(m_Spring[DIR_RIGHT]);
             m_X = m_GX * 8; m_Y = m_GY / 8;
             if (m_Y > m_pParent->GetHeight() * 32 + 16)
             {

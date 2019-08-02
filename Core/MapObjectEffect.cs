@@ -96,8 +96,8 @@ namespace MifuminSoft.funyan.Core
                 for (int i = 0; i < m_StarNum; i++)
                 {
                     float rad = 2.0 * PI * i / m_StarNum;
-                    m_Star[i].dx = 4.0f * cos(rad) * (0.5 + 0.5 / 4096.0 * CApp::random(4096));
-                    m_Star[i].dy = 4.0f * sin(rad) * (0.5 + 0.5 / 4096.0 * CApp::random(4096));
+                    m_Star[i].dx = 4.0f * cos(rad) * (0.5 + 0.5 / 4096.0 * CApp.theApp.random(4096));
+                    m_Star[i].dy = 4.0f * sin(rad) * (0.5 + 0.5 / 4096.0 * CApp.theApp.random(4096));
                     m_Star[i].x = 0;
                     m_Star[i].y = 0;
                     m_Star[i].f = 0.9f;
@@ -112,11 +112,11 @@ namespace MifuminSoft.funyan.Core
                 {
                     float rad = 2.0 * PI * i / m_StarNum;
                     m_Star[i].dx = 0;
-                    m_Star[i].dy = -16.0f * (0.5 + 0.5 / 4096.0 * CApp::random(4096));
-                    m_Star[i].x = 32 * (-0.5 + 1.0 / 4096.0 * CApp::random(4096));
+                    m_Star[i].dy = -16.0f * (0.5 + 0.5 / 4096.0 * CApp.theApp.random(4096));
+                    m_Star[i].x = 32 * (-0.5 + 1.0 / 4096.0 * CApp.theApp.random(4096));
                     m_Star[i].y = 0;
                     m_Star[i].f = 0.9f;
-                    m_Star[i].n = 35 + CApp::random(10);
+                    m_Star[i].n = 35 + CApp.theApp.random(10);
                 }
             }
             else
@@ -126,7 +126,7 @@ namespace MifuminSoft.funyan.Core
             }
             for (int i = 0; i < m_StarNum; i++)
             {
-                m_Star[i].r = CApp::random(4 * 16);
+                m_Star[i].r = CApp.theApp.random(4 * 16);
             }
         }
         public override void Dispose()

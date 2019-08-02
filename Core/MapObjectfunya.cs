@@ -39,7 +39,7 @@ namespace MifuminSoft.funyan.Core
 }
         protected void BreatheOut()
 {
-	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 	int p= (int)Math.Floor(m_ChargePower/40.0f)+1;
         TL.Saturate(1,ref p,m_nPower);
 	struct { float x, y, dx, dy; } s[4];
@@ -104,20 +104,20 @@ namespace MifuminSoft.funyan.Core
 protected void BreatheIn()
 {
 	if (m_nPower) {
-		if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+        if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 		m_State = BREATHEIN;
 		m_ChargePower = 0.0f;
 	}
 }
 protected void Sit()
 {
-	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+    if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 	m_State = WALKING;
 }
 protected void Sleep()
 {
 	m_State = SLEEPING;
-	if (m_bOriginal) theApp->GetBGM()->MusicEffect(MENumber.MEN_SLEEP);
+    if (m_bOriginal) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_SLEEP);
 	m_PoseCounter = 0;
 }
 protected void Blink()
@@ -127,13 +127,13 @@ protected void Blink()
 }
 protected void HighJump()
 {
-	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+    if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 	if (m_State!=FROZEN) m_State=JUMPING;
 	m_DY = -6.35f;
 }
 protected void Smile()
 {
-	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+    if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 	m_State = SMILING;
 	m_DX = m_DY = 0;
 }
@@ -195,39 +195,39 @@ protected void HitCheck()
 }
 protected void Stop()
 {
-	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+    if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 	m_State = STANDING;
 	m_Sleepy = 0;
 }
 protected void Run(f3MapObjectDirection direction)
 {
-	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+    if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 	m_State = RUNNING;
 	m_Direction = direction;
 	m_PoseCounter = 0;
 }
 protected void Fall()
 {
-	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+    if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 	m_State = JUMPING;
 }
 protected void Land()
 {
-	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+    if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 	m_State = STANDING;
 	m_DY = 0;
 	m_Sleepy = 0;
 }
 protected void StartJump()
 {
-	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+    if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 	m_State=CHARGING;
 	m_ChargePower = 1.0f;
 	m_DY = 0;
 }
 protected void Jump()
 {
-	if (m_bOriginal&&m_State==SLEEPING) theApp->GetBGM()->MusicEffect(MENumber.MEN_AWAKE);
+    if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
 	m_State=JUMPING;
 	m_OnEnemy = false;
 
@@ -332,20 +332,20 @@ public void Synergy()
 			if (!((Cf3MapObjectGeasprin*)(*it))->IsFrozen()) {
 				if (TL.IsIn(objX-16,m_X,objX+15)) {
 					if (TL.IsIn(objY-30,m_Y,objY+16)) {
-						if (m_bOriginal) theApp->GetBGM()->MusicEffect(MENumber.MEN_GEASPRIN);
+                        if (m_bOriginal) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_GEASPRIN);
 						m_Y--;
 						HighJump();
 					}
 				}
                 else if (TL.IsIn(objX+16,m_X,objX+29)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
-						if (m_bOriginal) theApp->GetBGM()->MusicEffect(MENumber.MEN_GEASPRIN);
+                        if (m_bOriginal) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_GEASPRIN);
 						m_DX=10;
 					}
 				}
                 else if (TL.IsIn(objX-29,m_X,objX-16)) {
 					if (TL.IsIn(objY-16,m_Y,objY+15)) {
-						if (m_bOriginal) theApp->GetBGM()->MusicEffect(MENumber.MEN_GEASPRIN);
+                        if (m_bOriginal) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_GEASPRIN);
 						m_DX=-10;
 					}
 				}
@@ -464,8 +464,8 @@ public void Synergy()
 				nPosition += cx-m_nCX;
 			}
 		}
-		theApp->GetBGM()->MusicEffect(MENumber.MEN_BANANADISTANCE, m_BananaDistance);
-		theApp->GetBGM()->MusicEffect(MENumber.MEN_BANANAPOSITION, nBanana?(float)nPosition/nBanana:0.0f);
+        CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANADISTANCE,m_BananaDistance);
+        CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANAPOSITION,nBanana ? (float)nPosition / nBanana : 0.0f);
 	}
 	if (m_OnEnemy) HitCheck();
 }
@@ -522,7 +522,7 @@ public void OnMove()
 		if (m_DX==0) m_Direction = DIR_FRONT;
 		if (m_State==STANDING && ++m_Sleepy>=30*40/3) Sleep();
 		if (m_State==BLINKING && --m_PoseCounter==0) m_State = STANDING;
-		if (m_State==STANDING && CApp::random(120)==0) Blink();
+		if (m_State==STANDING && CApp.theApp.random(120)==0) Blink();
 		if (m_PowerY<=0 && m_pInput->GetKeyPressed(F3KEY_JUMP)) StartJump();
 		if (m_PowerX<=0 && m_pInput->GetKeyPressed(F3KEY_LEFT)) Run(DIR_LEFT);
 		if (m_PowerX>=0 && m_pInput->GetKeyPressed(F3KEY_RIGHT)) Run(DIR_RIGHT);

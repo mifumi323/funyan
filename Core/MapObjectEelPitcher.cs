@@ -14,7 +14,7 @@ namespace MifuminSoft.funyan.Core
             m_RootY = (float)Math.Floor(m_Y / 32) * 32;
             if (m_pParent->GetHit((int)Math.Floor((m_X - 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 1;
             if (m_pParent->GetHit((int)Math.Floor((m_X + 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 2;
-            m_Direction = (d == 1 ? DIR_RIGHT : (d == 2 ? DIR_LEFT : ((CApp::random(2)) ? DIR_LEFT : DIR_RIGHT)));
+            m_Direction = (d == 1 ? DIR_RIGHT : (d == 2 ? DIR_LEFT : (CApp.theApp.random(2) != 0 ? DIR_LEFT : DIR_RIGHT)));
         }
         //	CDIB32* m_Graphic;
         private static Dictionary<int, Cf3MapObjectEelPitcher> m_EnemyList = new Dictionary<int, Cf3MapObjectEelPitcher>();

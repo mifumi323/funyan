@@ -31,16 +31,16 @@ namespace MifuminSoft.funyan.Core
                 if (m_Particle[i].x < m_Left)
                 {
                     m_Particle[i].x += m_Right - m_Left;
-                    m_Particle[i].y = CApp::random(32);
-                    m_Particle[i].color = 0xffffff * CApp::random(2);
-                    m_Particle[i].dx = m_Strength * (0.5f + (float)CApp::random(4096) / 4096);
+                    m_Particle[i].y = CApp.theApp.random(32);
+                    m_Particle[i].color = 0xffffff * CApp.theApp.random(2);
+                    m_Particle[i].dx = m_Strength * (0.5f + (float)CApp.theApp.random(4096) / 4096);
                 }
                 if (m_Particle[i].x > m_Right)
                 {
                     m_Particle[i].x -= m_Right - m_Left;
-                    m_Particle[i].y = CApp::random(32);
-                    m_Particle[i].color = 0xffffff * CApp::random(2);
-                    m_Particle[i].dx = m_Strength * (0.5f + (float)CApp::random(4096) / 4096);
+                    m_Particle[i].y = CApp.theApp.random(32);
+                    m_Particle[i].color = 0xffffff * CApp.theApp.random(2);
+                    m_Particle[i].dx = m_Strength * (0.5f + (float)CApp.theApp.random(4096) / 4096);
                 }
             }
         }
@@ -86,10 +86,10 @@ namespace MifuminSoft.funyan.Core
             m_Strength = s;
             for (int i = 0; i < m_ParticleCount; i++)
             {
-                m_Particle[i].x = m_Left + CApp::random(w * 32);
-                m_Particle[i].y = CApp::random(32);
-                m_Particle[i].color = CApp::random(2);
-                m_Particle[i].dx = m_Strength * (0.5f + (float)CApp::random(4096) / 4096);
+                m_Particle[i].x = m_Left + CApp.theApp.random(w * 32);
+                m_Particle[i].y = CApp.theApp.random(32);
+                m_Particle[i].color = CApp.theApp.random(2);
+                m_Particle[i].dx = m_Strength * (0.5f + (float)CApp.theApp.random(4096) / 4096);
             }
         }
         public override void Dispose()

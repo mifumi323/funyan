@@ -39,7 +39,7 @@ namespace MifuminSoft.funyan.Core
         }
         public void OnPreDraw()
         {
-            if (CApp::random(40)) { m_Phase++; m_Phase %= PHASEMAX; }
+            if (CApp.theApp.random(40) != 0) { m_Phase++; m_Phase %= PHASEMAX; }
             m_Size = GetSize();
         }
         public void OnDraw(CDIB32* lp)
@@ -53,7 +53,7 @@ namespace MifuminSoft.funyan.Core
         {
             m_IceList.Add(this);
             SetPos(x * 32 + 16, y * 32 + 16);
-            m_Phase = CApp::random(PHASEMAX);
+            m_Phase = CApp.theApp.random(PHASEMAX);
             m_Size = GetSize();
         }
         public override void Dispose()

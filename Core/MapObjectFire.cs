@@ -43,7 +43,7 @@ namespace MifuminSoft.funyan.Core
         public static IEnumerable<Cf3MapObjectFire> All() { return m_FireList; }
         public void OnPreDraw()
         {
-            if (CApp::random(40)) { m_Phase++; m_Phase %= PHASEMAX; }
+            if (CApp.theApp.random(40)) { m_Phase++; m_Phase %= PHASEMAX; }
             if (m_Size < GetSize()) { m_Size++; }
             else if (m_Size > GetSize()) { m_Size--; }
         }
@@ -105,7 +105,7 @@ namespace MifuminSoft.funyan.Core
             m_Delay = 0;
             m_FireList.Add(this);
             SetPos(x * 32 + 16, y * 32 + 16);
-            m_Phase = CApp::random(PHASEMAX);
+            m_Phase = CApp.theApp.random(PHASEMAX);
             m_Size = GetSize();
         }
         public override void Dispose()

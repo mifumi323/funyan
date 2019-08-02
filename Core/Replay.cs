@@ -87,7 +87,7 @@ public class Cf3Replay : IDisposable
         // Recorder
         public void Save(Cf3StageFile* stage, int map)
 {
-	if (CApp::MakeFileName(m_FileName,"f3r", Cf3Setting.theSetting.m_RecordNumber,true)) {
+	if (CApp.theApp.MakeFileName(out m_FileName,"f3r", Cf3Setting.theSetting.m_RecordNumber,true)) {
 		Cf3StageFile data;
                 CT chunk;
                 uint size;

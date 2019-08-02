@@ -347,7 +347,7 @@ namespace MifuminSoft.funyan.Core
                     pHit = new CDIB32;
                     pHit->CreateSurface(384, 32);
                     pHit->BltFast(CResourceManager.ResourceManager.Get(RID.RID_HIT), 0, 0);
-                    pHit->SubColorFast(theApp->random(0x1000000));
+                    pHit->SubColorFast(CApp.theApp.random(0x1000000));
                 }
                 sx = sy = 0;
                 GetViewPos(ref sx, ref sy);
