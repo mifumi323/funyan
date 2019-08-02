@@ -151,7 +151,7 @@ namespace MifuminSoft.funyan.Core
             m_funya = new Cf3MapObjectfunya(nCX, nCY);
             RemoveCharaFromList(m_funya);
             m_funya->m_bOriginal = false;
-            m_Graphic = ResourceManager.Get(RID_MRFRAME);
+            m_Graphic = CResourceManager.ResourceManager.Get(RID.RID_MRFRAME);
             SetPos(m_funya->m_X, m_funya->m_Y);
             m_nLife = 100;
         }

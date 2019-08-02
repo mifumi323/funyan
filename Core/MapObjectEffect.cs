@@ -38,7 +38,7 @@ namespace MifuminSoft.funyan.Core
 
         public void OnDraw(CDIB32* lp)
         {
-            CDIB32* graphic = ResourceManager.Get(RID_EFFECT);
+            CDIB32* graphic = CResourceManager.ResourceManager.Get(RID.RID_EFFECT);
             for (int i = 0; i < m_StarNum; i++)
             {
                 if (m_Star[i].n)
@@ -88,7 +88,6 @@ namespace MifuminSoft.funyan.Core
             m_Star = null;
             m_nEffectType = EffectType;
             m_EffectList.Add(this);
-            //	m_Graphic = ResourceManager.Get(RID_EFFECT);
             SetPos(x, y);
             if (EffectType == 0)
             {

@@ -442,8 +442,8 @@ namespace MifuminSoft.funyan.Core
                 case SMILE: CX = 18; break;
             }
             RECT rc = { CX * 32 + 1, CY * 32, CX * 32 + 31, CY * 32 + 30, };
-            CDIB32* graphic = ResourceManager.Get(RID_MAIN);
-            CDIB32* graphic2 = ResourceManager.Get(RID_MAINICY);
+            CDIB32* graphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
+            CDIB32* graphic2 = CResourceManager.ResourceManager.Get(RID.RID_MAINICY);
             lp->RotateBlt(m_nPower == 0 ? graphic : graphic2, &rc, m_nVX, m_nVY, m_Angle, 65536, 4);
             if (m_Power < -1.0f / 4096.0f)
             {

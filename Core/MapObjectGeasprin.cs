@@ -476,7 +476,7 @@ namespace MifuminSoft.funyan.Core
         public Cf3MapObjectGeasprin(int nCX, int nCY, f3MapObjectDirection direction = f3MapObjectDirection.DIR_LEFT) : base(f3MapObjectType.MOT_GEASPRIN)
         {
             m_EnemyList.Add(GetID(), this);
-            m_Graphic = ResourceManager.Get(RID_GEASPRIN);
+            m_Graphic = CResourceManager.ResourceManager.Get(RID.RID_GEASPRIN);
             SetPos(nCX * 32 + 16, nCY * 32 + 16);
             m_Direction = direction;
             m_Spring[DIR_FRONT] = m_Spring[DIR_LEFT] = m_Spring[DIR_RIGHT] = m_Spring2[DIR_FRONT] = m_Spring2[DIR_LEFT] = m_Spring2[DIR_RIGHT] = 0;

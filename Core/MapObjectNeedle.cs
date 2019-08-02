@@ -229,7 +229,7 @@ namespace MifuminSoft.funyan.Core
         public Cf3MapObjectNeedle(int nCX, int nCY, int nType = 0) : base(f3MapObjectType.MOT_NEEDLE)
         {
             m_EnemyList.Add(this);
-            m_Graphic = ResourceManager.Get(RID_NEEDLE);
+            m_Graphic = CResourceManager.ResourceManager.Get(RID.RID_NEEDLE);
             SetPos(nCX * 32 + 16, nCY * 32 + 17);
             switch (nType)
             {

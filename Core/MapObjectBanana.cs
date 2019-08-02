@@ -59,7 +59,7 @@ namespace MifuminSoft.funyan.Core
         public void OnDraw(CDIB32* lp)
         {
             if (!IsValid()) return;
-            static CDIB32* pGraphic = ResourceManager.Get(RID_MAIN);
+            static CDIB32* pGraphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
             RECT rc = { 320, 96, 352, 128, };
             SetViewPos(-16, -16);
             lp->BltNatural(pGraphic, m_nVX, m_nVY, &rc);

@@ -346,7 +346,7 @@ namespace MifuminSoft.funyan.Core
                 if (bShowHit) {
                     pHit = new CDIB32;
                     pHit->CreateSurface(384, 32);
-                    pHit->BltFast(ResourceManager.Get(RID_HIT), 0, 0);
+                    pHit->BltFast(CResourceManager.ResourceManager.Get(RID.RID_HIT), 0, 0);
                     pHit->SubColorFast(theApp->random(0x1000000));
                 }
                 sx = sy = 0;

@@ -269,7 +269,7 @@ namespace MifuminSoft.funyan.Core
             SetViewPos(-16, -16);
             int height = m_RootY - m_Y;
             RECT rc;
-            CDIB32* graphic = ResourceManager.Get(RID_EELPITCHER);
+            CDIB32* graphic = CResourceManager.ResourceManager.Get(RID.RID_EELPITCHER);
             if (m_State == EELLEAF || m_State == EELFROZEN)
             {
                 int offset1 = (m_State == EELLEAF ? 0 : 96);
@@ -345,7 +345,6 @@ namespace MifuminSoft.funyan.Core
             m_State = f3EelPitcherState.EELSEED;
             m_bBlinking = (false);
             m_EnemyList.Add(GetID(), this);
-            //	m_Graphic = ResourceManager.Get(RID_EELPITCHER);
             SetPos(nCX * 32 + 16, nCY * 32 + 16);
         }
         public override void Dispose()

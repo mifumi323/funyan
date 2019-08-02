@@ -759,8 +759,8 @@ public virtual void OnDraw(CDIB32* lp)
 }
 public Cf3MapObjectfunya(int nCX, int nCY)	:base(f3MapObjectType.MOT_FUNYA)
 {
-	m_Graphic = ResourceManager.Get(RID_MAIN);
-	m_Graphic2 = ResourceManager.Get(RID_MAINICY);
+	m_Graphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
+	m_Graphic2 = CResourceManager.ResourceManager.Get(RID.RID_MAINICY);
 	m_DX = m_DY = 0.0f;
 	m_ChargePower = 0.0f;
 	m_ChargeDec = 0.001f;
