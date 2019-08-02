@@ -77,7 +77,7 @@ namespace MifuminSoft.funyan.Core
             ex = sx + 320 / 32; ey = sy + 224 / 32;
             TL.Saturate(sx, ref ex, m_pParent->GetWidth() - 1);
             TL.Saturate(sy, ref ey, m_pParent->GetHeight() - 1);
-            for (Cf3MapObjectBase** it = m_pParent->GetMapObjects(sx - 3, sy - 3, ex + 3, ey + 3, MOT_EFFECT); (*it) != null; it++)
+            for (Cf3MapObjectBase** it = m_pParent->GetMapObjects(sx - 3, sy - 3, ex + 3, ey + 3,f3MapObjectType.MOT_EFFECT); (*it) != null; it++)
             {
                 if ((*it)->IsValid()) (*it)->OnDraw(lp);
             }

@@ -139,7 +139,7 @@ namespace MifuminSoft.funyan.Core
             m_Power = m_PowerX = m_PowerY = 0.0f;
             Cf3MapObjectBase** it;
             // ギヤバネ
-            for (it = m_pParent->GetMapObjects(m_nCX - 2, m_nCY - 2, m_nCX + 2, m_nCY + 2, MOT_GEASPRIN); (*it) != null; it++)
+            for (it = m_pParent->GetMapObjects(m_nCX - 2, m_nCY - 2, m_nCX + 2, m_nCY + 2,f3MapObjectType.MOT_GEASPRIN); (*it) != null; it++)
             {
                 if ((*it)->IsValid())
                 {
@@ -201,7 +201,7 @@ namespace MifuminSoft.funyan.Core
                 }
             }
             // とげとげ
-            for (it = m_pParent->GetMapObjects(m_nCX - 2, m_nCY - 2, m_nCX + 2, m_nCY + 2, MOT_NEEDLE); (*it) != null; it++)
+            for (it = m_pParent->GetMapObjects(m_nCX - 2, m_nCY - 2, m_nCX + 2, m_nCY + 2,f3MapObjectType.MOT_NEEDLE); (*it) != null; it++)
             {
                 if ((*it)->IsValid())
                 {
@@ -214,7 +214,7 @@ namespace MifuminSoft.funyan.Core
                 }
             }
             // ウナギカズラ
-            for (it = m_pParent->GetMapObjects(m_nCX - 2, m_nCY - 2, m_nCX + 2, m_nCY + 2, MOT_EELPITCHER); (*it) != null; it++)
+            for (it = m_pParent->GetMapObjects(m_nCX - 2, m_nCY - 2, m_nCX + 2, m_nCY + 2,f3MapObjectType.MOT_EELPITCHER); (*it) != null; it++)
             {
                 if ((*it)->IsValid() && ((Cf3MapObjectEelPitcher*)(*it))->IsLeaf())
                 {
@@ -235,7 +235,7 @@ namespace MifuminSoft.funyan.Core
             if (m_State != FROZEN)
             {
                 // 氷
-                for (it = m_pParent->GetMapObjects(m_nCX - 2, m_nCY - 2, m_nCX + 2, m_nCY + 2, MOT_ICE); (*it) != null; it++)
+                for (it = m_pParent->GetMapObjects(m_nCX - 2, m_nCY - 2, m_nCX + 2, m_nCY + 2,f3MapObjectType.MOT_ICE); (*it) != null; it++)
                 {
                     if ((*it)->IsValid() && ((Cf3MapObjectIce*)(*it))->GetSize() > 10)
                     {

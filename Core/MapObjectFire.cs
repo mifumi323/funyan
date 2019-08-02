@@ -18,7 +18,7 @@ namespace MifuminSoft.funyan.Core
             {
                 // ふにゃ
                 Cf3MapObjectBase** it;
-                for (it = m_pParent->GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1, MOT_FUNYA); (*it) != null; it++)
+                for (it = m_pParent->GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1,f3MapObjectType.MOT_FUNYA); (*it) != null; it++)
                 {
                     if ((*it)->IsValid() && ((Cf3MapObjectMain*)(*it))->IsFrozen())
                     {
@@ -28,7 +28,7 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
                 // 氷
-                for (it = m_pParent->GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1, MOT_ICE); (*it) != null; it++)
+                for (it = m_pParent->GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1,f3MapObjectType.MOT_ICE); (*it) != null; it++)
                 {
                     if ((*it)->IsValid())
                     {
@@ -95,7 +95,7 @@ namespace MifuminSoft.funyan.Core
             ex = sx + 320 / 32; ey = sy + 224 / 32;
             TL.Saturate(sx, ref ex, m_pParent->GetWidth() - 1);
             TL.Saturate(sy, ref ey, m_pParent->GetHeight() - 1);
-            for (Cf3MapObjectBase** it = m_pParent->GetMapObjects(sx - 1, sy - 1, ex + 1, ey + 1, MOT_FIRE); (*it) != null; it++)
+            for (Cf3MapObjectBase** it = m_pParent->GetMapObjects(sx - 1, sy - 1, ex + 1, ey + 1,f3MapObjectType.MOT_FIRE); (*it) != null; it++)
             {
                 if ((*it)->IsValid()) (*it)->OnDraw(lp);
             }

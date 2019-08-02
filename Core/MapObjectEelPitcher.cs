@@ -71,7 +71,7 @@ namespace MifuminSoft.funyan.Core
             obj->GetPos(out var objX, out var objY);
             switch (obj->GetMapObjectType())
             {
-                case MOT_FUNYA:
+                case f3MapObjectType.MOT_FUNYA:
                     {
                         if (TL.IsIn(m_X - 16, objX, m_X + 16))
                         {
@@ -83,8 +83,8 @@ namespace MifuminSoft.funyan.Core
                         }
                         break;
                     }
-                case MOT_NEEDLE:
-                case MOT_GEASPRIN:
+                case f3MapObjectType.MOT_NEEDLE:
+                case f3MapObjectType.MOT_GEASPRIN:
                     {
                         if (TL.IsIn(m_X - 16, objX, m_X + 16))
                         {
@@ -110,13 +110,13 @@ namespace MifuminSoft.funyan.Core
             Cf3MapObjectBase** it;
             if (m_State == EELLEAF)
             {
-                for (it = m_pParent->GetMapObjects(cx - 2, cy - 2, cx + 2, cy + 2, MOT_FUNYA); (*it) != null; it++)
+                for (it = m_pParent->GetMapObjects(cx - 2, cy - 2, cx + 2, cy + 2,f3MapObjectType.MOT_FUNYA); (*it) != null; it++)
                 {
                     if ((*it)->IsValid()) Reaction((*it));
                 }
                 if (m_RootY - m_Y > 16)
                 {
-                    for (it = m_pParent->GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1, MOT_ICE); (*it) != null; it++)
+                    for (it = m_pParent->GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1,f3MapObjectType.MOT_ICE); (*it) != null; it++)
                     {
                         if ((*it)->IsValid())
                         {
@@ -132,7 +132,7 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
             }
-            for (it = m_pParent->GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1, MOT_EELPITCHER); (*it) != null; it++)
+            for (it = m_pParent->GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1,f3MapObjectType.MOT_EELPITCHER); (*it) != null; it++)
             {
                 if ((*it)->IsValid() && (*it) != this)
                 {
@@ -177,11 +177,11 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
             }
-            for (it = m_pParent->GetMapObjects(cx - 2, cy - 2, cx + 2, cy + 2, MOT_GEASPRIN); (*it) != null; it++)
+            for (it = m_pParent->GetMapObjects(cx - 2, cy - 2, cx + 2, cy + 2,f3MapObjectType.MOT_GEASPRIN); (*it) != null; it++)
             {
                 if ((*it)->IsValid()) Reaction((*it));
             }
-            for (it = m_pParent->GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1, MOT_NEEDLE); (*it) != null; it++)
+            for (it = m_pParent->GetMapObjects(cx - 1, cy - 1, cx + 1, cy + 1,f3MapObjectType.MOT_NEEDLE); (*it) != null; it++)
             {
                 if ((*it)->IsValid()) Reaction((*it));
             }

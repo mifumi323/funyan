@@ -25,7 +25,7 @@ namespace MifuminSoft.funyan.Core
             ex = sx + 320 / 32; ey = sy + 224 / 32;
             TL.Saturate(sx, ref ex, m_pParent->GetWidth() - 1);
             TL.Saturate(sy, ref ey, m_pParent->GetHeight() - 1);
-            for (Cf3MapObjectBase** it = m_pParent->GetMapObjects(sx, sy, ex, ey, MOT_BANANA); (*it) != null; it++) {
+            for (Cf3MapObjectBase** it = m_pParent->GetMapObjects(sx, sy, ex, ey,f3MapObjectType.MOT_BANANA); (*it) != null; it++) {
                 if ((*it)->IsValid()) (*it)->OnDraw(lp);
             }
         }
@@ -34,7 +34,7 @@ namespace MifuminSoft.funyan.Core
         {
             if (!IsValid()) return;
             switch (obj->GetMapObjectType()) {
-                case MOT_FUNYA: {
+                case f3MapObjectType.MOT_FUNYA: {
                         GetCPos(out var cx1, out var cy1);
                         obj->GetCPos(out var cx2, out var cy2);
                         if (cx1 == cx2 && cy1 == cy2) {
@@ -52,7 +52,7 @@ namespace MifuminSoft.funyan.Core
         {
             if (!IsValid()) return;
             Cf3MapObjectBase** it;
-            for (it = m_pParent->GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1, MOT_FUNYA); (*it) != null; it++) {
+            for (it = m_pParent->GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1,f3MapObjectType.MOT_FUNYA); (*it) != null; it++) {
                 if ((*it)->IsValid()) Reaction((*it));
             }
         }
