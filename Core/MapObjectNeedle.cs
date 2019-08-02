@@ -14,12 +14,12 @@ namespace MifuminSoft.funyan.Core
                 case MOT_FUNYA:
                 case MOT_GEASPRIN:
                     {
-                        if (m_Type != NDT_VERTICAL || m_State != NDS_STOP || m_Speed != 0) return;
+                        if (m_Type != NDT.NDT_VERTICAL || m_State != NDS.NDS_STOP || m_Speed != 0) return;
                         if (TL.IsIn(m_X - 16, objX, m_X + 16))
                         {
                             if (TL.IsIn(m_Y + 15, objY, m_Y + 271))
                             {
-                                m_State = NDS_DOWN;
+                                m_State = NDS.NDS_DOWN;
                             }
                         }
                         break;
@@ -112,7 +112,7 @@ namespace MifuminSoft.funyan.Core
                         if (TL.IsIn(objY, m_Y, objY + 40))
                         {
                             // 食べられちゃった！！
-                            m_Type = NDT_DEAD;
+                            m_Type = NDT.NDT_DEAD;
                             new Cf3MapObjectEffect(m_X, m_Y, 0);
                         }
                     }
@@ -122,24 +122,24 @@ namespace MifuminSoft.funyan.Core
         public virtual void OnMove()
         {
             if (!IsValid()) return;
-            if (m_Type == NDT_UNDEFINED)
+            if (m_Type == NDT.NDT_UNDEFINED)
             {
                 // このタイミングで初期化
                 if (m_pParent->GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP))
                 {
-                    m_Type = NDT_HORIZONTAL;
-                    m_State = NDS_STOP;
+                    m_Type = NDT.NDT_HORIZONTAL;
+                    m_State = NDS.NDS_STOP;
                 }
                 else
                 {
-                    m_Type = NDT_VERTICAL;
+                    m_Type = NDT.NDT_VERTICAL;
                     m_StartY = m_Y;
-                    m_State = NDS_STOP;
+                    m_State = NDS.NDS_STOP;
                 }
             }
-            if (m_Type == NDT_HORIZONTAL)
+            if (m_Type == NDT.NDT_HORIZONTAL)
             {
-                if (m_State == NDS_STOP)
+                if (m_State == NDS.NDS_STOP)
                 {
                     TL.BringClose(ref m_Speed, 0.0f, 1.0f);
                     if (m_Speed == 0)
@@ -147,57 +147,57 @@ namespace MifuminSoft.funyan.Core
                         if (!m_pParent->GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP) ||
                             m_pParent->GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y) / 32), HIT.HIT_LEFT))
                         {
-                            m_State = NDS_LEFT;
+                            m_State = NDS.NDS_LEFT;
                         }
                         else
                         {
-                            m_State = NDS_RIGHT;
+                            m_State = NDS.NDS_RIGHT;
                         }
                     }
                 }
-                else if (m_State == NDS_LEFT)
+                else if (m_State == NDS.NDS_LEFT)
                 {
                     m_X -= 1;
                     if (!m_pParent->GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP) ||
                         m_pParent->GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor((m_Y) / 32), HIT.HIT_RIGHT))
                     {
-                        m_State = NDS_STOP;
+                        m_State = NDS.NDS_STOP;
                         m_Speed = 20;
                     }
                 }
-                else if (m_State == NDS_RIGHT)
+                else if (m_State == NDS.NDS_RIGHT)
                 {
                     m_X += 1;
                     if (!m_pParent->GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP) ||
                         m_pParent->GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y) / 32), HIT.HIT_LEFT))
                     {
-                        m_State = NDS_STOP;
+                        m_State = NDS.NDS_STOP;
                         m_Speed = 20;
                     }
                 }
             }
-            else if (m_Type == NDT_VERTICAL)
+            else if (m_Type == NDT.NDT_VERTICAL)
             {
-                if (m_State == NDS_STOP)
+                if (m_State == NDS.NDS_STOP)
                 {
                     if (m_Speed != 0)
                     {
                         TL.BringClose(ref m_Speed, 0.0f, 1.0f);
                         if (m_Speed == 0)
                         {
-                            m_State = NDS_UP;
+                            m_State = NDS.NDS_UP;
                         }
                     }
                 }
-                else if (m_State == NDS_UP)
+                else if (m_State == NDS.NDS_UP)
                 {
                     TL.BringClose(ref m_Y, m_StartY, 1.0f);
                     if (m_Y == m_StartY)
                     {
-                        m_State = NDS_STOP;
+                        m_State = NDS.NDS_STOP;
                     }
                 }
-                else if (m_State == NDS_DOWN)
+                else if (m_State == NDS.NDS_DOWN)
                 {
                     m_Speed += 0.2f;
                     TL.Saturate(0.0f, ref m_Speed, 10.0f);
@@ -206,16 +206,16 @@ namespace MifuminSoft.funyan.Core
                     {
                         m_Y = (float)Math.Floor((m_Y + 16) / 32) * 32 - 15;
                         m_Speed = 20;
-                        m_State = NDS_STOP;
+                        m_State = NDS.NDS_STOP;
                     }
                     else if (m_Y > m_pParent->GetHeight() * 32 + 16)
                     {
-                        m_Type = NDT_DEAD;
+                        m_Type = NDT.NDT_DEAD;
                         new Cf3MapObjectEffect(m_X, m_Y, 1);
                     }
                 }
             }
-            else if (m_Type == NDT_DEAD)
+            else if (m_Type == NDT.NDT_DEAD)
             {
                 Kill();
             }
@@ -234,20 +234,20 @@ namespace MifuminSoft.funyan.Core
             switch (nType)
             {
                 case 1:
-                    m_Type = NDT_HORIZONTAL;
-                    m_State = NDS_LEFT;
+                    m_Type = NDT.NDT_HORIZONTAL;
+                    m_State = NDS.NDS_LEFT;
                     break;
                 case 2:
-                    m_Type = NDT_VERTICAL;
+                    m_Type = NDT.NDT_VERTICAL;
                     m_StartY = m_Y;
-                    m_State = NDS_STOP;
+                    m_State = NDS.NDS_STOP;
                     break;
                 case 3:
-                    m_Type = NDT_HORIZONTAL;
-                    m_State = NDS_RIGHT;
+                    m_Type = NDT.NDT_HORIZONTAL;
+                    m_State = NDS.NDS_RIGHT;
                     break;
                 default:
-                    m_Type = NDT_UNDEFINED;
+                    m_Type = NDT.NDT_UNDEFINED;
                     break;
             }
             m_Speed = 0;
