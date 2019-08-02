@@ -48,26 +48,26 @@ namespace MifuminSoft.funyan.Core
                     }
             }
         }
-        public void Synergy()
+        public override void Synergy()
         {
             if (!IsValid()) return;
             foreach (var it in m_pParent.GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1, f3MapObjectType.MOT_FUNYA)) {
                 if (it.IsValid()) Reaction(it);
             }
         }
-        public void OnDraw(CDIB32* lp)
+        public override void OnDraw(CDIB32 lp)
         {
             if (!IsValid()) return;
-            static CDIB32* pGraphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
+            var pGraphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
             RECT rc = { 320, 96, 352, 128, };
             SetViewPos(-16, -16);
-            lp->BltNatural(pGraphic, m_nVX, m_nVY, &rc);
+            lp.BltNatural(pGraphic, m_nVX, m_nVY, &rc);
         }
         public Cf3MapObjectBanana(int nCX, int nCY) : base(f3MapObjectType.MOT_BANANA)
         {
             m_BananaList.Add(this);
             SetPos(nCX * 32 + 16, nCY * 32 + 16);
-            m_pParent->AddMapObject(m_nCX = nCX, m_nCY = nCY, this);
+            m_pParent.AddMapObject(m_nCX = nCX, m_nCY = nCY, this);
         }
         public override void Dispose()
         {

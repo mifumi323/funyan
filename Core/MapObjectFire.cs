@@ -40,23 +40,23 @@ namespace MifuminSoft.funyan.Core
         }
         public bool IsActive() { return m_Delay == 0; }
         public static IEnumerable<Cf3MapObjectFire> All() { return m_FireList; }
-        public void OnPreDraw()
+        public override void OnPreDraw()
         {
             if (CApp.theApp.random(40)) { m_Phase++; m_Phase %= PHASEMAX; }
             if (m_Size < GetSize()) { m_Size++; }
             else if (m_Size > GetSize()) { m_Size--; }
         }
-        public void OnMove()
+        public override void OnMove()
         {
             if (m_Delay > 0) m_Delay--;
             else if (m_Delay < 0) m_Delay++;
         }
-        public void OnDraw(CDIB32* lp)
+        public override void OnDraw(CDIB32 lp)
         {
             if (!IsValid()) return;
             RECT rc = { (15 - m_Size) * 64, 64, (16 - m_Size) * 64, 128, };
             SetViewPos(-32, -32);
-            lp->BltNatural(m_Graphic, m_nVX, m_nVY, &rc);
+            lp.BltNatural(m_Graphic, m_nVX, m_nVY, &rc);
         }
         public int GetSize()
         {

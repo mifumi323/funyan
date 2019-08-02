@@ -8,8 +8,8 @@ namespace MifuminSoft.funyan.Core
         protected void Reaction(Cf3MapObjectBase obj)
         {
             if (obj == null) return;
-            obj->GetPos(out var objX, out var objY);
-            switch (obj->GetMapObjectType())
+            obj.GetPos(out var objX, out var objY);
+            switch (obj.GetMapObjectType())
             {
                 case f3MapObjectType.MOT_FUNYA:
                 case f3MapObjectType.MOT_GEASPRIN:
@@ -118,13 +118,13 @@ namespace MifuminSoft.funyan.Core
                 }
             }
         }
-        public virtual void OnMove()
+        public override void OnMove()
         {
             if (!IsValid()) return;
             if (m_Type == NDT.NDT_UNDEFINED)
             {
                 // このタイミングで初期化
-                if (m_pParent->GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP))
+                if (m_pParent.GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP))
                 {
                     m_Type = NDT.NDT_HORIZONTAL;
                     m_State = NDS.NDS_STOP;
@@ -143,8 +143,8 @@ namespace MifuminSoft.funyan.Core
                     TL.BringClose(ref m_Speed, 0.0f, 1.0f);
                     if (m_Speed == 0)
                     {
-                        if (!m_pParent->GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP) ||
-                            m_pParent->GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y) / 32), HIT.HIT_LEFT))
+                        if (!m_pParent.GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP) ||
+                            m_pParent.GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y) / 32), HIT.HIT_LEFT))
                         {
                             m_State = NDS.NDS_LEFT;
                         }
@@ -157,8 +157,8 @@ namespace MifuminSoft.funyan.Core
                 else if (m_State == NDS.NDS_LEFT)
                 {
                     m_X -= 1;
-                    if (!m_pParent->GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP) ||
-                        m_pParent->GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor((m_Y) / 32), HIT.HIT_RIGHT))
+                    if (!m_pParent.GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP) ||
+                        m_pParent.GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor((m_Y) / 32), HIT.HIT_RIGHT))
                     {
                         m_State = NDS.NDS_STOP;
                         m_Speed = 20;
@@ -167,8 +167,8 @@ namespace MifuminSoft.funyan.Core
                 else if (m_State == NDS.NDS_RIGHT)
                 {
                     m_X += 1;
-                    if (!m_pParent->GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP) ||
-                        m_pParent->GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y) / 32), HIT.HIT_LEFT))
+                    if (!m_pParent.GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP) ||
+                        m_pParent.GetHit((int)Math.Floor((m_X + 15) / 32), (int)Math.Floor((m_Y) / 32), HIT.HIT_LEFT))
                     {
                         m_State = NDS.NDS_STOP;
                         m_Speed = 20;
@@ -201,13 +201,13 @@ namespace MifuminSoft.funyan.Core
                     m_Speed += 0.2f;
                     TL.Saturate(0.0f, ref m_Speed, 10.0f);
                     m_Y += m_Speed;
-                    if (m_pParent->GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP))
+                    if (m_pParent.GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor((m_Y + 16) / 32), HIT.HIT_TOP))
                     {
                         m_Y = (float)Math.Floor((m_Y + 16) / 32) * 32 - 15;
                         m_Speed = 20;
                         m_State = NDS.NDS_STOP;
                     }
-                    else if (m_Y > m_pParent->GetHeight() * 32 + 16)
+                    else if (m_Y > m_pParent.GetHeight() * 32 + 16)
                     {
                         m_Type = NDT.NDT_DEAD;
                         new Cf3MapObjectEffect(m_X, m_Y, 1);
@@ -219,11 +219,11 @@ namespace MifuminSoft.funyan.Core
                 Kill();
             }
         }
-        public virtual void OnDraw(CDIB32* lp)
+        public override void OnDraw(CDIB32 lp)
         {
             if (!IsValid()) return;
             SetViewPos(-15, -15);
-            lp->Blt(m_Graphic, m_nVX, m_nVY);
+            lp.Blt(m_Graphic, m_nVX, m_nVY);
         }
         public Cf3MapObjectNeedle(int nCX, int nCY, int nType = 0) : base(f3MapObjectType.MOT_NEEDLE)
         {

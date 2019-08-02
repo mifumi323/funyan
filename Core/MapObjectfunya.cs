@@ -153,7 +153,7 @@ namespace MifuminSoft.funyan.Core
                 CB = (int)Math.Floor((m_Y + 14) / 32);
             if (m_DX >= 0) {    // 右へ
                 if (CR != CX) {
-                    if (m_pParent->GetHit(CR,CY,HIT.HIT_LEFT)) {
+                    if (m_pParent.GetHit(CR,CY,HIT.HIT_LEFT)) {
                         m_X = 18 + 32 * CX;
                         m_DX = 0;
                         m_HitRight = true;
@@ -162,7 +162,7 @@ namespace MifuminSoft.funyan.Core
             }
             if (m_DX <= 0) {    // 左へ
                 if (CL != CX) {
-                    if (m_pParent->GetHit(CL,CY,HIT.HIT_RIGHT)) {
+                    if (m_pParent.GetHit(CL,CY,HIT.HIT_RIGHT)) {
                         m_X = 14 + 32 * CX;
                         m_DX = 0;
                         m_HitLeft = true;
@@ -170,7 +170,7 @@ namespace MifuminSoft.funyan.Core
                 }
                 else if ((double)CL == ceil((m_X - 14) / 32)) {
                     // (m_X-14)/32が整数ということは境界値でギリギリ当たっているということ！！
-                    if (m_pParent->GetHit(CL - 1,CY,HIT.HIT_RIGHT)) {
+                    if (m_pParent.GetHit(CL - 1,CY,HIT.HIT_RIGHT)) {
                         m_X = 14 + 32 * CX;
                         m_DX = 0;
                         m_HitLeft = true;
@@ -180,7 +180,7 @@ namespace MifuminSoft.funyan.Core
             m_HitBottom = m_OnEnemy;
             if (m_DY >= 0) {    // 落ちるとき
                 if (CB != CY) {
-                    if (m_pParent->GetHit(CX,CB,HIT.HIT_TOP)) {
+                    if (m_pParent.GetHit(CX,CB,HIT.HIT_TOP)) {
                         m_Y = 18 + 32 * CY;
                         m_DY = 0;
                         m_HitBottom = true;
@@ -189,15 +189,15 @@ namespace MifuminSoft.funyan.Core
             }
             else if (m_DY < 0) {    // 飛ぶとき
                 if (CT != CY) {
-                    if (m_pParent->GetHit(CX,CT,HIT.HIT_BOTTOM)) {
+                    if (m_pParent.GetHit(CX,CT,HIT.HIT_BOTTOM)) {
                         m_Y = 14 + 32 * CY;
                         m_DY = 0;
                         m_HitTop = true;
                     }
                 }
             }
-            if (m_pParent->GetHit(CX,CY,HIT.HIT_DEATH)) Die();
-            if (m_Y - 14 > 32 * m_pParent->GetHeight()) Die();
+            if (m_pParent.GetHit(CX,CY,HIT.HIT_DEATH)) Die();
+            if (m_Y - 14 > 32 * m_pParent.GetHeight()) Die();
         }
         protected void Stop()
         {
@@ -300,14 +300,14 @@ namespace MifuminSoft.funyan.Core
         {
             return m_State == DEAD;
         }
-        public void GetViewPos(out int vx,out int vy)
+        public override void GetViewPos(out int vx,out int vy)
         {
-            if (m_pParent->IsPlayable()) {
+            if (m_pParent.IsPlayable()) {
                 int ox = 0, oy = 0, tx = 0, ty = 0;
-                if (m_pInput->GetKeyPressed(F3KEY_RIGHT)) tx += 1;
-                if (m_pInput->GetKeyPressed(F3KEY_LEFT)) tx += 2;
-                if (m_pInput->GetKeyPressed(F3KEY_DOWN)) ty += 1;
-                if (m_pInput->GetKeyPressed(F3KEY_UP)) ty += 2;
+                if (m_pInput.GetKeyPressed(F3KEY_RIGHT)) tx += 1;
+                if (m_pInput.GetKeyPressed(F3KEY_LEFT)) tx += 2;
+                if (m_pInput.GetKeyPressed(F3KEY_DOWN)) ty += 1;
+                if (m_pInput.GetKeyPressed(F3KEY_UP)) ty += 2;
                 if (tx == 0) {; }
                 else if (tx == 1) { m_VOffsetToX = 100; }
                 else if (tx == 2) { m_VOffsetToX = -100; }
@@ -406,13 +406,13 @@ namespace MifuminSoft.funyan.Core
             }
             if (m_State != FROZEN) {
                 // 氷
-                foreach (it in m_pParent.GetMapObjects(m_nCX - 2,m_nCY - 2,m_nCX + 2,m_nCY + 2,f3MapObjectType.MOT_ICE)) {
+                foreach (var it in m_pParent.GetMapObjects(m_nCX - 2,m_nCY - 2,m_nCX + 2,m_nCY + 2,f3MapObjectType.MOT_ICE)) {
                     if (it.IsValid() && ((Cf3MapObjectIce)it).GetSize() > 10) {
                         float objX, objY;
                         it.GetPos(objX,objY);
                         if ((objX - m_X) * (objX - m_X) + (objY - m_Y) * (objY - m_Y) < 256) {
                             // あたった！
-                            Freeze(((Cf3MapObjectIce*)(*it))->GetSize());
+                            Freeze(((Cf3MapObjectIce)it).GetSize());
                         }
                     }
                 }
@@ -455,12 +455,12 @@ namespace MifuminSoft.funyan.Core
                 }
             }
             // バナナ(BGMの調整用)
-            if (m_pParent->GetMainChara() == this) {
+            if (m_pParent.GetMainChara() == this) {
                 m_BananaDistance = MAXDISTANCE;
                 float bd;
                 int nBanana = 0, nPosition = 0;
                 int cx, cy;
-                foreach (var bn = Cf3MapObjectBanana.All()) {
+                foreach (var bn in Cf3MapObjectBanana.All()) {
                     if (bn.IsValid()) {
                         bn.GetCPos(cx,cy);
                         bd = (cx * 32 + 16 - m_X) * (cx * 32 + 16 - m_X) + (cy * 32 + 16 - m_Y) * (cy * 32 + 16 - m_Y);
@@ -509,15 +509,15 @@ namespace MifuminSoft.funyan.Core
             }
             if (m_Power < -1.0f / 4096.0f) { ++m_PoseCounter2 %= 40; }
         }
-        public void OnMove()
+        public override void OnMove()
         {
             if (!IsValid()) return;
-            if (!m_pParent->IsPlayable()) return;
+            if (!m_pParent.IsPlayable()) return;
             if (m_bFirst) { HitCheck(); m_bFirst = false; }
-            float Wind = m_pParent->GetWind((int)Math.Floor(m_X / 32),(int)Math.Floor(m_Y / 32));
-            float Friction = m_pParent->GetFriction((int)Math.Floor(m_X / 32),(int)Math.Floor((m_Y + 14) / 32));
+            float Wind = m_pParent.GetWind((int)Math.Floor(m_X / 32),(int)Math.Floor(m_Y / 32));
+            float Friction = m_pParent.GetFriction((int)Math.Floor(m_X / 32),(int)Math.Floor((m_Y + 14) / 32));
             float Gravity = GetGravity();
-            if (m_pParent->ItemCompleted()) Smile();
+            if (m_pParent.ItemCompleted()) Smile();
             if (Cf3Setting.theSetting.m_Hyper) m_nPower = 4;
             // 動かしま～す
             if (m_State == STANDING || m_State == SLEEPING || m_State == BLINKING) {
@@ -528,11 +528,11 @@ namespace MifuminSoft.funyan.Core
                 if (m_State == STANDING && ++m_Sleepy >= 30 * 40 / 3) Sleep();
                 if (m_State == BLINKING && --m_PoseCounter == 0) m_State = STANDING;
                 if (m_State == STANDING && CApp.theApp.random(120) == 0) Blink();
-                if (m_PowerY <= 0 && m_pInput->GetKeyPressed(F3KEY_JUMP)) StartJump();
-                if (m_PowerX <= 0 && m_pInput->GetKeyPressed(F3KEY_LEFT)) Run(DIR_LEFT);
-                if (m_PowerX >= 0 && m_pInput->GetKeyPressed(F3KEY_RIGHT)) Run(DIR_RIGHT);
-                if (m_pInput->GetKeyPressed(F3KEY_DOWN)) Sit();
-                if (m_pInput->GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
+                if (m_PowerY <= 0 && m_pInput.GetKeyPressed(F3KEY_JUMP)) StartJump();
+                if (m_PowerX <= 0 && m_pInput.GetKeyPressed(F3KEY_LEFT)) Run(DIR_LEFT);
+                if (m_PowerX >= 0 && m_pInput.GetKeyPressed(F3KEY_RIGHT)) Run(DIR_RIGHT);
+                if (m_pInput.GetKeyPressed(F3KEY_DOWN)) Sit();
+                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
                 if (!m_HitBottom) {
                     Fall();
                 }
@@ -540,16 +540,16 @@ namespace MifuminSoft.funyan.Core
             else if (m_State == RUNNING) {
                 // 走ってるとき
                 int AXL = 0, AXR = 0;
-                if (m_PowerX <= 0 && m_pInput->GetKeyPressed(F3KEY_LEFT)) AXL = 1;
-                if (m_PowerX >= 0 && m_pInput->GetKeyPressed(F3KEY_RIGHT)) AXR = 1;
+                if (m_PowerX <= 0 && m_pInput.GetKeyPressed(F3KEY_LEFT)) AXL = 1;
+                if (m_PowerX >= 0 && m_pInput.GetKeyPressed(F3KEY_RIGHT)) AXR = 1;
                 m_DX -= Friction * (m_DX - Wind) * RUNFRICTION;
                 m_DX += Friction * 2.0f * (AXR - AXL);
                 if (AXL && !AXR) m_Direction = DIR_LEFT;
                 if (AXR && !AXL) m_Direction = DIR_RIGHT;
                 if (!AXL && !AXR) Stop();
-                if (m_PowerY <= 0 && m_pInput->GetKeyPressed(F3KEY_JUMP)) StartJump();
-                if (m_pInput->GetKeyPressed(F3KEY_DOWN)) Sit();
-                if (m_pInput->GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
+                if (m_PowerY <= 0 && m_pInput.GetKeyPressed(F3KEY_JUMP)) StartJump();
+                if (m_pInput.GetKeyPressed(F3KEY_DOWN)) Sit();
+                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
                 if (!m_HitBottom) {
                     Fall();
                 }
@@ -557,16 +557,16 @@ namespace MifuminSoft.funyan.Core
             else if (m_State == WALKING) {
                 // 歩いてるとき
                 int AXL = 0, AXR = 0;
-                if (m_PowerX <= 0 && m_pInput->GetKeyPressed(F3KEY_LEFT)) AXL = 1;
-                if (m_PowerX >= 0 && m_pInput->GetKeyPressed(F3KEY_RIGHT)) AXR = 1;
+                if (m_PowerX <= 0 && m_pInput.GetKeyPressed(F3KEY_LEFT)) AXL = 1;
+                if (m_PowerX >= 0 && m_pInput.GetKeyPressed(F3KEY_RIGHT)) AXR = 1;
                 m_DX += WALKACCEL * (AXR - AXL);
                 m_DX -= m_DX * WALKFRICTION;
                 if (AXL & !AXR) m_Direction = DIR_LEFT;
                 if (AXR & !AXL) m_Direction = DIR_RIGHT;
                 if (!AXL & !AXR) m_Direction = DIR_FRONT;
-                if (!m_pInput->GetKeyPressed(F3KEY_DOWN)) Stop();
-                if (m_PowerY <= 0 && m_pInput->GetKeyPushed(F3KEY_JUMP)) StartJump();
-                if (m_pInput->GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
+                if (!m_pInput.GetKeyPressed(F3KEY_DOWN)) Stop();
+                if (m_PowerY <= 0 && m_pInput.GetKeyPushed(F3KEY_JUMP)) StartJump();
+                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
                 if (!m_HitBottom) Fall();
             }
             else if (m_State == CHARGING) {
@@ -576,17 +576,17 @@ namespace MifuminSoft.funyan.Core
                     if (m_ChargePower < 0) m_ChargePower = 0;
                 }
                 m_X -= m_DX;
-                if (m_pInput->GetKeyPushed(F3KEY_DOWN)) Sit();
-                if (m_pInput->GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
-                if (!m_pInput->GetKeyPressed(F3KEY_JUMP)) Jump();
+                if (m_pInput.GetKeyPushed(F3KEY_DOWN)) Sit();
+                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
+                if (!m_pInput.GetKeyPressed(F3KEY_JUMP)) Jump();
                 if (!m_HitBottom) Fall();
             }
             else if (m_State == JUMPING) {
                 // 空中
                 if (m_DY >= 0) {
                     int AXL = 0, AXR = 0;
-                    if (m_PowerX <= 0 && m_pInput->GetKeyPressed(F3KEY_LEFT)) AXL = 1;
-                    if (m_PowerX >= 0 && m_pInput->GetKeyPressed(F3KEY_RIGHT)) AXR = 1;
+                    if (m_PowerX <= 0 && m_pInput.GetKeyPressed(F3KEY_LEFT)) AXL = 1;
+                    if (m_PowerX >= 0 && m_pInput.GetKeyPressed(F3KEY_RIGHT)) AXR = 1;
                     m_DX -= (m_DX - Wind) * JUMPFRICTIONX;
                     m_DX += JUMPACCEL * (AXR - AXL);
                     if (AXL & !AXR) m_Direction = DIR_LEFT;
@@ -595,26 +595,26 @@ namespace MifuminSoft.funyan.Core
                 if (m_HitLeft || m_HitRight) m_Direction = DIR_FRONT;
                 m_DY += Gravity;
                 if (m_DY >= 0) {
-                    if (m_PowerY >= 0 && m_pInput->GetKeyPressed(F3KEY_DOWN)) m_DY += Gravity * ADDGRAVITY;
+                    if (m_PowerY >= 0 && m_pInput.GetKeyPressed(F3KEY_DOWN)) m_DY += Gravity * ADDGRAVITY;
                     m_DY -= m_DY * JUMPFRICTIONY;
-                    if (m_pInput->GetKeyPressed(F3KEY_UP)) {
+                    if (m_pInput.GetKeyPressed(F3KEY_UP)) {
                         m_DY += Gravity;
                         m_DY -= m_DY * JUMPFRICTIONY;
                     }
                 }
-                if (m_pInput->GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
+                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
                 if (m_HitBottom) Land();
             }
             else if (m_State == BREATHEIN) {
                 // 冷気充填中
                 m_ChargePower += 1.0f;
-                if (m_pInput->GetKeyPushed(F3KEY_LEFT)) m_Direction = DIR_LEFT;
-                if (m_pInput->GetKeyPushed(F3KEY_RIGHT)) m_Direction = DIR_RIGHT;
-                if (m_pInput->GetKeyPushed(F3KEY_UP)) m_Direction = DIR_FRONT;
+                if (m_pInput.GetKeyPushed(F3KEY_LEFT)) m_Direction = DIR_LEFT;
+                if (m_pInput.GetKeyPushed(F3KEY_RIGHT)) m_Direction = DIR_RIGHT;
+                if (m_pInput.GetKeyPushed(F3KEY_UP)) m_Direction = DIR_FRONT;
                 if (m_HitBottom) {
                     m_DX -= WINDFACTOR * (m_DX - Wind) * RUNFRICTION;
                     TL.BringClose(ref m_DX,0.0f,Friction);
-                    if (m_pInput->GetKeyPushed(F3KEY_DOWN)) Sit();
+                    if (m_pInput.GetKeyPushed(F3KEY_DOWN)) Sit();
                 } else {
                     m_ChargePower += 1.0f;
                     if (m_DY >= 0) {
@@ -625,7 +625,7 @@ namespace MifuminSoft.funyan.Core
                         m_DY -= m_DY * JUMPFRICTIONY;
                     }
                 }
-                if (!m_pInput->GetKeyPressed(F3KEY_ATTACK)) BreatheOut();
+                if (!m_pInput.GetKeyPressed(F3KEY_ATTACK)) BreatheOut();
             }
             else if (m_State == BREATHEOUT) {
                 // 冷気放出！！
@@ -694,11 +694,11 @@ namespace MifuminSoft.funyan.Core
         public virtual void OnDraw(CDIB32* lp)
         {
             if (!IsValid()) return;
-            if (m_pParent->ItemCompleted()) Smile();
+            if (m_pParent.ItemCompleted()) Smile();
             int CX = 0, CY = m_Direction;
             SetViewPos(-16,-15);
             if (m_State == STANDING) {  // 立ってるとき
-                if (m_pInput->GetKeyPressed(F3KEY_SMILE)) CX = 18;
+                if (m_pInput.GetKeyPressed(F3KEY_SMILE)) CX = 18;
             }
             else if (m_State == RUNNING) {
                 CX = m_PoseCounter < 6 ? m_PoseCounter + 2 : 14 - m_PoseCounter;
@@ -748,18 +748,18 @@ namespace MifuminSoft.funyan.Core
             }
             else if (m_State == BLINKING) {
                 CX = m_BananaDistance < MAXDISTANCE ? 1 : 30;
-                if (m_pInput->GetKeyPressed(F3KEY_SMILE)) CX = 18;
+                if (m_pInput.GetKeyPressed(F3KEY_SMILE)) CX = 18;
             }
             // あせあせ
             RECT rc = { CX * 32,CY * 32,CX * 32 + 32,CY * 32 + 32,};
-            lp->BltNatural(m_nPower == 0 ? m_Graphic : m_Graphic2,m_nVX,m_nVY,&rc);
+            lp.BltNatural(m_nPower == 0 ? m_Graphic : m_Graphic2,m_nVX,m_nVY,&rc);
             if (m_Power < -1.0f / 4096.0f) {
                 rc.left = (m_PoseCounter2 < 20 ? 0 : 64) +
-                    ((m_Direction != DIR_RIGHT && (int)Math.Floor(m_X / 32) < m_pParent->GetWidth() - 1) ? 0 : 128);
+                    ((m_Direction != DIR_RIGHT && (int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1) ? 0 : 128);
                 rc.top = 96;
                 rc.right = rc.left + 64;
                 rc.bottom = rc.top + 32;
-                lp->BltNatural(m_Graphic,m_nVX - 16,m_nVY,&rc);
+                lp.BltNatural(m_Graphic,m_nVX - 16,m_nVY,&rc);
             }
         }
         public Cf3MapObjectfunya(int nCX,int nCY) : base(f3MapObjectType.MOT_FUNYA)

@@ -50,19 +50,19 @@ namespace MifuminSoft.funyan.Core
                 if (it.IsValid()) it.OnDraw(lp);
             }
         }
-        public void OnDraw(CDIB32* lp)
+        public override void OnDraw(CDIB32 lp)
         {
             if (!IsValid() || m_Life <= 0) return;
             RECT rc;
             rc.left = 64 * (15 - GetSize()); rc.top = 0;
             rc.right = 64 * (16 - GetSize()); rc.bottom = 64;
             SetViewPos(-32, -32);
-            lp->BltNatural(m_Graphic, m_nVX, m_nVY, &rc);
+            lp.BltNatural(m_Graphic, m_nVX, m_nVY, &rc);
         }
-        public void OnMove()
+        public override void OnMove()
         {
             if (--m_Life <= 0) Kill();
-            float Wind = m_pParent->GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32));
+            float Wind = m_pParent.GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32));
             m_DX -= (m_DX - Wind) * FRICTION;
             m_DY += GRAVITY;
             m_DY -= m_DY * FRICTION;
@@ -72,7 +72,7 @@ namespace MifuminSoft.funyan.Core
             int s = GetSize();
             if (m_DX > 0) {
                 // 右側当たり判定
-                if (m_pParent->GetHit((int)Math.Floor((m_X + s) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_LEFT)) {
+                if (m_pParent.GetHit((int)Math.Floor((m_X + s) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_LEFT)) {
                     if ((int)Math.Floor((m_X + s) / 32) != (int)Math.Floor((m_X + s - m_DX) / 32)) {
                         m_DX *= -REFRECTION;
                         m_X = (int)Math.Floor((m_X + s) / 32) * 32 - s;
@@ -82,7 +82,7 @@ namespace MifuminSoft.funyan.Core
             }
             else if (m_DX < 0) {
                 // 左側当たり判定
-                if (m_pParent->GetHit((int)Math.Floor((m_X - s) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_RIGHT)) {
+                if (m_pParent.GetHit((int)Math.Floor((m_X - s) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_RIGHT)) {
                     if ((int)Math.Floor((m_X - s) / 32) != (int)Math.Floor((m_X - s - m_DX) / 32)) {
                         m_DX *= -REFRECTION;
                         m_X = (int)Math.Floor(m_X / 32) * 32 + s;
@@ -93,8 +93,8 @@ namespace MifuminSoft.funyan.Core
             m_Y += m_DY;
             if (m_DY > 0) {
                 // 下側当たり判定
-                if (m_pParent->GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor((m_Y + s) / 32), HIT.HIT_TOP)) {
-                    if (fl(int)Math.Flooroor((m_Y + s) / 32) != (int)Math.Floor((m_Y + s - m_DY) / 32)) {
+                if (m_pParent.GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor((m_Y + s) / 32), HIT.HIT_TOP)) {
+                    if ((int)Math.Floor((m_Y + s) / 32) != (int)Math.Floor((m_Y + s - m_DY) / 32)) {
                         m_DY *= -REFRECTION;
                         m_Y = (int)Math.Floor((m_Y + s) / 32) * 32 - s;
                         m_Life--;
@@ -103,7 +103,7 @@ namespace MifuminSoft.funyan.Core
             }
             else if (m_DY < 0) {
                 // 上側当たり判定
-                if (m_pParent->GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor((m_Y - s) / 32), HIT.HIT_BOTTOM)) {
+                if (m_pParent.GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor((m_Y - s) / 32), HIT.HIT_BOTTOM)) {
                     if ((int)Math.Floor((m_Y - s) / 32) != (int)Math.Floor((m_Y - s - m_DY) / 32)) {
                         m_DY *= -REFRECTION;
                         m_Y = (int)Math.Floor(m_Y / 32) * 32 + s;

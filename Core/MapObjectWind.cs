@@ -44,12 +44,12 @@ namespace MifuminSoft.funyan.Core
                 }
             }
         }
-        public void OnDraw(CDIB32* lp)
+        public override void OnDraw(CDIB32 lp)
         {
             SetViewPos();
             for (int i = 0; i < m_ParticleCount; i++)
             {
-                lp->BltFast(&m_Graphic[m_Particle[i].color & 1], m_nVX + m_Particle[i].x, m_nVY + m_Particle[i].y);
+                lp.BltFast(&m_Graphic[m_Particle[i].color & 1], m_nVX + m_Particle[i].x, m_nVY + m_Particle[i].y);
             }
         }
         public static void OnPreDrawAll()
@@ -59,7 +59,7 @@ namespace MifuminSoft.funyan.Core
                 if (it.IsValid()) it.OnPreDraw();
             }
         }
-        public static void OnDrawAll(CDIB32* lp)
+        public static void OnDrawAll(CDIB32 lp)
         {
             foreach (var it in m_WindList)
             {

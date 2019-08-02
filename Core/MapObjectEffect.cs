@@ -36,19 +36,19 @@ namespace MifuminSoft.funyan.Core
         protected tagStar[] m_Star;
         protected int m_StarNum;
 
-        public void OnDraw(CDIB32* lp)
+        public override void OnDraw(CDIB32 lp)
         {
-            CDIB32* graphic = CResourceManager.ResourceManager.Get(RID.RID_EFFECT);
+            var graphic = CResourceManager.ResourceManager.Get(RID.RID_EFFECT);
             for (int i = 0; i < m_StarNum; i++)
             {
                 if (m_Star[i].n)
                 {
                     SetViewPos(m_Star[i].x, m_Star[i].y);
-                    lp->Blt(graphic, m_nVX, m_nVY, &m_GraphicRect[m_Star[i].r]);
+                    lp.Blt(graphic, m_nVX, m_nVY, &m_GraphicRect[m_Star[i].r]);
                 }
             }
         }
-        public void OnPreDraw()
+        public override void OnPreDraw()
         {
             int n = m_StarNum;
             for (int i = 0; i < m_StarNum; i++)

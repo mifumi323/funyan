@@ -12,8 +12,8 @@ namespace MifuminSoft.funyan.Core
             m_State = m_Delay ? EELBUD : EELLEAF;
             m_RootX = m_X;
             m_RootY = (float)Math.Floor(m_Y / 32) * 32;
-            if (m_pParent->GetHit((int)Math.Floor((m_X - 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 1;
-            if (m_pParent->GetHit((int)Math.Floor((m_X + 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 2;
+            if (m_pParent.GetHit((int)Math.Floor((m_X - 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 1;
+            if (m_pParent.GetHit((int)Math.Floor((m_X + 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 2;
             m_Direction = (d == 1 ? DIR_RIGHT : (d == 2 ? DIR_LEFT : (CApp.theApp.random(2) != 0 ? DIR_LEFT : DIR_RIGHT)));
         }
         //	CDIB32* m_Graphic;
@@ -36,7 +36,7 @@ namespace MifuminSoft.funyan.Core
         private bool m_bBlinking;
 
         public bool IsLeaf() { return m_State == EELLEAF || m_State == EELFROZEN; }
-        public static void OnDrawAll(CDIB32* lp)
+        public static void OnDrawAll(CDIB32 lp)
         {
             foreach (var it in m_EnemyList)
             {
@@ -68,8 +68,8 @@ namespace MifuminSoft.funyan.Core
         public void Reaction(Cf3MapObjectBase obj)
         {
             if (obj == null || obj == this) return;
-            obj->GetPos(out var objX, out var objY);
-            switch (obj->GetMapObjectType())
+            obj.GetPos(out var objX, out var objY);
+            switch (obj.GetMapObjectType())
             {
                 case f3MapObjectType.MOT_FUNYA:
                     {
@@ -185,20 +185,20 @@ namespace MifuminSoft.funyan.Core
                 if (it.IsValid()) Reaction(it);
             }
         }
-        public void OnMove()
+        public override void OnMove()
         {
             if (m_State == EELLEAF)
             {
                 TL.BringClose(ref m_Y, m_RootY - m_Level * 32, 4.0f);
-                m_DX = m_DX + (m_pParent->GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32)) - m_DX) * m_Level * 0.1 + (m_RootX - m_X) * 0.025;
+                m_DX = m_DX + (m_pParent.GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32)) - m_DX) * m_Level * 0.1 + (m_RootX - m_X) * 0.025;
                 TL.Saturate(-14.0f, ref m_DX, 14.0f);
                 m_X += m_DX;
-                if (m_pParent->GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_RIGHT))
+                if (m_pParent.GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_RIGHT))
                 {
                     m_DX = 0;
                     m_X = (int)Math.Floor(m_X / 32) * 32 + 16;
                 }
-                else if (m_pParent->GetHit((int)Math.Floor((m_X + 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_LEFT))
+                else if (m_pParent.GetHit((int)Math.Floor((m_X + 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_LEFT))
                 {
                     m_DX = 0;
                     m_X = (int)Math.Floor(m_X / 32) * 32 + 16;
@@ -217,15 +217,15 @@ namespace MifuminSoft.funyan.Core
             else if (m_State == EELSEED)
             {
                 TL.BringClose(ref m_DY, 8.0f, 1.0f);
-                m_DX = m_DX + (m_pParent->GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32)) - m_DX) * 0.2;
+                m_DX = m_DX + (m_pParent.GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32)) - m_DX) * 0.2;
                 TL.Saturate(-14.0f, ref m_DX, 14.0f);
                 m_X += m_DX;
-                if (m_pParent->GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_RIGHT))
+                if (m_pParent.GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_RIGHT))
                 {
                     m_DX = 0;
                     m_X = (int)Math.Floor(m_X / 32) * 32 + 16;
                 }
-                else if (m_pParent->GetHit((int)Math.Floor((m_X + 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_LEFT))
+                else if (m_pParent.GetHit((int)Math.Floor((m_X + 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_LEFT))
                 {
                     m_DX = 0;
                     m_X = (int)Math.Floor(m_X / 32) * 32 + 16;
@@ -234,19 +234,19 @@ namespace MifuminSoft.funyan.Core
                 if ((int)Math.Floor(m_Y / 32) != (int)Math.Floor((m_Y - m_DY) / 32))
                 {
                     // 32ドット境界をまたいだ！！
-                    if (m_pParent->GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)
-                        || (int)Math.Floor(m_Y / 32) >= m_pParent->GetHeight())
+                    if (m_pParent.GetHit((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)
+                        || (int)Math.Floor(m_Y / 32) >= m_pParent.GetHeight())
                     {
                         Seed();
                     }
                     else
                     {
-                        if (m_pParent->GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_RIGHT))
+                        if (m_pParent.GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_RIGHT))
                         {
                             m_DX = 0;
                             m_X = (int)Math.Floor(m_X / 32) * 32 + 16;
                         }
-                        else if (m_pParent->GetHit((int)Math.Floor((m_X + 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_LEFT))
+                        else if (m_pParent.GetHit((int)Math.Floor((m_X + 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_LEFT))
                         {
                             m_DX = 0;
                             m_X = (int)Math.Floor(m_X / 32) * 32 + 16;
@@ -268,7 +268,7 @@ namespace MifuminSoft.funyan.Core
             SetViewPos(-16, -16);
             int height = m_RootY - m_Y;
             RECT rc;
-            CDIB32* graphic = CResourceManager.ResourceManager.Get(RID.RID_EELPITCHER);
+            var graphic = CResourceManager.ResourceManager.Get(RID.RID_EELPITCHER);
             if (m_State == EELLEAF || m_State == EELFROZEN)
             {
                 int offset1 = (m_State == EELLEAF ? 0 : 96);
@@ -278,7 +278,7 @@ namespace MifuminSoft.funyan.Core
                 int height1 = (height >= 16 ? 32 : height + 16);
                 rc.left = offset1 + offset2; rc.top = offset3;
                 rc.right = rc.left + 32; rc.bottom = rc.top + height1;
-                lp->Blt(graphic, m_nVX, m_nVY, &rc);
+                lp.Blt(graphic, m_nVX, m_nVY, &rc);
                 // 茎
                 if (height > 16)
                 {
@@ -292,7 +292,7 @@ namespace MifuminSoft.funyan.Core
                         rc.right = rc.left + 32; rc.bottom = rc.top + h2;
                         // +0.5fは小数点以下四捨五入のため
                         SetViewPos(-16 + (m_RootX - m_X) * (i - 16) / (height - 16) + 0.5f, -16);
-                        lp->Blt(graphic, m_nVX, m_nVY + 16 + i, &rc);
+                        lp.Blt(graphic, m_nVX, m_nVY + 16 + i, &rc);
                     }
                 }
                 SetViewPos(-16, -16);
@@ -302,7 +302,7 @@ namespace MifuminSoft.funyan.Core
                     int height3 = height - 16;
                     rc.left = offset1 + offset2; rc.top = 80;
                     rc.right = rc.left + 32; rc.bottom = rc.top + height3;
-                    lp->Blt(graphic, m_nVX, m_nVY + 32, &rc);
+                    lp.Blt(graphic, m_nVX, m_nVY + 32, &rc);
                 }
                 else if (TL.IsIn(33, height, 48))
                 {
@@ -310,29 +310,29 @@ namespace MifuminSoft.funyan.Core
                     // ふくろ
                     rc.left = offset1 + offset2; rc.top = 64;
                     rc.right = rc.left + 32; rc.bottom = rc.top + height2;
-                    lp->Blt(graphic, m_nVX, m_nVY + 32, &rc);
+                    lp.Blt(graphic, m_nVX, m_nVY + 32, &rc);
                     // あご
                     rc.left = offset1 + offset2; rc.top = 80;
                     rc.right = rc.left + 32; rc.bottom = rc.top + 16;
-                    lp->Blt(graphic, m_nVX, m_nVY + height, &rc);
+                    lp.Blt(graphic, m_nVX, m_nVY + height, &rc);
                 }
                 else if (height > 48)
                 {
                     // ふくろ
                     rc.left = offset1 + offset2; rc.top = 64;
                     rc.right = rc.left + 32; rc.bottom = rc.top + 16;
-                    lp->Blt(graphic, m_nVX, m_nVY + 32, &rc);
+                    lp.Blt(graphic, m_nVX, m_nVY + 32, &rc);
                     // あご
                     rc.left = offset1 + offset2; rc.top = 80;
                     rc.right = rc.left + 32; rc.bottom = rc.top + 16;
-                    lp->Blt(graphic, m_nVX, m_nVY + 48, &rc);
+                    lp.Blt(graphic, m_nVX, m_nVY + 48, &rc);
                 }
             }
             else if (m_State == EELSEED)
             {
                 rc.left = 0; rc.top = 0;
                 rc.right = 32; rc.bottom = 32;
-                lp->Blt(graphic, m_nVX, m_nVY, &rc);
+                lp.Blt(graphic, m_nVX, m_nVY, &rc);
             }
         }
         public Cf3MapObjectEelPitcher(int nCX, int nCY) : base(f3MapObjectType.MOT_EELPITCHER)
