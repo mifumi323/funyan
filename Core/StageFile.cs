@@ -76,7 +76,7 @@ namespace MifuminSoft.funyan.Core
                 dwSrcSize += 4 + 4 +::GlobalSize((*it).second);
             }
             // 書き込むデータを用意する
-            BYTE* lpSrcAdr = new BYTE[dwSrcSize];
+            var lpSrcAdr = new byte[dwSrcSize];
             BYTE* lpPos = lpSrcAdr;
             for (it = m_Data.begin(); it != m_Data.end(); it++) {
                 DWORD chunksize = ::GlobalSize((*it).second);
@@ -99,7 +99,7 @@ namespace MifuminSoft.funyan.Core
             if (lzss.Encode(lpSrcAdr, lpDstAdr, dwSrcSize, dwDstSize)) {
                 dwDstSize = dwSrcSize;
                 lpDstAdr = lpSrcAdr;
-                lpSrcAdr = new BYTE[1];
+                lpSrcAdr = new byte[1];
             }
 
             // やーとこさ書き込みジャー

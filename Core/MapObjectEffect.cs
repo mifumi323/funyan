@@ -41,10 +41,10 @@ namespace MifuminSoft.funyan.Core
             var graphic = CResourceManager.ResourceManager.Get(RID.RID_EFFECT);
             for (int i = 0; i < m_StarNum; i++)
             {
-                if (m_Star[i].n)
+                if (m_Star[i].n != 0)
                 {
                     SetViewPos(m_Star[i].x, m_Star[i].y);
-                    lp.Blt(graphic, m_nVX, m_nVY, &m_GraphicRect[m_Star[i].r]);
+                    lp.Blt(graphic, m_nVX, m_nVY, m_GraphicRect[m_Star[i].r]);
                 }
             }
         }
@@ -53,7 +53,7 @@ namespace MifuminSoft.funyan.Core
             int n = m_StarNum;
             for (int i = 0; i < m_StarNum; i++)
             {
-                if (m_Star[i].n) m_Star[i].n--; else n--;
+                if (m_Star[i].n != 0) m_Star[i].n--; else n--;
                 m_Star[i].dx *= m_Star[i].f;
                 m_Star[i].dy *= m_Star[i].f;
                 m_Star[i].x += m_Star[i].dx;
@@ -95,7 +95,7 @@ namespace MifuminSoft.funyan.Core
                 m_Star = new tagStar[m_StarNum];
                 for (int i = 0; i < m_StarNum; i++)
                 {
-                    float rad = 2.0 * PI * i / m_StarNum;
+                    float rad = 2.0f * PI * i / m_StarNum;
                     m_Star[i].dx = 4.0f * cos(rad) * (0.5 + 0.5 / 4096.0 * CApp.theApp.random(4096));
                     m_Star[i].dy = 4.0f * sin(rad) * (0.5 + 0.5 / 4096.0 * CApp.theApp.random(4096));
                     m_Star[i].x = 0;
@@ -110,10 +110,10 @@ namespace MifuminSoft.funyan.Core
                 m_Star = new tagStar[m_StarNum];
                 for (int i = 0; i < m_StarNum; i++)
                 {
-                    float rad = 2.0 * PI * i / m_StarNum;
+                    float rad = 2.0f * PI * i / m_StarNum;
                     m_Star[i].dx = 0;
-                    m_Star[i].dy = -16.0f * (0.5 + 0.5 / 4096.0 * CApp.theApp.random(4096));
-                    m_Star[i].x = 32 * (-0.5 + 1.0 / 4096.0 * CApp.theApp.random(4096));
+                    m_Star[i].dy = -16.0f * (0.5f + 0.5f / 4096.0f * CApp.theApp.random(4096));
+                    m_Star[i].x = 32f * (-0.5f + 1.0f / 4096.0f * CApp.theApp.random(4096));
                     m_Star[i].y = 0;
                     m_Star[i].f = 0.9f;
                     m_Star[i].n = 35 + CApp.theApp.random(10);

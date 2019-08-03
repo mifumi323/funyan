@@ -101,7 +101,7 @@ namespace MifuminSoft.funyan.Core
             m_bValid = false;
         }
         public bool IsValid() { return m_bValid; }
-        public void SetPos(float x, float y) { m_X = x; m_Y = y; }
+        public virtual void SetPos(float x, float y) { m_X = x; m_Y = y; }
         public void GetPos(out float x, out float y) { x = m_X; y = m_Y; }
 
         public int GetID() { return m_nID; }

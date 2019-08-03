@@ -49,7 +49,7 @@ namespace MifuminSoft.funyan.Core
         public void Reset()
         {
             m_State.clear();
-            m_State.push_back(CKeyState());
+            m_State.push_back(new CKeyState());
             m_nSize = 0;
             Seek();
             DELETE_SAFE(m_pPlayerState);
@@ -67,7 +67,7 @@ namespace MifuminSoft.funyan.Core
             m_nPointer++;
             if (m_nPointer >= REPLAYBUFFER) {
                 if (++m_iPointer == m_State.end()) {
-                    m_State.push_back(CKeyState());
+                    m_State.push_back(new CKeyState());
                     m_iPointer = m_State.end();
                     m_iPointer--;
                 }
@@ -88,12 +88,12 @@ namespace MifuminSoft.funyan.Core
         public void Save(Cf3StageFile stage,int map)
         {
             if (CApp.theApp.MakeFileName(out m_FileName,"f3r",Cf3Setting.theSetting.m_RecordNumber,true)) {
-                Cf3StageFile data;
+                var data = new Cf3StageFile();
                 CT chunk;
                 uint size;
-                BYTE* ptr;
+                byte[] ptr;
                 // キー入力情報をこーんぽたーじゅ(謎)
-                ptr = new BYTE[m_nSize * 2];
+                ptr = new byte[m_nSize * 2];
                 Seek();
                 while (!Finished()) {
                     ptr[m_nProgress * 2] = (*m_iPointer).pressed[m_nPointer];
@@ -183,8 +183,8 @@ namespace MifuminSoft.funyan.Core
             m_pPlayerState.map.OnPreDraw();
             Progress();
         }
-        void OnDraw(CDIB32* lp) { m_pPlayerState.map.OnDraw(lp); }
-        Cf3Map GetMap() { return m_pPlayerState.map; }
+        public void OnDraw(CDIB32 lp) { m_pPlayerState.map.OnDraw(lp); }
+        public Cf3Map GetMap() { return m_pPlayerState.map; }
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -76,18 +77,18 @@ namespace MifuminSoft.funyan.Core
             if (m_pParent.ItemCompleted()) m_funya.Smile();
             int CX = 0, CY = m_funya.m_Direction;
             SetViewPos(-16, -15);
-            if (m_funya.m_State == Cf3MapObjectfunya::STANDING)
+            if (m_funya.m_State == f3MainCharaState.STANDING)
             {   // 立ってるとき
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::RUNNING)
+            else if (m_funya.m_State == f3MainCharaState.RUNNING)
             {
                 CX = m_funya.m_PoseCounter < 6 ? m_funya.m_PoseCounter + 2 : 14 - m_funya.m_PoseCounter;
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::WALKING)
+            else if (m_funya.m_State == f3MainCharaState.WALKING)
             {
                 CX = 11;
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::CHARGING)
+            else if (m_funya.m_State == f3MainCharaState.CHARGING)
             {
                 CX =
                 (m_funya.m_ChargePower >= m_funya.m_JumpFunc[0].Power ? 24 :
@@ -96,54 +97,54 @@ namespace MifuminSoft.funyan.Core
                 (m_funya.m_ChargePower >= m_funya.m_JumpFunc[3].Power ? 12 :
                 12))));
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::JUMPING)
+            else if (m_funya.m_State == f3MainCharaState.JUMPING)
             {
                 CX = ((m_funya.m_DY >= 0) ? 10 : 9);
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::BREATHEIN)
+            else if (m_funya.m_State == f3MainCharaState.BREATHEIN)
             {
                 if (m_funya.m_ChargePower < 40.0f) { CX = 15; }
                 else if (m_funya.m_ChargePower < 120.0f) { CX = 16; }
                 else { CX = 17; }
                 if (!m_funya.m_HitBottom) CX += 12;
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::BREATHEOUT)
+            else if (m_funya.m_State == f3MainCharaState.BREATHEOUT)
             {
                 CX = 14;
                 if (!m_funya.m_HitBottom) CX += 12;
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::TIRED)
+            else if (m_funya.m_State == f3MainCharaState.TIRED)
             {
                 CX = ((m_funya.m_PoseCounter + 1) % 40 < 20) ? 21 : 22;
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::DAMAGED)
+            else if (m_funya.m_State == f3MainCharaState.DAMAGED)
             {
                 CX = 13;
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::FROZEN)
+            else if (m_funya.m_State == f3MainCharaState.FROZEN)
             {
                 CX = 23;
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::DEAD)
+            else if (m_funya.m_State == f3MainCharaState.DEAD)
             {
                 CX = 13; CY = 0;
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::SMILING)
+            else if (m_funya.m_State == f3MainCharaState.SMILING)
             {
                 CX = 18; CY = 0;
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::SLEEPING)
+            else if (m_funya.m_State == f3MainCharaState.SLEEPING)
             {
                 CX = 19 + (int)(m_funya.m_PoseCounter >= 20);
                 if (m_funya.m_Power < -1.0f / 4096.0f) CX += 2;
                 CY = 0;
             }
-            else if (m_funya.m_State == Cf3MapObjectfunya::BLINKING)
+            else if (m_funya.m_State == f3MainCharaState.BLINKING)
             {
                 CX = 1;
             }
-            RECT rc = { CX * 32, CY * 32, CX * 32 + 32, CY * 32 + 32, };
-            lp.BltNatural(m_Graphic, m_nVX, m_nVY, &rc);
+            var rc = new Rectangle(CX* 32, CY * 32, 32, 32);
+            lp.BltNatural(m_Graphic, m_nVX, m_nVY, rc);
         }
         public Cf3MapObjectmrframe(int nCX, int nCY) : base(f3MapObjectType.MOT_FUNYA)
         {

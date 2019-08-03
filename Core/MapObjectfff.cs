@@ -18,15 +18,15 @@ namespace MifuminSoft.funyan.Core
         {
             int p = (int)Math.Floor(m_ChargePower / 40.0f) + 1;
             TL.Saturate(1, ref p, m_nPower);
-            int start = -m_Angle + (p - 1) * 16, angle;
+            int start = (int)(-m_Angle + (p - 1) * 16), angle;
             for (int i = 0; i < p; i++)
             {
                 angle = start - 32 * i;
                 new Cf3MapObjectIce(
-                    m_X + CSinTable::Sin(angle) * 16 / 65536,
-                    m_Y - CSinTable::Cos(angle) * 16 / 65536,
-                    m_DX + CSinTable::Sin(angle) * 6 / 65536,
-                    m_DY - CSinTable::Cos(angle) * 6 / 65536);
+                    m_X + CSinTable.Sin(angle) * 16 / 65536,
+                    m_Y - CSinTable.Cos(angle) * 16 / 65536,
+                    m_DX + CSinTable.Sin(angle) * 6 / 65536,
+                    m_DY - CSinTable.Cos(angle) * 6 / 65536);
             }
             m_nPower -= p;
             m_State = BREATHEOUT;
@@ -34,7 +34,7 @@ namespace MifuminSoft.funyan.Core
         }
         private void BreatheIn()
         {
-            if (m_nPower)
+            if (m_nPower != 0)
             {
                 m_State = BREATHEIN;
                 m_ChargePower = 0.0f;
@@ -45,7 +45,7 @@ namespace MifuminSoft.funyan.Core
             m_State = FROZEN;
             m_PoseCounter = level * 8;
         }
-        private void Die()
+        public override void Die()
         {
             m_State = DEAD;
             m_DX = m_DY = 0;
@@ -294,7 +294,7 @@ namespace MifuminSoft.funyan.Core
             // バナナ(BGMの調整用)
             if (m_pParent.GetMainChara() == this)
             {
-                float bd, bananaDistance = 1e10;
+                float bd, bananaDistance = 1e10f;
                 int nBanana = 0, nPosition = 0;
                 int cx, cy;
                 foreach (var bn in Cf3MapObjectBanana.All())
@@ -309,7 +309,7 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
                 CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANADISTANCE, bananaDistance);
-                CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANAPOSITION, nBanana ? (float)nPosition / nBanana : 0.0f);
+                CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANAPOSITION, nBanana != 0 ? (float)nPosition / nBanana : 0.0f);
             }
         }
         public bool IsDied() { return m_State == DEAD; }
@@ -377,7 +377,7 @@ namespace MifuminSoft.funyan.Core
                 m_DY -= m_DY * FLYFRICTION;
                 if (m_ChargePower <= 0.0f)
                 {
-                    if (m_nPower)
+                    if (m_nPower != 0)
                     {
                         m_State = NORMAL;
                     }
@@ -417,7 +417,7 @@ namespace MifuminSoft.funyan.Core
             m_Y += m_DY;
             HitCheck();
         }
-        public void OnDraw(CDIB32 lp)
+        public override void OnDraw(CDIB32 lp)
         {
             if (!IsValid()) return;
             if (m_pParent.ItemCompleted()) Smile();
@@ -447,10 +447,7 @@ namespace MifuminSoft.funyan.Core
             lp.RotateBlt(m_nPower == 0 ? graphic : graphic2, rc, m_nVX, m_nVY, m_Angle, 65536, 4);
             if (m_Power < -1.0f / 4096.0f)
             {
-                rc.left = (m_PoseCounter2 < 20 ? 0 : 64) + ((int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1 ? 0 : 128);
-                rc.top = 96;
-                rc.right = rc.left + 64;
-                rc.bottom = rc.top + 32;
+                rc = new Rectangle((m_PoseCounter2 < 20 ? 0 : 64) + ((int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1 ? 0 : 128),96,64,32);
                 lp.BltNatural(graphic, m_nVX - 16, m_nVY, rc);
             }
         }

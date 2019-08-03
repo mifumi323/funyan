@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -53,11 +54,9 @@ namespace MifuminSoft.funyan.Core
         public override void OnDraw(CDIB32 lp)
         {
             if (!IsValid() || m_Life <= 0) return;
-            RECT rc;
-            rc.left = 64 * (15 - GetSize()); rc.top = 0;
-            rc.right = 64 * (16 - GetSize()); rc.bottom = 64;
+            var rc = new Rectangle(64 * (15 - GetSize()), 0, 64, 64);
             SetViewPos(-32, -32);
-            lp.BltNatural(m_Graphic, m_nVX, m_nVY, &rc);
+            lp.BltNatural(m_Graphic, m_nVX, m_nVY, rc);
         }
         public override void OnMove()
         {

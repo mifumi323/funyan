@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -25,7 +26,7 @@ namespace MifuminSoft.funyan.Core
         protected void Blow(f3MapObjectDirection dir = DIR_FRONT)
         {
             if (dir != DIR_FRONT) m_Direction = dir;
-            m_Spring[m_Direction] = 32;
+            m_Spring[(int)m_Direction] = 32;
             m_Delay = 20;
             m_State = BLOWN;
         }
@@ -229,7 +230,7 @@ namespace MifuminSoft.funyan.Core
                                 else
                                 {
                                     m_Y = objY - 32.125f;
-                                    m_GY = m_Y * 8;
+                                    m_GY = (int)(m_Y * 8);
                                     Freeze();
                                 }
                             }
@@ -247,7 +248,7 @@ namespace MifuminSoft.funyan.Core
                                 else
                                 {
                                     m_X = objX - 40;
-                                    m_GX = m_X / 8;
+                                    m_GX = (int)(m_X / 8);
                                     Freeze();
                                 }
                             }
@@ -265,7 +266,7 @@ namespace MifuminSoft.funyan.Core
                                 else
                                 {
                                     m_X = objX + 40;
-                                    m_GX = m_X / 8;
+                                    m_GX = (int)(m_X / 8);
                                     Freeze();
                                 }
                             }
@@ -295,7 +296,7 @@ namespace MifuminSoft.funyan.Core
         public override void OnMove()
         {
             if (!IsValid()) return;
-            if (m_Delay) m_Delay--;
+            if (m_Delay > 0) m_Delay--;
             if (m_State == WALKING)
             {
                 if (m_Direction == DIR_LEFT && m_pParent.GetHit((int)Math.Floor((m_X - 17) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_RIGHT))
@@ -422,20 +423,17 @@ namespace MifuminSoft.funyan.Core
             if (m_Spring2[DIR_FRONT])
             {
                 int h = m_Spring2[DIR_FRONT];
-                RECT rc = { 32, 64, 64, 64 + h, };
-                lp.BltNatural(m_Graphic, m_nVX, m_nVY + 8 - h, &rc);
+                lp.BltNatural(m_Graphic, m_nVX, m_nVY + 8 - h, new Rectangle(32,64,32,h));
             }
             if (m_Spring2[DIR_LEFT])
             {
                 int w = m_Spring2[DIR_LEFT];
-                RECT rc = { 0, 64, w, 96, };
-                lp.BltNatural(m_Graphic, m_nVX + 8 - w, m_nVY, &rc);
+                lp.BltNatural(m_Graphic, m_nVX + 8 - w, m_nVY, new Rectangle(0,64,w,32));
             }
             if (m_Spring2[DIR_RIGHT])
             {
                 int w = m_Spring2[DIR_RIGHT];
-                RECT rc = { 32 - w, 64, 32, 96, };
-                lp.BltNatural(m_Graphic, m_nVX + 24, m_nVY, &rc);
+                lp.BltNatural(m_Graphic, m_nVX + 24, m_nVY, new Rectangle(32-w,64,w,96));
             }
             // 本体
             int CX = 0, CY = (m_Direction == DIR_LEFT ? 0 : 1);
@@ -469,8 +467,8 @@ namespace MifuminSoft.funyan.Core
             {
                 CX = ((m_Delay < 40 && (m_Delay >> 1) & 1) ? 6 : 7);
             }
-            RECT rc = { CX * 32, CY * 32, CX * 32 + 32, CY * 32 + 32, };
-            lp.BltNatural(m_Graphic, m_nVX, m_nVY, in rc);
+            var rc = new Rectangle(CX* 32, CY * 32, 32, 32);
+            lp.BltNatural(m_Graphic, m_nVX, m_nVY, rc);
         }
         public Cf3MapObjectGeasprin(int nCX, int nCY, f3MapObjectDirection direction = f3MapObjectDirection.DIR_LEFT) : base(f3MapObjectType.MOT_GEASPRIN)
         {

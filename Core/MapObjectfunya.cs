@@ -1,7 +1,26 @@
 ﻿using System;
+using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
+    public enum f3MainCharaState
+    {
+        STANDING,
+        RUNNING,
+        WALKING,
+        CHARGING,
+        JUMPING,
+        BREATHEIN,
+        BREATHEOUT,
+        TIRED,
+        DAMAGED,
+        FROZEN,
+        DEAD,
+        SMILING,
+        SLEEPING,
+        BLINKING,
+    }
+
     public class Cf3MapObjectfunya : Cf3MapObjectMain
     {
         protected const float RUNMAX = 13.0f;
@@ -50,7 +69,7 @@ namespace MifuminSoft.funyan.Core
             TL.Saturate(1,ref p,m_nPower);
             var s = new temp_s[4];
             if (m_Direction == DIR_FRONT) {
-                if (p & 1) {
+                if ((p & 1) != 0) {
                     s[0].x = 0.0f;
                     s[0].y = -16.0f;
                     s[0].dx = 0.0f;
@@ -109,7 +128,7 @@ namespace MifuminSoft.funyan.Core
         }
         protected void BreatheIn()
         {
-            if (m_nPower) {
+            if (m_nPower != 0) {
                 if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
                 m_State = BREATHEIN;
                 m_ChargePower = 0.0f;
@@ -260,23 +279,6 @@ namespace MifuminSoft.funyan.Core
 };  // チャージ－ジャンプ力対応
         protected float m_Power, m_PowerX, m_PowerY;
         protected int m_nPower;
-        protected enum f3MainCharaState
-        {
-            STANDING,
-            RUNNING,
-            WALKING,
-            CHARGING,
-            JUMPING,
-            BREATHEIN,
-            BREATHEOUT,
-            TIRED,
-            DAMAGED,
-            FROZEN,
-            DEAD,
-            SMILING,
-            SLEEPING,
-            BLINKING,
-        }
         protected f3MainCharaState m_State;
         f3MapObjectDirection m_Direction;
         protected bool m_HitLeft, m_HitRight, m_HitTop, m_HitBottom, m_OnEnemy;
@@ -290,13 +292,13 @@ namespace MifuminSoft.funyan.Core
         protected int m_VOffsetToX, m_VOffsetToY;
 
         public float GetGravity() { int g = Cf3Setting.theSetting.m_Gravity; return g == 1 ? 0.2f : (g == 2 ? 0.05f : 0.1f); }
-        public bool IsFrozen() { return m_State == FROZEN; }
-        public void Die()
+        public override bool IsFrozen() { return m_State == FROZEN; }
+        public override void Die()
         {
             m_State = DEAD;
             m_DX = m_DY = 0;
         }
-        public bool IsDied()
+        public override bool IsDied()
         {
             return m_State == DEAD;
         }
@@ -316,15 +318,15 @@ namespace MifuminSoft.funyan.Core
                 else if (ty == 1) { m_VOffsetToY = 50; }
                 else if (ty == 2) { m_VOffsetToY = -50; }
                 else if (ty == 3) { m_VOffsetToY = 0; }
-                TL.BringClose(ref m_VOffsetX,m_VOffsetToX,1 + (int)(m_DX * m_VOffsetToX < 0) + (int)(m_VOffsetX * m_VOffsetToX < 0));
-                TL.BringClose(ref m_VOffsetY,m_VOffsetToY,1 + (int)(m_DY * m_VOffsetToY < 0) + (int)(m_VOffsetY * m_VOffsetToY < 0));
+                TL.BringClose(ref m_VOffsetX,m_VOffsetToX,1 + (m_DX * m_VOffsetToX < 0?1:0) + (m_VOffsetX * m_VOffsetToX < 0?1:0));
+                TL.BringClose(ref m_VOffsetY,m_VOffsetToY,1 + (m_DY * m_VOffsetToY < 0?1:0) + (m_VOffsetY * m_VOffsetToY < 0?1:0));
                 ox = m_VOffsetX; oy = m_VOffsetY;
-                vx = m_X + ox; vy = m_Y + oy;
+                vx = (int)(m_X + ox); vy = (int)(m_Y + oy);
             } else {
-                vx = m_X; vy = m_Y;
+                vx = (int)m_X; vy = (int)m_Y;
             }
         }
-        public void Synergy()
+        public override void Synergy()
         {
             if (m_State == DEAD || m_State == SMILING) return;
             m_OnEnemy = false;
@@ -332,8 +334,7 @@ namespace MifuminSoft.funyan.Core
             // ギヤバネ
             foreach (var it in m_pParent.GetMapObjects(m_nCX - 2,m_nCY - 2,m_nCX + 2,m_nCY + 2,f3MapObjectType.MOT_GEASPRIN)) {
                 if (it.IsValid()) {
-                    float objX, objY;
-                    it.GetPos(objX,objY);
+                    it.GetPos(out var objX,out var objY);
                     if (!((Cf3MapObjectGeasprin)it).IsFrozen()) {
                         if (TL.IsIn(objX - 16,m_X,objX + 15)) {
                             if (TL.IsIn(objY - 30,m_Y,objY + 16)) {
@@ -380,8 +381,7 @@ namespace MifuminSoft.funyan.Core
             // とげとげ
             foreach (var it in m_pParent.GetMapObjects(m_nCX - 2,m_nCY - 2,m_nCX + 2,m_nCY + 2,f3MapObjectType.MOT_NEEDLE)) {
                 if (it.IsValid()) {
-                    float objX, objY;
-                    it.GetPos(objX,objY);
+                    it.GetPos(out var objX,out var objY);
                     if ((objX - m_X) * (objX - m_X) + (objY - m_Y) * (objY - m_Y) < 256) {
                         Die();
                         return;
@@ -391,8 +391,7 @@ namespace MifuminSoft.funyan.Core
             // ウナギカズラ
             foreach (var it in m_pParent.GetMapObjects(m_nCX - 2,m_nCY - 2,m_nCX + 2,m_nCY + 2,f3MapObjectType.MOT_EELPITCHER)) {
                 if (it.IsValid() && ((Cf3MapObjectEelPitcher)it).IsLeaf()) {
-                    float objX, objY;
-                    it.GetPos(objX,objY);
+                    it.GetPos(out var objX,out var objY);
                     if (TL.IsIn(objX - 16,m_X,objX + 16)) {
                         if (TL.IsIn(objY - 14,m_Y,objY)) {
                             if (m_DY >= 0) {
@@ -408,8 +407,7 @@ namespace MifuminSoft.funyan.Core
                 // 氷
                 foreach (var it in m_pParent.GetMapObjects(m_nCX - 2,m_nCY - 2,m_nCX + 2,m_nCY + 2,f3MapObjectType.MOT_ICE)) {
                     if (it.IsValid() && ((Cf3MapObjectIce)it).GetSize() > 10) {
-                        float objX, objY;
-                        it.GetPos(objX,objY);
+                        it.GetPos(out var objX,out var objY);
                         if ((objX - m_X) * (objX - m_X) + (objY - m_Y) * (objY - m_Y) < 256) {
                             // あたった！
                             Freeze(((Cf3MapObjectIce)it).GetSize());
@@ -418,8 +416,7 @@ namespace MifuminSoft.funyan.Core
                 }
                 // 氷ゾーン
                 foreach (var is_ in Cf3MapObjectIceSource.All()) {
-                    float objX, objY;
-                    is_.GetPos(objX,objY);
+                    is_.GetPos(out var objX,out var objY);
                     float dX = objX - m_X, dY = objY - m_Y,
                         p = 1.0f / (dX * dX + dY * dY), p3 = p * sqrt(p);
                     m_Power += p;
@@ -427,10 +424,9 @@ namespace MifuminSoft.funyan.Core
                     m_PowerY += dY * p3;
                 }
                 // 炎ゾーン
-                foreach (var fr = Cf3MapObjectFire.All()) {
+                foreach (var fr in Cf3MapObjectFire.All()) {
                     if (fr.IsActive()) {
-                        float objX, objY;
-                        fr.GetPos(objX,objY);
+                        fr.GetPos(out var objX,out var objY);
                         float dX = objX - m_X, dY = objY - m_Y,
                             p = 1.0f / (dX * dX + dY * dY), p3 = p * sqrt(p);
                         m_Power -= p;
@@ -459,10 +455,11 @@ namespace MifuminSoft.funyan.Core
                 m_BananaDistance = MAXDISTANCE;
                 float bd;
                 int nBanana = 0, nPosition = 0;
-                int cx, cy;
-                foreach (var bn in Cf3MapObjectBanana.All()) {
-                    if (bn.IsValid()) {
-                        bn.GetCPos(cx,cy);
+                foreach (var bn in Cf3MapObjectBanana.All())
+                {
+                    if (bn.IsValid())
+                    {
+                        bn.GetCPos(out var cx,out var cy);
                         bd = (cx * 32 + 16 - m_X) * (cx * 32 + 16 - m_X) + (cy * 32 + 16 - m_Y) * (cy * 32 + 16 - m_Y);
                         if (bd < m_BananaDistance) m_BananaDistance = bd;
                         nBanana++;
@@ -470,18 +467,18 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
                 CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANADISTANCE,m_BananaDistance);
-                CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANAPOSITION,nBanana ? (float)nPosition / nBanana : 0.0f);
+                CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANAPOSITION,nBanana != 0 ? (float)nPosition / nBanana : 0.0f);
             }
             if (m_OnEnemy) HitCheck();
         }
-        public void OnPreDraw()
+        public override void OnPreDraw()
         {
             if (!IsValid()) return;
             // PoseCounterの処理
             if (m_State == STANDING) {  // 立ってるとき
             }
             else if (m_State == RUNNING) {
-                ++m_PoseCounter %= 12;
+                ++m_PoseCounter; m_PoseCounter %= 12;
             }
             else if (m_State == WALKING) {
             }
@@ -501,13 +498,13 @@ namespace MifuminSoft.funyan.Core
             else if (m_State == DEAD) {
             }
             else if (m_State == SLEEPING) {
-                ++m_PoseCounter %= 40;
+                ++m_PoseCounter; m_PoseCounter %= 40;
                 m_PoseCounter2 = m_PoseCounter - 1;
                 Cf3Setting.theSetting.m_SleepTime++;
             }
             else if (m_State == BLINKING) {
             }
-            if (m_Power < -1.0f / 4096.0f) { ++m_PoseCounter2 %= 40; }
+            if (m_Power < -1.0f / 4096.0f) { ++m_PoseCounter2; m_PoseCounter2 %= 40; }
         }
         public override void OnMove()
         {
@@ -518,7 +515,7 @@ namespace MifuminSoft.funyan.Core
             float Friction = m_pParent.GetFriction((int)Math.Floor(m_X / 32),(int)Math.Floor((m_Y + 14) / 32));
             float Gravity = GetGravity();
             if (m_pParent.ItemCompleted()) Smile();
-            if (Cf3Setting.theSetting.m_Hyper) m_nPower = 4;
+            if (Cf3Setting.theSetting.m_Hyper != 0) m_nPower = 4;
             // 動かしま～す
             if (m_State == STANDING || m_State == SLEEPING || m_State == BLINKING) {
                 // 立ってるとき
@@ -643,7 +640,7 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
                 if (m_ChargePower <= 0.0f) {
-                    if (m_nPower) {
+                    if (m_nPower != 0) {
                         if (m_HitBottom) Land(); else Fall();
                     } else {
                         Tire();
@@ -691,11 +688,11 @@ namespace MifuminSoft.funyan.Core
                 HitCheck();
             }
         }
-        public virtual void OnDraw(CDIB32 lp)
+        public override void OnDraw(CDIB32 lp)
         {
             if (!IsValid()) return;
             if (m_pParent.ItemCompleted()) Smile();
-            int CX = 0, CY = m_Direction;
+            int CX = 0, CY = (int)m_Direction;
             SetViewPos(-16,-15);
             if (m_State == STANDING) {  // 立ってるとき
                 if (m_pInput.GetKeyPressed(F3KEY_SMILE)) CX = 18;
@@ -742,7 +739,7 @@ namespace MifuminSoft.funyan.Core
                 CX = 18; CY = 0;
             }
             else if (m_State == SLEEPING) {
-                CX = 19 + (int)(m_PoseCounter >= 20);
+                CX = 19 + (m_PoseCounter >= 20 ? 1 : 0);
                 if (m_Power < -1.0f / 4096.0f) CX += 2;
                 CY = 0;
             }
@@ -751,15 +748,15 @@ namespace MifuminSoft.funyan.Core
                 if (m_pInput.GetKeyPressed(F3KEY_SMILE)) CX = 18;
             }
             // あせあせ
-            RECT rc = { CX * 32,CY * 32,CX * 32 + 32,CY * 32 + 32,};
-            lp.BltNatural(m_nPower == 0 ? m_Graphic : m_Graphic2,m_nVX,m_nVY,&rc);
+            var rc = new Rectangle(CX * 32,CY * 32,32,32);
+            lp.BltNatural(m_nPower == 0 ? m_Graphic : m_Graphic2,m_nVX,m_nVY,rc);
             if (m_Power < -1.0f / 4096.0f) {
                 rc.left = (m_PoseCounter2 < 20 ? 0 : 64) +
                     ((m_Direction != DIR_RIGHT && (int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1) ? 0 : 128);
                 rc.top = 96;
                 rc.right = rc.left + 64;
                 rc.bottom = rc.top + 32;
-                lp.BltNatural(m_Graphic,m_nVX - 16,m_nVY,&rc);
+                lp.BltNatural(m_Graphic,m_nVX - 16,m_nVY,rc);
             }
         }
         public Cf3MapObjectfunya(int nCX,int nCY) : base(f3MapObjectType.MOT_FUNYA)

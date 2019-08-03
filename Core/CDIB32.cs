@@ -10,10 +10,12 @@ namespace MifuminSoft.funyan.Core
         public abstract void Dispose();
 
         public abstract void CreateSurface(int v1,int v2);
-        public abstract int Load(char fn,bool v);
+        public abstract void CreateSurface(int v1,int v2,bool v3);
+        public abstract int Load(string fn,bool v);
         #endregion
 
         #region 描画
+        public abstract void Blt(CDIB32 dib,int x,int y);
         public abstract void Blt(CDIB32 dib,int x,int y,Rectangle rc);
         public abstract void BltFast(CDIB32 dib,int x,int y);
         public abstract void BltFast(CDIB32 dib,int x,int y,Rectangle rc);

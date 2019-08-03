@@ -49,7 +49,7 @@ namespace MifuminSoft.funyan.Core
             SetViewPos();
             for (int i = 0; i < m_ParticleCount; i++)
             {
-                lp.BltFast(&m_Graphic[m_Particle[i].color & 1], m_nVX + m_Particle[i].x, m_nVY + m_Particle[i].y);
+                lp.BltFast(m_Graphic[m_Particle[i].color & 1], (int)(m_nVX + m_Particle[i].x), m_nVY + m_Particle[i].y);
             }
         }
         public static void OnPreDrawAll()

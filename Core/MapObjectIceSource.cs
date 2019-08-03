@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -37,7 +38,7 @@ namespace MifuminSoft.funyan.Core
                 if (it.IsValid()) it.OnDraw(lp);
             }
         }
-        public void OnPreDraw()
+        public override void OnPreDraw()
         {
             if (CApp.theApp.random(40) != 0) { m_Phase++; m_Phase %= PHASEMAX; }
             m_Size = GetSize();
@@ -45,9 +46,9 @@ namespace MifuminSoft.funyan.Core
         public override void OnDraw(CDIB32 lp)
         {
             if (!IsValid()) return;
-            RECT rc = { (7 - m_Size) * 64, 0, (8 - m_Size) * 64, 64, };
+            var rc = new Rectangle((7 - m_Size) * 64, 0, 64, 64);
             SetViewPos(-32, -32);
-            lp.BltNatural(m_Graphic, m_nVX, m_nVY, &rc);
+            lp.BltNatural(m_Graphic, m_nVX, m_nVY, rc);
         }
         public Cf3MapObjectIceSource(int x, int y) : base(f3MapObjectType.MOT_ICESOURCE)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -42,7 +43,7 @@ namespace MifuminSoft.funyan.Core
         public static IEnumerable<Cf3MapObjectFire> All() { return m_FireList; }
         public override void OnPreDraw()
         {
-            if (CApp.theApp.random(40)) { m_Phase++; m_Phase %= PHASEMAX; }
+            if (CApp.theApp.random(40) != 0) { m_Phase++; m_Phase %= PHASEMAX; }
             if (m_Size < GetSize()) { m_Size++; }
             else if (m_Size > GetSize()) { m_Size--; }
         }
@@ -54,9 +55,9 @@ namespace MifuminSoft.funyan.Core
         public override void OnDraw(CDIB32 lp)
         {
             if (!IsValid()) return;
-            RECT rc = { (15 - m_Size) * 64, 64, (16 - m_Size) * 64, 128, };
+            var rc = new Rectangle((15 - m_Size) * 64, 64, 64, 64);
             SetViewPos(-32, -32);
-            lp.BltNatural(m_Graphic, m_nVX, m_nVY, &rc);
+            lp.BltNatural(m_Graphic, m_nVX, m_nVY, rc);
         }
         public int GetSize()
         {

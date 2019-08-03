@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -59,9 +60,9 @@ namespace MifuminSoft.funyan.Core
         {
             if (!IsValid()) return;
             var pGraphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
-            RECT rc = { 320, 96, 352, 128, };
+            var rc = new Rectangle(320, 96, 32, 32);
             SetViewPos(-16, -16);
-            lp.BltNatural(pGraphic, m_nVX, m_nVY, &rc);
+            lp.BltNatural(pGraphic, m_nVX, m_nVY, rc);
         }
         public Cf3MapObjectBanana(int nCX, int nCY) : base(f3MapObjectType.MOT_BANANA)
         {
