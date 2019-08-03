@@ -885,11 +885,11 @@ namespace MifuminSoft.funyan.Core
             lp.BltNatural(m_nPower == 0 ? m_Graphic : m_Graphic2, m_nVX, m_nVY, rc);
             if (m_Power < -1.0f / 4096.0f)
             {
-                rc.left = (m_PoseCounter2 < 20 ? 0 : 64) +
-                    ((m_Direction != f3MapObjectDirection.DIR_RIGHT && (int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1) ? 0 : 128);
-                rc.top = 96;
-                rc.right = rc.left + 64;
-                rc.bottom = rc.top + 32;
+                rc = new Rectangle(
+                    (m_PoseCounter2 < 20 ? 0 : 64) + ((m_Direction != f3MapObjectDirection.DIR_RIGHT && (int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1) ? 0 : 128),
+                    96,
+                    64,
+                    32);
                 lp.BltNatural(m_Graphic, m_nVX - 16, m_nVY, rc);
             }
         }

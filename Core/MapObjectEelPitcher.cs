@@ -275,9 +275,7 @@ namespace MifuminSoft.funyan.Core
                 int offset2 = (m_Direction == f3MapObjectDirection.DIR_LEFT ? 32 : 64);
                 int offset3 = (m_bBlinking ? 32 : 0);
                 // あたま
-                int height1 = (height >= 16 ? 32 : height + 16);
-                rc.left = offset1 + offset2; rc.top = offset3;
-                rc.right = rc.left + 32; rc.bottom = rc.top + height1;
+                rc = new Rectangle(offset1 + offset2, offset3, 32, height >= 16 ? 32 : height + 16);
                 lp.Blt(graphic, m_nVX, m_nVY, rc);
                 // 茎
                 if (height > 16)
@@ -288,8 +286,7 @@ namespace MifuminSoft.funyan.Core
                     for (i = 16; i < height; i += h)
                     {
                         h2 = h <= height - i ? h : height - i;
-                        rc.left = offset1; rc.top = offset2;
-                        rc.right = rc.left + 32; rc.bottom = rc.top + h2;
+                        rc = new Rectangle(offset1, offset2, 32, h2);
                         // +0.5fは小数点以下四捨五入のため
                         SetViewPos(-16 + (m_RootX - m_X) * (i - 16) / (height - 16) + 0.5f, -16);
                         lp.Blt(graphic, m_nVX, m_nVY + 16 + i, rc);
@@ -299,39 +296,32 @@ namespace MifuminSoft.funyan.Core
                 if (TL.IsIn(17, height, 32))
                 {
                     // あご
-                    int height3 = height - 16;
-                    rc.left = offset1 + offset2; rc.top = 80;
-                    rc.right = rc.left + 32; rc.bottom = rc.top + height3;
+                    rc = new Rectangle(offset1 + offset2, 80, 32, height - 16);
                     lp.Blt(graphic, m_nVX, m_nVY + 32, rc);
                 }
                 else if (TL.IsIn(33, height, 48))
                 {
                     int height2 = height - 32;
                     // ふくろ
-                    rc.left = offset1 + offset2; rc.top = 64;
-                    rc.right = rc.left + 32; rc.bottom = rc.top + height2;
+                    rc = new Rectangle(offset1 + offset2, 64, 32, height2);
                     lp.Blt(graphic, m_nVX, m_nVY + 32, rc);
                     // あご
-                    rc.left = offset1 + offset2; rc.top = 80;
-                    rc.right = rc.left + 32; rc.bottom = rc.top + 16;
+                    rc = new Rectangle(offset1 + offset2, 80, 32, 16);
                     lp.Blt(graphic, m_nVX, m_nVY + height, rc);
                 }
                 else if (height > 48)
                 {
                     // ふくろ
-                    rc.left = offset1 + offset2; rc.top = 64;
-                    rc.right = rc.left + 32; rc.bottom = rc.top + 16;
+                    rc = new Rectangle(offset1 + offset2, 64, 32, 16);
                     lp.Blt(graphic, m_nVX, m_nVY + 32, rc);
                     // あご
-                    rc.left = offset1 + offset2; rc.top = 80;
-                    rc.right = rc.left + 32; rc.bottom = rc.top + 16;
+                    rc = new Rectangle(offset1 + offset2, 80, 32, 16);
                     lp.Blt(graphic, m_nVX, m_nVY + 48, rc);
                 }
             }
             else if (m_State == f3EelPitcherState.EELSEED)
             {
-                rc.left = 0; rc.top = 0;
-                rc.right = 32; rc.bottom = 32;
+                rc = new Rectangle(0, 0, 32, 32);
                 lp.Blt(graphic, m_nVX, m_nVY, rc);
             }
         }
