@@ -60,7 +60,7 @@ namespace MifuminSoft.funyan.Core
         public override void OnMove()
         {
             m_funya.OnMove();
-            SetPos(m_funya.m_X, m_funya.m_Y);
+            SetPos(m_funya.X, m_funya.Y);
             if (m_funya.IsDied())
             {
                 if (--m_nLife <= 0)
@@ -75,93 +75,91 @@ namespace MifuminSoft.funyan.Core
         {
             if (!IsValid()) return;
             if (m_pParent.ItemCompleted()) m_funya.Smile();
-            int CX = 0, CY = m_funya.m_Direction;
+            int CX = 0, CY = (int)m_funya.Direction;
             SetViewPos(-16, -15);
-            if (m_funya.m_State == f3MainCharaState.STANDING)
+            if (m_funya.State == f3MainCharaState.STANDING)
             {   // 立ってるとき
             }
-            else if (m_funya.m_State == f3MainCharaState.RUNNING)
+            else if (m_funya.State == f3MainCharaState.RUNNING)
             {
-                CX = m_funya.m_PoseCounter < 6 ? m_funya.m_PoseCounter + 2 : 14 - m_funya.m_PoseCounter;
+                CX = m_funya.PoseCounter < 6 ? m_funya.PoseCounter + 2 : 14 - m_funya.PoseCounter;
             }
-            else if (m_funya.m_State == f3MainCharaState.WALKING)
+            else if (m_funya.State == f3MainCharaState.WALKING)
             {
                 CX = 11;
             }
-            else if (m_funya.m_State == f3MainCharaState.CHARGING)
+            else if (m_funya.State == f3MainCharaState.CHARGING)
             {
                 CX =
-                (m_funya.m_ChargePower >= m_funya.m_JumpFunc[0].Power ? 24 :
-                (m_funya.m_ChargePower >= m_funya.m_JumpFunc[1].Power ? 11 :
-                (m_funya.m_ChargePower >= m_funya.m_JumpFunc[2].Power ? 25 :
-                (m_funya.m_ChargePower >= m_funya.m_JumpFunc[3].Power ? 12 :
+                (m_funya.ChargePower >= m_funya.JumpFunc[0].Power ? 24 :
+                (m_funya.ChargePower >= m_funya.JumpFunc[1].Power ? 11 :
+                (m_funya.ChargePower >= m_funya.JumpFunc[2].Power ? 25 :
+                (m_funya.ChargePower >= m_funya.JumpFunc[3].Power ? 12 :
                 12))));
             }
-            else if (m_funya.m_State == f3MainCharaState.JUMPING)
+            else if (m_funya.State == f3MainCharaState.JUMPING)
             {
-                CX = ((m_funya.m_DY >= 0) ? 10 : 9);
+                CX = ((m_funya.DY >= 0) ? 10 : 9);
             }
-            else if (m_funya.m_State == f3MainCharaState.BREATHEIN)
+            else if (m_funya.State == f3MainCharaState.BREATHEIN)
             {
-                if (m_funya.m_ChargePower < 40.0f) { CX = 15; }
-                else if (m_funya.m_ChargePower < 120.0f) { CX = 16; }
+                if (m_funya.ChargePower < 40.0f) { CX = 15; }
+                else if (m_funya.ChargePower < 120.0f) { CX = 16; }
                 else { CX = 17; }
-                if (!m_funya.m_HitBottom) CX += 12;
+                if (!m_funya.HitBottom) CX += 12;
             }
-            else if (m_funya.m_State == f3MainCharaState.BREATHEOUT)
+            else if (m_funya.State == f3MainCharaState.BREATHEOUT)
             {
                 CX = 14;
-                if (!m_funya.m_HitBottom) CX += 12;
+                if (!m_funya.HitBottom) CX += 12;
             }
-            else if (m_funya.m_State == f3MainCharaState.TIRED)
+            else if (m_funya.State == f3MainCharaState.TIRED)
             {
-                CX = ((m_funya.m_PoseCounter + 1) % 40 < 20) ? 21 : 22;
+                CX = ((m_funya.PoseCounter + 1) % 40 < 20) ? 21 : 22;
             }
-            else if (m_funya.m_State == f3MainCharaState.DAMAGED)
+            else if (m_funya.State == f3MainCharaState.DAMAGED)
             {
                 CX = 13;
             }
-            else if (m_funya.m_State == f3MainCharaState.FROZEN)
+            else if (m_funya.State == f3MainCharaState.FROZEN)
             {
                 CX = 23;
             }
-            else if (m_funya.m_State == f3MainCharaState.DEAD)
+            else if (m_funya.State == f3MainCharaState.DEAD)
             {
                 CX = 13; CY = 0;
             }
-            else if (m_funya.m_State == f3MainCharaState.SMILING)
+            else if (m_funya.State == f3MainCharaState.SMILING)
             {
                 CX = 18; CY = 0;
             }
-            else if (m_funya.m_State == f3MainCharaState.SLEEPING)
+            else if (m_funya.State == f3MainCharaState.SLEEPING)
             {
-                CX = 19 + (int)(m_funya.m_PoseCounter >= 20);
-                if (m_funya.m_Power < -1.0f / 4096.0f) CX += 2;
+                CX = 19 + (m_funya.PoseCounter >= 20 ? 1 : 0);
+                if (m_funya.Power < -1.0f / 4096.0f) CX += 2;
                 CY = 0;
             }
-            else if (m_funya.m_State == f3MainCharaState.BLINKING)
+            else if (m_funya.State == f3MainCharaState.BLINKING)
             {
                 CX = 1;
             }
-            var rc = new Rectangle(CX* 32, CY * 32, 32, 32);
+            var rc = new Rectangle(CX * 32, CY * 32, 32, 32);
             lp.BltNatural(m_Graphic, m_nVX, m_nVY, rc);
         }
         public Cf3MapObjectmrframe(int nCX, int nCY) : base(f3MapObjectType.MOT_FUNYA)
         {
             m_EnemyList.Add(this);
-            m_funya = new Cf3MapObjectfunya(nCX, nCY);
+            m_funya = new Cf3MapObjectfunya(nCX, nCY, false);
             RemoveCharaFromList(m_funya);
-            m_funya.m_bOriginal = false;
             m_Graphic = CResourceManager.ResourceManager.Get(RID.RID_MRFRAME);
-            SetPos(m_funya.m_X, m_funya.m_Y);
+            SetPos(m_funya.X, m_funya.Y);
             m_nLife = 100;
         }
         public override void Dispose()
         {
             m_EnemyList.Remove(this);
-            delete m_funya;
+            m_funya.Dispose();
             base.Dispose();
         }
-
     }
 }
