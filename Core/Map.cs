@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -117,11 +118,11 @@ namespace MifuminSoft.funyan.Core
             }
             p.m_pNext = null;
         }
-        public CDIB32* ReadMapChip(Cf3StageFile* lp, int level)
+        public CDIB32 ReadMapChip(Cf3StageFile lp, int level)
         {
             BYTE* buf;
             DWORD s;
-            CDIB32* dib = new CDIB32;
+            var dib = CDIB32.Create();
             // ステージ内部データを読み込む
             if ((buf = lp.GetStageData(CT.CT_MCD0 | (CT)(level << 24), &s)) != null) {
                 char fn2[256];
@@ -156,7 +157,7 @@ namespace MifuminSoft.funyan.Core
         public void CreateTemparatureMap(CDIB32 dib)
         {
             float objX, objY, dX, dY, fX, fY, power = 0.0f;
-            DWORD* pixel = dib.GetPtr();
+            var pixel = dib.GetPtr();
             float offx = m_ScrollRX - 320 / 2, offy = m_ScrollRY - 224 / 2 - 2;
             TL.Saturate(0.0f, ref offx, m_Width[1] * 32 - 320.0f);
             TL.Saturate(0.0f, ref offy, m_Height[1] * 32 - 224.0f);
@@ -200,15 +201,16 @@ namespace MifuminSoft.funyan.Core
                     pixel++;
                 }
             }
-            CDIB32* lpSrc = dib, *lpDst = m_pDIBBuf;
+            var lpSrc = dib;
+            var lpDst = m_pDIBBuf;
             if (m_nEffect & 1) {
                 CPlaneTransBlt.MirrorBlt1(lpDst, lpSrc, 0, 0, 128);
                 swap(lpSrc, lpDst);
             }
             if (m_nEffect & 2) {
                 CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0, 128);
-                RECT rc = { 0, 16, 320, 240 };
-                lpSrc.BltFast(lpDst, 0, 0, &rc);
+                var rc = new Rectangle(0,16,320,224);
+                lpSrc.BltFast(lpDst, 0, 0, in rc);
             }
             if (lpDst == dib) lpDst.BltFast(lpSrc, 0, 0);
         }
@@ -312,7 +314,7 @@ namespace MifuminSoft.funyan.Core
             int x, y, z;
             int vx, vy;
             int sx, sy, ex, ey;
-            RECT r;
+            Rectangle r;
             lp.Clear(0);
             if (m_MapData[0]) {
                 float mx = 1;
@@ -341,7 +343,7 @@ namespace MifuminSoft.funyan.Core
             if (m_MapData[1]) {
                 CDIB32 pHit;
                 if (bShowHit) {
-                    pHit = new CDIB32;
+                    pHit = CDIB32.Create();
                     pHit.CreateSurface(384, 32);
                     pHit.BltFast(CResourceManager.ResourceManager.Get(RID.RID_HIT), 0, 0);
                     pHit.SubColorFast(CApp.theApp.random(0x1000000));
@@ -371,7 +373,7 @@ namespace MifuminSoft.funyan.Core
                                 r.top = 0;
                                 r.right = f + 32;
                                 r.bottom = 32;
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, &r);
+                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, in r);
                             }
                             if (GetHit(x, y, HIT.HIT_BOTTOM)) {
                                 r.left = 256;
@@ -443,15 +445,16 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
             }
-            CDIB32* lpSrc = lp, *lpDst = m_pDIBBuf;
+            var lpSrc = lp;
+            var lpDst = m_pDIBBuf;
             if (m_nEffect & 1) {
                 CPlaneTransBlt.MirrorBlt1(lpDst, lpSrc, 0, 0, 128);
                 swap(lpSrc, lpDst);
             }
             if (m_nEffect & 2) {
                 CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0, 128);
-                RECT rc = { 0, 16, 320, 240 };
-                lpSrc.BltFast(lpDst, 0, 0, &rc);
+                var rc = new Rectangle(0,16,320,224);
+                lpSrc.BltFast(lpDst, 0, 0, rc);
             }
             if (m_nEffect & 4) {
                 CPlaneTransBlt.FlushBlt1(lpDst, lpSrc, 0, 0, 128);

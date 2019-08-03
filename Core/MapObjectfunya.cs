@@ -691,7 +691,7 @@ namespace MifuminSoft.funyan.Core
                 HitCheck();
             }
         }
-        public virtual void OnDraw(CDIB32* lp)
+        public virtual void OnDraw(CDIB32 lp)
         {
             if (!IsValid()) return;
             if (m_pParent.ItemCompleted()) Smile();

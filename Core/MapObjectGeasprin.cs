@@ -470,7 +470,7 @@ namespace MifuminSoft.funyan.Core
                 CX = ((m_Delay < 40 && (m_Delay >> 1) & 1) ? 6 : 7);
             }
             RECT rc = { CX * 32, CY * 32, CX * 32 + 32, CY * 32 + 32, };
-            lp.BltNatural(m_Graphic, m_nVX, m_nVY, &rc);
+            lp.BltNatural(m_Graphic, m_nVX, m_nVY, in rc);
         }
         public Cf3MapObjectGeasprin(int nCX, int nCY, f3MapObjectDirection direction = f3MapObjectDirection.DIR_LEFT) : base(f3MapObjectType.MOT_GEASPRIN)
         {

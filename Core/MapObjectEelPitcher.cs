@@ -263,7 +263,7 @@ namespace MifuminSoft.funyan.Core
                 Kill();
             }
         }
-        public void OnDraw(CDIB32* lp)
+        public override void OnDraw(CDIB32 lp)
         {
             SetViewPos(-16, -16);
             int height = m_RootY - m_Y;
@@ -278,7 +278,7 @@ namespace MifuminSoft.funyan.Core
                 int height1 = (height >= 16 ? 32 : height + 16);
                 rc.left = offset1 + offset2; rc.top = offset3;
                 rc.right = rc.left + 32; rc.bottom = rc.top + height1;
-                lp.Blt(graphic, m_nVX, m_nVY, &rc);
+                lp.Blt(graphic, m_nVX, m_nVY, in rc);
                 // 茎
                 if (height > 16)
                 {

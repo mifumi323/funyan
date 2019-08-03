@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -416,7 +417,7 @@ namespace MifuminSoft.funyan.Core
             m_Y += m_DY;
             HitCheck();
         }
-        public void OnDraw(CDIB32* lp)
+        public void OnDraw(CDIB32 lp)
         {
             if (!IsValid()) return;
             if (m_pParent.ItemCompleted()) Smile();
@@ -440,17 +441,17 @@ namespace MifuminSoft.funyan.Core
                 case DEAD: CX = 13; break;
                 case SMILE: CX = 18; break;
             }
-            RECT rc = { CX * 32 + 1, CY * 32, CX * 32 + 31, CY * 32 + 30, };
+            var rc = new Rectangle(CX * 32 + 1,CY * 32,30,30);
             var graphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
             var graphic2 = CResourceManager.ResourceManager.Get(RID.RID_MAINICY);
-            lp.RotateBlt(m_nPower == 0 ? graphic : graphic2, &rc, m_nVX, m_nVY, m_Angle, 65536, 4);
+            lp.RotateBlt(m_nPower == 0 ? graphic : graphic2, rc, m_nVX, m_nVY, m_Angle, 65536, 4);
             if (m_Power < -1.0f / 4096.0f)
             {
                 rc.left = (m_PoseCounter2 < 20 ? 0 : 64) + ((int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1 ? 0 : 128);
                 rc.top = 96;
                 rc.right = rc.left + 64;
                 rc.bottom = rc.top + 32;
-                lp.BltNatural(graphic, m_nVX - 16, m_nVY, &rc);
+                lp.BltNatural(graphic, m_nVX - 16, m_nVY, rc);
             }
         }
         public Cf3MapObjectfff(int nCX, int nCY) : base(f3MapObjectType.MOT_FUNYA)
