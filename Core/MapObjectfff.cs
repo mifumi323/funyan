@@ -11,7 +11,7 @@ namespace MifuminSoft.funyan.Core
         private const float ROTATEFRICTION = 0.01f;
         private void Tire()
         {
-            m_State = TIRED;
+            m_State = f3fffState.TIRED;
             m_PoseCounter = 100;
         }
         private void BreatheOut()
@@ -29,25 +29,25 @@ namespace MifuminSoft.funyan.Core
                     m_DY - CSinTable.Cos(angle) * 6 / 65536);
             }
             m_nPower -= p;
-            m_State = BREATHEOUT;
+            m_State = f3fffState.BREATHEOUT;
             m_ChargePower = 10.0f;
         }
         private void BreatheIn()
         {
             if (m_nPower != 0)
             {
-                m_State = BREATHEIN;
+                m_State = f3fffState.BREATHEIN;
                 m_ChargePower = 0.0f;
             }
         }
         private void Freeze(int level = 15)
         {
-            m_State = FROZEN;
+            m_State = f3fffState.FROZEN;
             m_PoseCounter = level * 8;
         }
         public override void Die()
         {
-            m_State = DEAD;
+            m_State = f3fffState.DEAD;
             m_DX = m_DY = 0;
         }
         private void HitCheck()
@@ -107,7 +107,7 @@ namespace MifuminSoft.funyan.Core
             if (m_Y + 14 < 0) Die();
             if (m_Y - 14 > mh) Die();
         }
-        private void Smile() { m_State = SMILE; }
+        private void Smile() { m_State = f3fffState.SMILE; }
 
         private float m_OldX, m_OldY;
         private float m_DX, m_DY, m_OldDX, m_OldDY; // 位置などの情報
@@ -133,10 +133,10 @@ namespace MifuminSoft.funyan.Core
         private int m_VOffsetX, m_VOffsetY;
         private int m_VOffsetToX, m_VOffsetToY;
 
-        public bool IsFrozen() { return m_State == FROZEN; }
+        public bool IsFrozen() { return m_State == f3fffState.FROZEN; }
         public void Synergy()
         {
-            if (m_State == DEAD || m_State == SMILE) return;
+            if (m_State == f3fffState.DEAD || m_State == f3fffState.SMILE) return;
             m_Power = m_PowerX = m_PowerY = 0.0f;
             // ギヤバネ
             foreach (var it in m_pParent.GetMapObjects(m_nCX - 2, m_nCY - 2, m_nCX + 2, m_nCY + 2, f3MapObjectType.MOT_GEASPRIN))
@@ -232,7 +232,7 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
             }
-            if (m_State != FROZEN)
+            if (m_State != f3fffState.FROZEN)
             {
                 // 氷
                 foreach (var it in m_pParent.GetMapObjects(m_nCX - 2, m_nCY - 2, m_nCX + 2, m_nCY + 2, f3MapObjectType.MOT_ICE))
@@ -312,8 +312,8 @@ namespace MifuminSoft.funyan.Core
                 CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_BANANAPOSITION, nBanana != 0 ? (float)nPosition / nBanana : 0.0f);
             }
         }
-        public bool IsDied() { return m_State == DEAD; }
-        public void OnMove()
+        public override bool IsDied() { return m_State == f3fffState.DEAD; }
+        public override void OnMove()
         {
             if (!IsValid()) return;
             if (!m_pParent.IsPlayable()) return;
@@ -327,37 +327,37 @@ namespace MifuminSoft.funyan.Core
             m_OldX = m_X; m_OldY = m_Y;
             m_OldDX = m_DX; m_OldDY = m_DY;
             // 動かしま～す
-            if (m_State == NORMAL)
+            if (m_State == f3fffState.NORMAL)
             {
                 // 空中
                 float ddx = 0, ddy = 0;
-                if (m_PowerX <= 0 && m_pInput.GetKeyPressed(F3KEY_LEFT)) ddx -= 1;
-                if (m_PowerX >= 0 && m_pInput.GetKeyPressed(F3KEY_RIGHT)) ddx += 1;
-                if (m_PowerY <= 0 && m_pInput.GetKeyPressed(F3KEY_UP)) ddy -= 1;
-                if (m_PowerY >= 0 && m_pInput.GetKeyPressed(F3KEY_DOWN)) ddy += 1;
+                if (m_PowerX <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_LEFT)) ddx -= 1;
+                if (m_PowerX >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) ddx += 1;
+                if (m_PowerY <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_UP)) ddy -= 1;
+                if (m_PowerY >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) ddy += 1;
                 if (ddx * ddx + ddy * ddy > FLYACCEL * FLYACCEL)
                 {
                     float r = FLYACCEL / sqrt(ddx * ddx + ddy * ddy);
                     ddx *= r; ddy *= r;
                 }
-                for (int i = m_pInput.GetKeyPressed(F3KEY_JUMP) ? 0 : 1; i <= 1; i++)
+                for (int i = m_pInput.GetKeyPressed((int)F3KEY.F3KEY_JUMP) ? 0 : 1; i <= 1; i++)
                 {
                     m_DX -= (m_DX - Wind) * FLYFRICTION;
                     m_DX += ddx;
                     m_DY -= m_DY * FLYFRICTION;
                     m_DY += ddy;
                 }
-                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
+                if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_ATTACK)) BreatheIn();
             }
-            else if (m_State == BREATHEIN)
+            else if (m_State == f3fffState.BREATHEIN)
             {
                 // 冷気充填中
                 m_ChargePower += 2.0f;
                 float ddx = 0, ddy = 0;
-                if (m_PowerX <= 0 && m_pInput.GetKeyPressed(F3KEY_LEFT)) ddx -= 1;
-                if (m_PowerX >= 0 && m_pInput.GetKeyPressed(F3KEY_RIGHT)) ddx += 1;
-                if (m_PowerY <= 0 && m_pInput.GetKeyPressed(F3KEY_UP)) ddy -= 1;
-                if (m_PowerY >= 0 && m_pInput.GetKeyPressed(F3KEY_DOWN)) ddy += 1;
+                if (m_PowerX <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_LEFT)) ddx -= 1;
+                if (m_PowerX >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) ddx += 1;
+                if (m_PowerY <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_UP)) ddy -= 1;
+                if (m_PowerY >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) ddy += 1;
                 if (ddx * ddx + ddy * ddy > FLYACCEL * FLYACCEL)
                 {
                     float r = FLYACCEL / sqrt(ddx * ddx + ddy * ddy);
@@ -367,9 +367,9 @@ namespace MifuminSoft.funyan.Core
                 m_DX += ddx;
                 m_DY -= m_DY * FLYFRICTION;
                 m_DY += ddy;
-                if (!m_pInput.GetKeyPressed(F3KEY_ATTACK)) BreatheOut();
+                if (!m_pInput.GetKeyPressed((int)F3KEY.F3KEY_ATTACK)) BreatheOut();
             }
-            else if (m_State == BREATHEOUT)
+            else if (m_State == f3fffState.BREATHEOUT)
             {
                 // 冷気放出！！
                 m_ChargePower -= 1.0f;
@@ -379,7 +379,7 @@ namespace MifuminSoft.funyan.Core
                 {
                     if (m_nPower != 0)
                     {
-                        m_State = NORMAL;
+                        m_State = f3fffState.NORMAL;
                     }
                     else
                     {
@@ -387,21 +387,21 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
             }
-            else if (m_State == TIRED)
+            else if (m_State == f3fffState.TIRED)
             {
                 // ちかれたー！
                 m_PoseCounter--;
                 m_DX -= (m_DX - Wind) * FLYFRICTION;
                 m_DY -= m_DY * FLYFRICTION;
-                if (m_PoseCounter == 0) m_State = NORMAL;
+                if (m_PoseCounter == 0) m_State = f3fffState.NORMAL;
             }
-            else if (m_State == FROZEN)
+            else if (m_State == f3fffState.FROZEN)
             {
                 // 凍っちゃった…
                 m_PoseCounter--;
                 m_DX -= (m_DX - Wind) * FLYFRICTION / 5;
                 m_DY -= m_DY * FLYFRICTION / 5;
-                if (m_PoseCounter == 0) m_State = NORMAL;
+                if (m_PoseCounter == 0) m_State = f3fffState.NORMAL;
             }
             // 速度飽和(めり込み防止)
             if (m_DX * m_DX + m_DY * m_DY > 13 * 13)
@@ -425,21 +425,21 @@ namespace MifuminSoft.funyan.Core
             SetViewPos(-15, -15);
             switch (m_State)
             {
-                case NORMAL:
-                    CX = m_pInput.GetKeyPressed(F3KEY_SMILE) ? 18 : 10;
+                case f3fffState.NORMAL:
+                    CX = m_pInput.GetKeyPressed((int)F3KEY.F3KEY_SMILE) ? 18 : 10;
                     break;
-                case BREATHEIN:
+                case f3fffState.BREATHEIN:
                     CX = (m_ChargePower < 40.0f ? 27 :
                         (m_ChargePower < 120.0f ? 28 :
                         29));
                     break;
-                case BREATHEOUT: CX = 26; break;
-                case TIRED:
+                case f3fffState.BREATHEOUT: CX = 26; break;
+                case f3fffState.TIRED:
                     CX = ((m_PoseCounter + 1) % 40 < 20) ? 21 : 22;
                     break;
-                case FROZEN: CX = 23; break;
-                case DEAD: CX = 13; break;
-                case SMILE: CX = 18; break;
+                case f3fffState.FROZEN: CX = 23; break;
+                case f3fffState.DEAD: CX = 13; break;
+                case f3fffState.SMILE: CX = 18; break;
             }
             var rc = new Rectangle(CX * 32 + 1,CY * 32,30,30);
             var graphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);

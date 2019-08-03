@@ -6,16 +6,16 @@ namespace MifuminSoft.funyan.Core
 {
     public class Cf3MapObjectEelPitcher : Cf3MapObjectBase, IDisposable
     {
-        private void Freeze() { m_State = EELFROZEN; m_Delay = 80; }
+        private void Freeze() { m_State = f3EelPitcherState.EELFROZEN; m_Delay = 80; }
         private void Seed()
         {
             int d = 0;
-            m_State = m_Delay != 0 ? EELBUD : EELLEAF;
+            m_State = m_Delay != 0 ? f3EelPitcherState.EELBUD : f3EelPitcherState.EELLEAF;
             m_RootX = m_X;
             m_RootY = (float)Math.Floor(m_Y / 32) * 32;
             if (m_pParent.GetHit((int)Math.Floor((m_X - 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 1;
             if (m_pParent.GetHit((int)Math.Floor((m_X + 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 2;
-            m_Direction = (d == 1 ? DIR_RIGHT : (d == 2 ? DIR_LEFT : (CApp.theApp.random(2) != 0 ? DIR_LEFT : DIR_RIGHT)));
+            m_Direction = (d == 1 ? f3MapObjectDirection.DIR_RIGHT : (d == 2 ? f3MapObjectDirection.DIR_LEFT : (CApp.theApp.random(2) != 0 ? f3MapObjectDirection.DIR_LEFT : f3MapObjectDirection.DIR_RIGHT)));
         }
         //	CDIB32* m_Graphic;
         private static Dictionary<int, Cf3MapObjectEelPitcher> m_EnemyList = new Dictionary<int, Cf3MapObjectEelPitcher>();
@@ -36,7 +36,7 @@ namespace MifuminSoft.funyan.Core
         private float m_RootX, m_RootY;         // 根元
         private bool m_bBlinking;
 
-        public bool IsLeaf() { return m_State == EELLEAF || m_State == EELFROZEN; }
+        public bool IsLeaf() { return m_State == f3EelPitcherState.EELLEAF || m_State == f3EelPitcherState.EELFROZEN; }
         public static void OnDrawAll(CDIB32 lp)
         {
             foreach (var it in m_EnemyList)
@@ -108,7 +108,7 @@ namespace MifuminSoft.funyan.Core
             if (!IsValid()) return;
             m_bBlinking = false;
             GetCPos(out var cx, out var cy);
-            if (m_State == EELLEAF)
+            if (m_State == f3EelPitcherState.EELLEAF)
             {
                 foreach (var it in m_pParent.GetMapObjects(cx - 2, cy - 2, cx + 2, cy + 2, f3MapObjectType.MOT_FUNYA))
                 {
@@ -137,13 +137,13 @@ namespace MifuminSoft.funyan.Core
                 if (it.IsValid() && it != this)
                 {
                     it.GetPos(out var objX, out var objY);
-                    if (m_State == EELLEAF || m_State == EELFROZEN)
+                    if (m_State == f3EelPitcherState.EELLEAF || m_State == f3EelPitcherState.EELFROZEN)
                     {
                         if (TL.IsIn(m_X - 16, objX, m_X + 16))
                         {
                             if (TL.IsIn(m_Y, objY, m_Y + 16))
                             {
-                                if (((Cf3MapObjectEelPitcher)it).m_State != EELLEAF)
+                                if (((Cf3MapObjectEelPitcher)it).m_State != f3EelPitcherState.EELLEAF)
                                 {
                                     // 食べちゃった！！
                                     m_Level += ((Cf3MapObjectEelPitcher)it).m_Level;
@@ -151,21 +151,21 @@ namespace MifuminSoft.funyan.Core
                                 else
                                 {
                                     // 食べられちゃった！！
-                                    m_State = EELDEAD;
+                                    m_State = f3EelPitcherState.EELDEAD;
                                 }
                             }
                         }
                     }
-                    else if (m_State == EELSEED)
+                    else if (m_State == f3EelPitcherState.EELSEED)
                     {
                         if (TL.IsIn(objX - 16, m_X, objX + 16))
                         {
                             if (TL.IsIn(objY, m_Y, objY + 16))
                             {
-                                if (((Cf3MapObjectEelPitcher)it).m_State != EELDEAD)
+                                if (((Cf3MapObjectEelPitcher)it).m_State != f3EelPitcherState.EELDEAD)
                                 {
                                     // 食べられちゃった！！
-                                    m_State = EELDEAD;
+                                    m_State = f3EelPitcherState.EELDEAD;
                                 }
                                 else
                                 {
@@ -188,7 +188,7 @@ namespace MifuminSoft.funyan.Core
         }
         public override void OnMove()
         {
-            if (m_State == EELLEAF)
+            if (m_State == f3EelPitcherState.EELLEAF)
             {
                 TL.BringClose(ref m_Y, m_RootY - m_Level * 32, 4.0f);
                 m_DX = m_DX + (m_pParent.GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32)) - m_DX) * m_Level * 0.1f + (m_RootX - m_X) * 0.025f;
@@ -205,17 +205,17 @@ namespace MifuminSoft.funyan.Core
                     m_X = (int)Math.Floor(m_X / 32) * 32 + 16;
                 }
             }
-            else if (m_State == EELFROZEN)
+            else if (m_State == f3EelPitcherState.EELFROZEN)
             {
                 if (--m_Delay == 0)
                 {
                     m_Y += 16;
-                    m_State = EELSEED;
+                    m_State = f3EelPitcherState.EELSEED;
                     m_Delay = 200;
                     new Cf3MapObjectEffect(m_X, m_Y, 0);
                 }
             }
-            else if (m_State == EELSEED)
+            else if (m_State == f3EelPitcherState.EELSEED)
             {
                 TL.BringClose(ref m_DY, 8.0f, 1.0f);
                 m_DX = m_DX + (m_pParent.GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32)) - m_DX) * 0.2f;
@@ -255,11 +255,11 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
             }
-            else if (m_State == EELBUD)
+            else if (m_State == f3EelPitcherState.EELBUD)
             {
-                if (--m_Delay == 0) m_State = EELLEAF;
+                if (--m_Delay == 0) m_State = f3EelPitcherState.EELLEAF;
             }
-            else if (m_State == EELDEAD)
+            else if (m_State == f3EelPitcherState.EELDEAD)
             {
                 Kill();
             }
@@ -270,10 +270,10 @@ namespace MifuminSoft.funyan.Core
             int height = (int)(m_RootY - m_Y);
             Rectangle rc;
             var graphic = CResourceManager.ResourceManager.Get(RID.RID_EELPITCHER);
-            if (m_State == EELLEAF || m_State == EELFROZEN)
+            if (m_State == f3EelPitcherState.EELLEAF || m_State == f3EelPitcherState.EELFROZEN)
             {
-                int offset1 = (m_State == EELLEAF ? 0 : 96);
-                int offset2 = (m_Direction == DIR_LEFT ? 32 : 64);
+                int offset1 = (m_State == f3EelPitcherState.EELLEAF ? 0 : 96);
+                int offset2 = (m_Direction == f3MapObjectDirection.DIR_LEFT ? 32 : 64);
                 int offset3 = (m_bBlinking ? 32 : 0);
                 // あたま
                 int height1 = (height >= 16 ? 32 : height + 16);
@@ -329,7 +329,7 @@ namespace MifuminSoft.funyan.Core
                     lp.Blt(graphic, m_nVX, m_nVY + 48, rc);
                 }
             }
-            else if (m_State == EELSEED)
+            else if (m_State == f3EelPitcherState.EELSEED)
             {
                 rc.left = 0; rc.top = 0;
                 rc.right = 32; rc.bottom = 32;

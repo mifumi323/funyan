@@ -512,11 +512,11 @@ namespace MifuminSoft.funyan.Core
                                 bgm[(int)BGMNumber.BGMN_GAMENEEDLE] += 4;
                             }
                             else if (n == 0xf3) {   // ギヤバネ左向き
-                                new Cf3MapObjectGeasprin(x, y, DIR_LEFT);
+                                new Cf3MapObjectGeasprin(x, y, f3MapObjectDirection.DIR_LEFT);
                                 bgm[(int)BGMNumber.BGMN_GAMEGEASPRIN] += 10;
                             }
                             else if (n == 0xf4) {   // ギヤバネ右向き
-                                new Cf3MapObjectGeasprin(x, y, DIR_RIGHT);
+                                new Cf3MapObjectGeasprin(x, y, f3MapObjectDirection.DIR_RIGHT);
                                 bgm[(int)BGMNumber.BGMN_GAMEGEASPRIN] += 10;
                             }
                             else if (n == 0xf5) {   // 風ストップ

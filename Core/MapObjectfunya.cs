@@ -60,21 +60,21 @@ namespace MifuminSoft.funyan.Core
 
         protected void Freeze(int level = 15)
         {
-            m_State = FROZEN;
+            m_State = f3MainCharaState.FROZEN;
             m_PoseCounter = level * 8;
         }
         protected void Tire()
         {
-            m_State = TIRED;
+            m_State = f3MainCharaState.TIRED;
             m_PoseCounter = 100;
         }
         protected void BreatheOut()
         {
-            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+            if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
             int p = (int)Math.Floor(m_ChargePower / 40.0f) + 1;
             TL.Saturate(1,ref p,m_nPower);
             var s = new temp_s[4];
-            if (m_Direction == DIR_FRONT) {
+            if (m_Direction == f3MapObjectDirection.DIR_FRONT) {
                 if ((p & 1) != 0) {
                     s[0].x = 0.0f;
                     s[0].y = -16.0f;
@@ -125,47 +125,47 @@ namespace MifuminSoft.funyan.Core
                 s[3].dy = -6.0f * SIN60;
             }
             for (int i = 0;i < p;i++) {
-                if (m_Direction == DIR_LEFT) { s[i].x = -s[i].x; s[i].dx = -s[i].dx; }
+                if (m_Direction == f3MapObjectDirection.DIR_LEFT) { s[i].x = -s[i].x; s[i].dx = -s[i].dx; }
                 new Cf3MapObjectIce(m_X + s[i].x,m_Y + s[i].y,m_DX + s[i].dx,m_DY + s[i].dy);
             }
             m_nPower -= p;
-            m_State = BREATHEOUT;
+            m_State = f3MainCharaState.BREATHEOUT;
             m_ChargePower = 10.0f;
         }
         protected void BreatheIn()
         {
             if (m_nPower != 0) {
-                if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
-                m_State = BREATHEIN;
+                if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+                m_State = f3MainCharaState.BREATHEIN;
                 m_ChargePower = 0.0f;
             }
         }
         protected void Sit()
         {
-            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
-            m_State = WALKING;
+            if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+            m_State = f3MainCharaState.WALKING;
         }
         protected void Sleep()
         {
-            m_State = SLEEPING;
+            m_State = f3MainCharaState.SLEEPING;
             if (m_bOriginal) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_SLEEP);
             m_PoseCounter = 0;
         }
         protected void Blink()
         {
-            m_State = BLINKING;
+            m_State = f3MainCharaState.BLINKING;
             m_PoseCounter = m_BananaDistance < MAXDISTANCE ? 2 : 12;
         }
         protected void HighJump()
         {
-            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
-            if (m_State != FROZEN) m_State = JUMPING;
+            if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+            if (m_State != f3MainCharaState.FROZEN) m_State = f3MainCharaState.JUMPING;
             m_DY = -6.35f;
         }
         protected void Smile()
         {
-            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
-            m_State = SMILING;
+            if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+            m_State = f3MainCharaState.SMILING;
             m_DX = m_DY = 0;
         }
         protected void HitCheck()
@@ -226,40 +226,40 @@ namespace MifuminSoft.funyan.Core
         }
         protected void Stop()
         {
-            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
-            m_State = STANDING;
+            if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+            m_State = f3MainCharaState.STANDING;
             m_Sleepy = 0;
         }
         protected void Run(f3MapObjectDirection direction)
         {
-            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
-            m_State = RUNNING;
+            if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+            m_State = f3MainCharaState.RUNNING;
             m_Direction = direction;
             m_PoseCounter = 0;
         }
         protected void Fall()
         {
-            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
-            m_State = JUMPING;
+            if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+            m_State = f3MainCharaState.JUMPING;
         }
         protected void Land()
         {
-            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
-            m_State = STANDING;
+            if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+            m_State = f3MainCharaState.STANDING;
             m_DY = 0;
             m_Sleepy = 0;
         }
         protected void StartJump()
         {
-            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
-            m_State = CHARGING;
+            if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+            m_State = f3MainCharaState.CHARGING;
             m_ChargePower = 1.0f;
             m_DY = 0;
         }
         protected void Jump()
         {
-            if (m_bOriginal && m_State == SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
-            m_State = JUMPING;
+            if (m_bOriginal && m_State == f3MainCharaState.SLEEPING) CApp.theApp.GetBGM().MusicEffect(MENumber.MEN_AWAKE);
+            m_State = f3MainCharaState.JUMPING;
             m_OnEnemy = false;
 
             m_DY = -
@@ -298,24 +298,24 @@ namespace MifuminSoft.funyan.Core
         protected int m_VOffsetToX, m_VOffsetToY;
 
         public float GetGravity() { int g = Cf3Setting.theSetting.m_Gravity; return g == 1 ? 0.2f : (g == 2 ? 0.05f : 0.1f); }
-        public override bool IsFrozen() { return m_State == FROZEN; }
+        public override bool IsFrozen() { return m_State == f3MainCharaState.FROZEN; }
         public override void Die()
         {
-            m_State = DEAD;
+            m_State = f3MainCharaState.DEAD;
             m_DX = m_DY = 0;
         }
         public override bool IsDied()
         {
-            return m_State == DEAD;
+            return m_State == f3MainCharaState.DEAD;
         }
         public override void GetViewPos(out int vx,out int vy)
         {
             if (m_pParent.IsPlayable()) {
                 int ox = 0, oy = 0, tx = 0, ty = 0;
-                if (m_pInput.GetKeyPressed(F3KEY_RIGHT)) tx += 1;
-                if (m_pInput.GetKeyPressed(F3KEY_LEFT)) tx += 2;
-                if (m_pInput.GetKeyPressed(F3KEY_DOWN)) ty += 1;
-                if (m_pInput.GetKeyPressed(F3KEY_UP)) ty += 2;
+                if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) tx += 1;
+                if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_LEFT)) tx += 2;
+                if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) ty += 1;
+                if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_UP)) ty += 2;
                 if (tx == 0) {; }
                 else if (tx == 1) { m_VOffsetToX = 100; }
                 else if (tx == 2) { m_VOffsetToX = -100; }
@@ -334,7 +334,7 @@ namespace MifuminSoft.funyan.Core
         }
         public override void Synergy()
         {
-            if (m_State == DEAD || m_State == SMILING) return;
+            if (m_State == f3MainCharaState.DEAD || m_State == f3MainCharaState.SMILING) return;
             m_OnEnemy = false;
             m_Power = m_PowerX = m_PowerY = 0.0f;
             // ギヤバネ
@@ -366,7 +366,7 @@ namespace MifuminSoft.funyan.Core
                             if (TL.IsIn(objY - 30,m_Y,objY) && m_DY >= 0) {
                                 m_OnEnemy = true;
                                 m_Y = objY - 30;
-                                if (m_State == JUMPING) Land();
+                                if (m_State == f3MainCharaState.JUMPING) Land();
                             }
                         }
                         else if (TL.IsIn(objX + 16,m_X,objX + 29)) {
@@ -403,13 +403,13 @@ namespace MifuminSoft.funyan.Core
                             if (m_DY >= 0) {
                                 m_OnEnemy = true;
                                 m_Y = objY - 14;
-                                if (m_State == JUMPING) Land();
+                                if (m_State == f3MainCharaState.JUMPING) Land();
                             }
                         }
                     }
                 }
             }
-            if (m_State != FROZEN) {
+            if (m_State != f3MainCharaState.FROZEN) {
                 // 氷
                 foreach (var it in m_pParent.GetMapObjects(m_nCX - 2,m_nCY - 2,m_nCX + 2,m_nCY + 2,f3MapObjectType.MOT_ICE)) {
                     if (it.IsValid() && ((Cf3MapObjectIce)it).GetSize() > 10) {
@@ -481,34 +481,34 @@ namespace MifuminSoft.funyan.Core
         {
             if (!IsValid()) return;
             // PoseCounterの処理
-            if (m_State == STANDING) {  // 立ってるとき
+            if (m_State == f3MainCharaState.STANDING) {  // 立ってるとき
             }
-            else if (m_State == RUNNING) {
+            else if (m_State == f3MainCharaState.RUNNING) {
                 ++m_PoseCounter; m_PoseCounter %= 12;
             }
-            else if (m_State == WALKING) {
+            else if (m_State == f3MainCharaState.WALKING) {
             }
-            else if (m_State == CHARGING) {
+            else if (m_State == f3MainCharaState.CHARGING) {
             }
-            else if (m_State == JUMPING) {
+            else if (m_State == f3MainCharaState.JUMPING) {
             }
-            else if (m_State == BREATHEIN) {
+            else if (m_State == f3MainCharaState.BREATHEIN) {
             }
-            else if (m_State == BREATHEOUT) {
+            else if (m_State == f3MainCharaState.BREATHEOUT) {
             }
-            else if (m_State == TIRED) {
+            else if (m_State == f3MainCharaState.TIRED) {
                 m_PoseCounter2 = m_PoseCounter - 1;
             }
-            else if (m_State == DAMAGED) {
+            else if (m_State == f3MainCharaState.DAMAGED) {
             }
-            else if (m_State == DEAD) {
+            else if (m_State == f3MainCharaState.DEAD) {
             }
-            else if (m_State == SLEEPING) {
+            else if (m_State == f3MainCharaState.SLEEPING) {
                 ++m_PoseCounter; m_PoseCounter %= 40;
                 m_PoseCounter2 = m_PoseCounter - 1;
                 Cf3Setting.theSetting.m_SleepTime++;
             }
-            else if (m_State == BLINKING) {
+            else if (m_State == f3MainCharaState.BLINKING) {
             }
             if (m_Power < -1.0f / 4096.0f) { ++m_PoseCounter2; m_PoseCounter2 %= 40; }
         }
@@ -523,101 +523,101 @@ namespace MifuminSoft.funyan.Core
             if (m_pParent.ItemCompleted()) Smile();
             if (Cf3Setting.theSetting.m_Hyper != 0) m_nPower = 4;
             // 動かしま～す
-            if (m_State == STANDING || m_State == SLEEPING || m_State == BLINKING) {
+            if (m_State == f3MainCharaState.STANDING || m_State == f3MainCharaState.SLEEPING || m_State == f3MainCharaState.BLINKING) {
                 // 立ってるとき
                 m_DX -= WINDFACTOR * (m_DX - Wind) * RUNFRICTION;
                 TL.BringClose(ref m_DX,0.0f,Friction);
-                if (m_DX == 0) m_Direction = DIR_FRONT;
-                if (m_State == STANDING && ++m_Sleepy >= 30 * 40 / 3) Sleep();
-                if (m_State == BLINKING && --m_PoseCounter == 0) m_State = STANDING;
-                if (m_State == STANDING && CApp.theApp.random(120) == 0) Blink();
-                if (m_PowerY <= 0 && m_pInput.GetKeyPressed(F3KEY_JUMP)) StartJump();
-                if (m_PowerX <= 0 && m_pInput.GetKeyPressed(F3KEY_LEFT)) Run(DIR_LEFT);
-                if (m_PowerX >= 0 && m_pInput.GetKeyPressed(F3KEY_RIGHT)) Run(DIR_RIGHT);
-                if (m_pInput.GetKeyPressed(F3KEY_DOWN)) Sit();
-                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
+                if (m_DX == 0) m_Direction = f3MapObjectDirection.DIR_FRONT;
+                if (m_State == f3MainCharaState.STANDING && ++m_Sleepy >= 30 * 40 / 3) Sleep();
+                if (m_State == f3MainCharaState.BLINKING && --m_PoseCounter == 0) m_State = f3MainCharaState.STANDING;
+                if (m_State == f3MainCharaState.STANDING && CApp.theApp.random(120) == 0) Blink();
+                if (m_PowerY <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_JUMP)) StartJump();
+                if (m_PowerX <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_LEFT)) Run(f3MapObjectDirection.DIR_LEFT);
+                if (m_PowerX >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) Run(f3MapObjectDirection.DIR_RIGHT);
+                if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) Sit();
+                if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_ATTACK)) BreatheIn();
                 if (!m_HitBottom) {
                     Fall();
                 }
             }
-            else if (m_State == RUNNING) {
+            else if (m_State == f3MainCharaState.RUNNING) {
                 // 走ってるとき
                 int AXL = 0, AXR = 0;
-                if (m_PowerX <= 0 && m_pInput.GetKeyPressed(F3KEY_LEFT)) AXL = 1;
-                if (m_PowerX >= 0 && m_pInput.GetKeyPressed(F3KEY_RIGHT)) AXR = 1;
+                if (m_PowerX <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_LEFT)) AXL = 1;
+                if (m_PowerX >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) AXR = 1;
                 m_DX -= Friction * (m_DX - Wind) * RUNFRICTION;
                 m_DX += Friction * 2.0f * (AXR - AXL);
-                if (AXL && !AXR) m_Direction = DIR_LEFT;
-                if (AXR && !AXL) m_Direction = DIR_RIGHT;
+                if (AXL && !AXR) m_Direction = f3MapObjectDirection.DIR_LEFT;
+                if (AXR && !AXL) m_Direction = f3MapObjectDirection.DIR_RIGHT;
                 if (!AXL && !AXR) Stop();
-                if (m_PowerY <= 0 && m_pInput.GetKeyPressed(F3KEY_JUMP)) StartJump();
-                if (m_pInput.GetKeyPressed(F3KEY_DOWN)) Sit();
-                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
+                if (m_PowerY <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_JUMP)) StartJump();
+                if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) Sit();
+                if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_ATTACK)) BreatheIn();
                 if (!m_HitBottom) {
                     Fall();
                 }
             }
-            else if (m_State == WALKING) {
+            else if (m_State == f3MainCharaState.WALKING) {
                 // 歩いてるとき
                 int AXL = 0, AXR = 0;
-                if (m_PowerX <= 0 && m_pInput.GetKeyPressed(F3KEY_LEFT)) AXL = 1;
-                if (m_PowerX >= 0 && m_pInput.GetKeyPressed(F3KEY_RIGHT)) AXR = 1;
+                if (m_PowerX <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_LEFT)) AXL = 1;
+                if (m_PowerX >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) AXR = 1;
                 m_DX += WALKACCEL * (AXR - AXL);
                 m_DX -= m_DX * WALKFRICTION;
-                if (AXL & !AXR) m_Direction = DIR_LEFT;
-                if (AXR & !AXL) m_Direction = DIR_RIGHT;
-                if (!AXL & !AXR) m_Direction = DIR_FRONT;
-                if (!m_pInput.GetKeyPressed(F3KEY_DOWN)) Stop();
-                if (m_PowerY <= 0 && m_pInput.GetKeyPushed(F3KEY_JUMP)) StartJump();
-                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
+                if (AXL & !AXR) m_Direction = f3MapObjectDirection.DIR_LEFT;
+                if (AXR & !AXL) m_Direction = f3MapObjectDirection.DIR_RIGHT;
+                if (!AXL & !AXR) m_Direction = f3MapObjectDirection.DIR_FRONT;
+                if (!m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) Stop();
+                if (m_PowerY <= 0 && m_pInput.GetKeyPushed((int)F3KEY.F3KEY_JUMP)) StartJump();
+                if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_ATTACK)) BreatheIn();
                 if (!m_HitBottom) Fall();
             }
-            else if (m_State == CHARGING) {
+            else if (m_State == f3MainCharaState.CHARGING) {
                 // パワー充填中
                 if (m_ChargePower > 0) {
                     m_ChargePower -= m_ChargeDec;
                     if (m_ChargePower < 0) m_ChargePower = 0;
                 }
                 m_X -= m_DX;
-                if (m_pInput.GetKeyPushed(F3KEY_DOWN)) Sit();
-                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
-                if (!m_pInput.GetKeyPressed(F3KEY_JUMP)) Jump();
+                if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_DOWN)) Sit();
+                if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_ATTACK)) BreatheIn();
+                if (!m_pInput.GetKeyPressed((int)F3KEY.F3KEY_JUMP)) Jump();
                 if (!m_HitBottom) Fall();
             }
-            else if (m_State == JUMPING) {
+            else if (m_State == f3MainCharaState.JUMPING) {
                 // 空中
                 if (m_DY >= 0) {
                     int AXL = 0, AXR = 0;
-                    if (m_PowerX <= 0 && m_pInput.GetKeyPressed(F3KEY_LEFT)) AXL = 1;
-                    if (m_PowerX >= 0 && m_pInput.GetKeyPressed(F3KEY_RIGHT)) AXR = 1;
+                    if (m_PowerX <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_LEFT)) AXL = 1;
+                    if (m_PowerX >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) AXR = 1;
                     m_DX -= (m_DX - Wind) * JUMPFRICTIONX;
                     m_DX += JUMPACCEL * (AXR - AXL);
-                    if (AXL & !AXR) m_Direction = DIR_LEFT;
-                    if (AXR & !AXL) m_Direction = DIR_RIGHT;
+                    if (AXL & !AXR) m_Direction = f3MapObjectDirection.DIR_LEFT;
+                    if (AXR & !AXL) m_Direction = f3MapObjectDirection.DIR_RIGHT;
                 }
-                if (m_HitLeft || m_HitRight) m_Direction = DIR_FRONT;
+                if (m_HitLeft || m_HitRight) m_Direction = f3MapObjectDirection.DIR_FRONT;
                 m_DY += Gravity;
                 if (m_DY >= 0) {
-                    if (m_PowerY >= 0 && m_pInput.GetKeyPressed(F3KEY_DOWN)) m_DY += Gravity * ADDGRAVITY;
+                    if (m_PowerY >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) m_DY += Gravity * ADDGRAVITY;
                     m_DY -= m_DY * JUMPFRICTIONY;
-                    if (m_pInput.GetKeyPressed(F3KEY_UP)) {
+                    if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_UP)) {
                         m_DY += Gravity;
                         m_DY -= m_DY * JUMPFRICTIONY;
                     }
                 }
-                if (m_pInput.GetKeyPushed(F3KEY_ATTACK)) BreatheIn();
+                if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_ATTACK)) BreatheIn();
                 if (m_HitBottom) Land();
             }
-            else if (m_State == BREATHEIN) {
+            else if (m_State == f3MainCharaState.BREATHEIN) {
                 // 冷気充填中
                 m_ChargePower += 1.0f;
-                if (m_pInput.GetKeyPushed(F3KEY_LEFT)) m_Direction = DIR_LEFT;
-                if (m_pInput.GetKeyPushed(F3KEY_RIGHT)) m_Direction = DIR_RIGHT;
-                if (m_pInput.GetKeyPushed(F3KEY_UP)) m_Direction = DIR_FRONT;
+                if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_LEFT)) m_Direction = f3MapObjectDirection.DIR_LEFT;
+                if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_RIGHT)) m_Direction = f3MapObjectDirection.DIR_RIGHT;
+                if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_UP)) m_Direction = f3MapObjectDirection.DIR_FRONT;
                 if (m_HitBottom) {
                     m_DX -= WINDFACTOR * (m_DX - Wind) * RUNFRICTION;
                     TL.BringClose(ref m_DX,0.0f,Friction);
-                    if (m_pInput.GetKeyPushed(F3KEY_DOWN)) Sit();
+                    if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_DOWN)) Sit();
                 } else {
                     m_ChargePower += 1.0f;
                     if (m_DY >= 0) {
@@ -628,9 +628,9 @@ namespace MifuminSoft.funyan.Core
                         m_DY -= m_DY * JUMPFRICTIONY;
                     }
                 }
-                if (!m_pInput.GetKeyPressed(F3KEY_ATTACK)) BreatheOut();
+                if (!m_pInput.GetKeyPressed((int)F3KEY.F3KEY_ATTACK)) BreatheOut();
             }
-            else if (m_State == BREATHEOUT) {
+            else if (m_State == f3MainCharaState.BREATHEOUT) {
                 // 冷気放出！！
                 m_ChargePower -= 1.0f;
                 if (m_HitBottom) {
@@ -653,7 +653,7 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
             }
-            else if (m_State == TIRED) {
+            else if (m_State == f3MainCharaState.TIRED) {
                 // ちかれたー！
                 m_PoseCounter--;
                 if (m_HitBottom) {
@@ -661,13 +661,13 @@ namespace MifuminSoft.funyan.Core
                     TL.BringClose(ref m_DX,0.0f,Friction);
                 } else {
                     m_DX -= (m_DX - Wind) * JUMPFRICTIONX;
-                    if (m_HitLeft || m_HitRight) m_Direction = DIR_FRONT;
+                    if (m_HitLeft || m_HitRight) m_Direction = f3MapObjectDirection.DIR_FRONT;
                     m_DY += Gravity;
                     m_DY -= m_DY * JUMPFRICTIONY;
                 }
                 if (m_PoseCounter == 0) Land();
             }
-            else if (m_State == FROZEN) {
+            else if (m_State == f3MainCharaState.FROZEN) {
                 // 凍っちゃった…
                 m_PoseCounter--;
                 if (m_HitBottom) {
@@ -700,65 +700,65 @@ namespace MifuminSoft.funyan.Core
             if (m_pParent.ItemCompleted()) Smile();
             int CX = 0, CY = (int)m_Direction;
             SetViewPos(-16,-15);
-            if (m_State == STANDING) {  // 立ってるとき
-                if (m_pInput.GetKeyPressed(F3KEY_SMILE)) CX = 18;
+            if (m_State == f3MainCharaState.STANDING) {  // 立ってるとき
+                if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_SMILE)) CX = 18;
             }
-            else if (m_State == RUNNING) {
+            else if (m_State == f3MainCharaState.RUNNING) {
                 CX = m_PoseCounter < 6 ? m_PoseCounter + 2 : 14 - m_PoseCounter;
             }
-            else if (m_State == WALKING) {
+            else if (m_State == f3MainCharaState.WALKING) {
                 CX = 11;
             }
-            else if (m_State == CHARGING) {
+            else if (m_State == f3MainCharaState.CHARGING) {
                 CX = (m_ChargePower >= m_JumpFunc[0].Power ? 24 :
                     (m_ChargePower >= m_JumpFunc[1].Power ? 11 :
                     (m_ChargePower >= m_JumpFunc[2].Power ? 25 :
                     (m_ChargePower >= m_JumpFunc[3].Power ? 12 :
                     12))));
             }
-            else if (m_State == JUMPING) {
+            else if (m_State == f3MainCharaState.JUMPING) {
                 CX = ((m_DY >= 0) ? 10 : 9);
             }
-            else if (m_State == BREATHEIN) {
+            else if (m_State == f3MainCharaState.BREATHEIN) {
                 CX = (m_ChargePower < 40.0f ? 15 :
                     (m_ChargePower < 120.0f ? 16 :
                     17));
                 if (!m_HitBottom) CX += 12;
             }
-            else if (m_State == BREATHEOUT) {
+            else if (m_State == f3MainCharaState.BREATHEOUT) {
                 CX = 14;
                 if (!m_HitBottom) CX += 12;
             }
-            else if (m_State == TIRED) {
+            else if (m_State == f3MainCharaState.TIRED) {
                 CX = ((m_PoseCounter + 1) % 40 < 20) ? 21 : 22;
             }
-            else if (m_State == DAMAGED) {
+            else if (m_State == f3MainCharaState.DAMAGED) {
                 CX = 13;
             }
-            else if (m_State == FROZEN) {
+            else if (m_State == f3MainCharaState.FROZEN) {
                 CX = 23;
             }
-            else if (m_State == DEAD) {
+            else if (m_State == f3MainCharaState.DEAD) {
                 CX = 13; CY = 0;
             }
-            else if (m_State == SMILING) {
+            else if (m_State == f3MainCharaState.SMILING) {
                 CX = 18; CY = 0;
             }
-            else if (m_State == SLEEPING) {
+            else if (m_State == f3MainCharaState.SLEEPING) {
                 CX = 19 + (m_PoseCounter >= 20 ? 1 : 0);
                 if (m_Power < -1.0f / 4096.0f) CX += 2;
                 CY = 0;
             }
-            else if (m_State == BLINKING) {
+            else if (m_State == f3MainCharaState.BLINKING) {
                 CX = m_BananaDistance < MAXDISTANCE ? 1 : 30;
-                if (m_pInput.GetKeyPressed(F3KEY_SMILE)) CX = 18;
+                if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_SMILE)) CX = 18;
             }
             // あせあせ
             var rc = new Rectangle(CX * 32,CY * 32,32,32);
             lp.BltNatural(m_nPower == 0 ? m_Graphic : m_Graphic2,m_nVX,m_nVY,rc);
             if (m_Power < -1.0f / 4096.0f) {
                 rc.left = (m_PoseCounter2 < 20 ? 0 : 64) +
-                    ((m_Direction != DIR_RIGHT && (int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1) ? 0 : 128);
+                    ((m_Direction != f3MapObjectDirection.DIR_RIGHT && (int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1) ? 0 : 128);
                 rc.top = 96;
                 rc.right = rc.left + 64;
                 rc.bottom = rc.top + 32;
@@ -774,7 +774,7 @@ namespace MifuminSoft.funyan.Core
             m_ChargeDec = 0.001f;
             m_nPower = 0;
             m_Power = m_PowerX = m_PowerY = 0.0f;
-            m_Direction = DIR_FRONT;
+            m_Direction = f3MapObjectDirection.DIR_FRONT;
             m_HitLeft = m_HitRight = m_HitTop = m_OnEnemy = false; m_HitBottom = true;
             Land();
             SetPos(nCX * 32 + 16,nCY * 32 + 18);
