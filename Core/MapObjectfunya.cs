@@ -21,6 +21,12 @@ namespace MifuminSoft.funyan.Core
         BLINKING,
     }
 
+    public struct f3JumpFunction
+    {
+        public float DY;
+        public float Power;
+    };
+
     public class Cf3MapObjectfunya : Cf3MapObjectMain
     {
         protected const float RUNMAX = 13.0f;
@@ -272,11 +278,11 @@ namespace MifuminSoft.funyan.Core
         protected float m_ChargePower;                        // ジャンプチャージ係数(1.0f=100%から減ってゆく)
         protected float m_ChargeDec;                          // ジャンプチャージ係数減衰値(設定で変化する予定)
         protected static readonly f3JumpFunction[] m_JumpFunc = new f3JumpFunction[4]{
-    4.5f, 0.994f,
-    3.6f, 0.980f,
-    2.6f, 0.940f,
-    0.9f, 0.0f,
-};  // チャージ－ジャンプ力対応
+            new f3JumpFunction { DY = 4.5f, Power = 0.994f },
+            new f3JumpFunction { DY = 3.6f, Power = 0.980f },
+            new f3JumpFunction { DY = 2.6f, Power = 0.940f },
+            new f3JumpFunction { DY = 0.9f, Power = 0.0f },
+        };  // チャージ－ジャンプ力対応
         protected float m_Power, m_PowerX, m_PowerY;
         protected int m_nPower;
         protected f3MainCharaState m_State;
