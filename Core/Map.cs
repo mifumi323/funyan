@@ -209,7 +209,7 @@ namespace MifuminSoft.funyan.Core
             }
             if ((m_nEffect & 2) != 0) {
                 CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0, 128);
-                var rc = new Rectangle(0,16,320,224);
+                var rc = new Rectangle(0, 16, 320, 224);
                 lpSrc.BltFast(lpDst, 0, 0, rc);
             }
             if (lpDst == dib) lpDst.BltFast(lpSrc, 0, 0);
@@ -330,7 +330,7 @@ namespace MifuminSoft.funyan.Core
                 for (y = sy; y <= ey; y++) {
                     for (x = sx; x <= ex; x++) {
                         z = y * m_Width[0] + x;
-                        r = new Rectangle((m_MapData[0][z] & 0xf) * 32,(m_MapData[0][z] >> 4) * 32,32,32);
+                        r = new Rectangle((m_MapData[0][z] & 0xf) * 32, (m_MapData[0][z] >> 4) * 32, 32, 32);
                         vx = x * 32; vy = y * 32;
                         GetViewPos(ref vx, ref vy, mx, my);
                         lp.BltFast(m_MapChip[0], vx, vy, r);
@@ -354,7 +354,7 @@ namespace MifuminSoft.funyan.Core
                 for (y = sy; y <= ey; y++) {
                     for (x = sx; x <= ex; x++) {
                         z = y * m_Width[1] + x;
-                        r = new Rectangle((m_MapData[1][z] & 0xf) * 32,(m_MapData[1][z] >> 4) * 32,32,32);
+                        r = new Rectangle((m_MapData[1][z] & 0xf) * 32, (m_MapData[1][z] >> 4) * 32, 32, 32);
                         vx = x * 32; vy = y * 32;
                         GetViewPos(ref vx, ref vy);
                         if (m_MapData[0] != null) lp.Blt(m_MapChip[1], vx, vy, r);
@@ -363,23 +363,23 @@ namespace MifuminSoft.funyan.Core
                             // 当たり判定表示
                             if (GetHit(x, y, HIT.HIT_TOP)) {
                                 int f = m_Hit[GetMapData(1, x, y)] & ~0x1f;
-                                r = new Rectangle(f,0,32,32);
+                                r = new Rectangle(f, 0, 32, 32);
                                 lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_BOTTOM)) {
-                                r = new Rectangle(256,0,32,32);
+                                r = new Rectangle(256, 0, 32, 32);
                                 lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_LEFT)) {
-                                r = new Rectangle(288,0,32,32);
+                                r = new Rectangle(288, 0, 32, 32);
                                 lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_RIGHT)) {
-                                r = new Rectangle(320,0,32,32);
+                                r = new Rectangle(320, 0, 32, 32);
                                 lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_DEATH)) {
-                                r = new Rectangle(352,0,32,32);
+                                r = new Rectangle(352, 0, 32, 32);
                                 lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                         }
@@ -414,7 +414,7 @@ namespace MifuminSoft.funyan.Core
                 for (y = sy; y <= ey; y++) {
                     for (x = sx; x <= ex; x++) {
                         z = y * m_Width[2] + x;
-                        r = new Rectangle((m_MapData[2][z] & 0xf) * 32,(m_MapData[2][z] >> 4) * 32,32,32);
+                        r = new Rectangle((m_MapData[2][z] & 0xf) * 32, (m_MapData[2][z] >> 4) * 32, 32, 32);
                         vx = (int)(x * 32 * mx); vy = (int)(y * 32 * my);
                         GetViewPos(ref vx, ref vy, mx, my);
                         lp.Blt(m_MapChip[2], vx, vy, r);
@@ -429,7 +429,7 @@ namespace MifuminSoft.funyan.Core
             }
             if ((m_nEffect & 2) != 0) {
                 CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0, 128);
-                var rc = new Rectangle(0,16,320,224);
+                var rc = new Rectangle(0, 16, 320, 224);
                 lpSrc.BltFast(lpDst, 0, 0, rc);
             }
             if ((m_nEffect & 4) != 0) {
@@ -629,8 +629,7 @@ namespace MifuminSoft.funyan.Core
             m_MapChip[2].Dispose();
             m_MapChip[1].Dispose();
             m_MapChip[0].Dispose();
-            DELETE_SAFE(m_pDIBBuf);
+            TL.DELETE_SAFE(ref m_pDIBBuf);
         }
-
     }
 }

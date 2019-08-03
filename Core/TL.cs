@@ -1,4 +1,6 @@
-﻿namespace MifuminSoft.funyan.Core
+﻿using System;
+
+namespace MifuminSoft.funyan.Core
 {
     /// <summary>
     /// f3TL - funya3 Typical Library
@@ -95,6 +97,15 @@
             {
                 from += step;
                 if (from > to) from = to;
+            }
+        }
+
+        internal static void DELETE_SAFE<T>(ref T obj) where T : class, IDisposable
+        {
+            if (obj != null)
+            {
+                obj.Dispose();
+                obj = null;
             }
         }
     }
