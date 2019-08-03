@@ -14,7 +14,7 @@ namespace MifuminSoft.funyan.Core
         public static IEnumerable<Cf3MapObjectIceSource> All() { return m_IceList; }
         public int GetSize()
         {
-            int s = abs((PHASEMAX / 2) - m_Phase) * 6 / PHASEMAX + 4;
+            int s = Math.Abs((PHASEMAX / 2) - m_Phase) * 6 / PHASEMAX + 4;
             return s;
         }
         public static void OnPreDrawAll()
@@ -62,6 +62,5 @@ namespace MifuminSoft.funyan.Core
             m_IceList.Remove(this);
             base.Dispose();
         }
-
     }
 }

@@ -77,7 +77,7 @@ namespace MifuminSoft.funyan.Core
                 m_Graphic[1].SetPixel(0, 0, 0xffffff);
                 m_bGraphicInitialize = true;
             }
-            m_ParticleCount = (int)Math.Floor(w * abs(s) * 0.5);
+            m_ParticleCount = (int)Math.Floor(w * Math.Abs(s) * 0.5);
             if (m_ParticleCount == 0) { Kill(); return; }
             m_Particle = new tagWindParticle[m_ParticleCount];
             m_Left = x * 32;

@@ -15,7 +15,7 @@ namespace MifuminSoft.funyan.Core
             m_RootY = (float)Math.Floor(m_Y / 32) * 32;
             if (m_pParent.GetHit((int)Math.Floor((m_X - 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 1;
             if (m_pParent.GetHit((int)Math.Floor((m_X + 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 2;
-            m_Direction = (d == 1 ? f3MapObjectDirection.DIR_RIGHT : (d == 2 ? f3MapObjectDirection.DIR_LEFT : (CApp.theApp.random(2) != 0 ? f3MapObjectDirection.DIR_LEFT : f3MapObjectDirection.DIR_RIGHT)));
+            m_Direction = d == 1 ? f3MapObjectDirection.DIR_RIGHT : (d == 2 ? f3MapObjectDirection.DIR_LEFT : (CApp.theApp.random(2) != 0 ? f3MapObjectDirection.DIR_LEFT : f3MapObjectDirection.DIR_RIGHT));
         }
         private static Dictionary<int, Cf3MapObjectEelPitcher> m_EnemyList = new Dictionary<int, Cf3MapObjectEelPitcher>();
 
@@ -217,7 +217,7 @@ namespace MifuminSoft.funyan.Core
             else if (m_State == f3EelPitcherState.EELSEED)
             {
                 TL.BringClose(ref m_DY, 8.0f, 1.0f);
-                m_DX = m_DX + (m_pParent.GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32)) - m_DX) * 0.2f;
+                m_DX += (m_pParent.GetWind((int)Math.Floor(m_X / 32), (int)Math.Floor(m_Y / 32)) - m_DX) * 0.2f;
                 TL.Saturate(-14.0f, ref m_DX, 14.0f);
                 m_X += m_DX;
                 if (m_pParent.GetHit((int)Math.Floor((m_X - 16) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_RIGHT))
@@ -283,7 +283,7 @@ namespace MifuminSoft.funyan.Core
                 if (height > 16)
                 {
                     int i, h, h2;
-                    h = (int)Math.Floor((m_RootY - m_Y) / (abs(m_RootY - m_Y) + 1) + 1);
+                    h = (int)Math.Floor((m_RootY - m_Y) / (Math.Abs(m_RootY - m_Y) + 1) + 1);
                     if (h > 32) h = 32;
                     for (i = 16; i < height; i += h)
                     {

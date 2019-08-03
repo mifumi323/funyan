@@ -423,17 +423,17 @@ namespace MifuminSoft.funyan.Core
             if (m_Spring2[(int)f3MapObjectDirection.DIR_FRONT] != 0)
             {
                 int h = m_Spring2[(int)f3MapObjectDirection.DIR_FRONT];
-                lp.BltNatural(m_Graphic, m_nVX, m_nVY + 8 - h, new Rectangle(32,64,32,h));
+                lp.BltNatural(m_Graphic, m_nVX, m_nVY + 8 - h, new Rectangle(32, 64, 32, h));
             }
             if (m_Spring2[(int)f3MapObjectDirection.DIR_LEFT] != 0)
             {
                 int w = m_Spring2[(int)f3MapObjectDirection.DIR_LEFT];
-                lp.BltNatural(m_Graphic, m_nVX + 8 - w, m_nVY, new Rectangle(0,64,w,32));
+                lp.BltNatural(m_Graphic, m_nVX + 8 - w, m_nVY, new Rectangle(0, 64, w, 32));
             }
             if (m_Spring2[(int)f3MapObjectDirection.DIR_RIGHT] != 0)
             {
                 int w = m_Spring2[(int)f3MapObjectDirection.DIR_RIGHT];
-                lp.BltNatural(m_Graphic, m_nVX + 24, m_nVY, new Rectangle(32-w,64,w,96));
+                lp.BltNatural(m_Graphic, m_nVX + 24, m_nVY, new Rectangle(32 - w, 64, w, 96));
             }
             // 本体
             int CX = 0, CY = (m_Direction == f3MapObjectDirection.DIR_LEFT ? 0 : 1);
@@ -465,9 +465,9 @@ namespace MifuminSoft.funyan.Core
             }
             else if (m_State == f3GeasprinState.FROZEN)
             {
-                CX = ((m_Delay < 40 && (m_Delay >> 1) & 1) ? 6 : 7);
+                CX = ((m_Delay < 40 && ((m_Delay >> 1) & 1) != 0) ? 6 : 7);
             }
-            var rc = new Rectangle(CX* 32, CY * 32, 32, 32);
+            var rc = new Rectangle(CX * 32, CY * 32, 32, 32);
             lp.BltNatural(m_Graphic, m_nVX, m_nVY, rc);
         }
         public Cf3MapObjectGeasprin(int nCX, int nCY, f3MapObjectDirection direction = f3MapObjectDirection.DIR_LEFT) : base(f3MapObjectType.MOT_GEASPRIN)
@@ -489,6 +489,5 @@ namespace MifuminSoft.funyan.Core
             m_EnemyList.Remove(GetID());
             base.Dispose();
         }
-
     }
 }

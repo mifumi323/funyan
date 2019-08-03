@@ -61,7 +61,7 @@ namespace MifuminSoft.funyan.Core
         }
         public int GetSize()
         {
-            int s = abs((PHASEMAX / 2) - m_Phase) * 6 / PHASEMAX;
+            int s = Math.Abs((PHASEMAX / 2) - m_Phase) * 6 / PHASEMAX;
             if (m_Delay == 0) s += 10;
             return s;
         }

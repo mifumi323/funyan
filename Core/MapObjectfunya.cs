@@ -208,7 +208,7 @@ namespace MifuminSoft.funyan.Core
                         m_HitLeft = true;
                     }
                 }
-                else if ((double)CL == ceil((m_X - 14) / 32))
+                else if (CL == Math.Ceiling((m_X - 14) / 32))
                 {
                     // (m_X-14)/32が整数ということは境界値でギリギリ当たっているということ！！
                     if (m_pParent.GetHit(CL - 1, CY, HIT.HIT_RIGHT))
@@ -335,7 +335,7 @@ namespace MifuminSoft.funyan.Core
         {
             if (m_pParent.IsPlayable())
             {
-                int ox = 0, oy = 0, tx = 0, ty = 0;
+                int tx = 0, ty = 0;
                 if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) tx += 1;
                 if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_LEFT)) tx += 2;
                 if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) ty += 1;
@@ -350,7 +350,8 @@ namespace MifuminSoft.funyan.Core
                 else if (ty == 3) { m_VOffsetToY = 0; }
                 TL.BringClose(ref m_VOffsetX, m_VOffsetToX, 1 + (m_DX * m_VOffsetToX < 0 ? 1 : 0) + (m_VOffsetX * m_VOffsetToX < 0 ? 1 : 0));
                 TL.BringClose(ref m_VOffsetY, m_VOffsetToY, 1 + (m_DY * m_VOffsetToY < 0 ? 1 : 0) + (m_VOffsetY * m_VOffsetToY < 0 ? 1 : 0));
-                ox = m_VOffsetX; oy = m_VOffsetY;
+                var ox = m_VOffsetX;
+                var oy = m_VOffsetY;
                 vx = (int)(m_X + ox); vy = (int)(m_Y + oy);
             }
             else
@@ -480,7 +481,7 @@ namespace MifuminSoft.funyan.Core
                 {
                     is_.GetPos(out var objX, out var objY);
                     float dX = objX - m_X, dY = objY - m_Y,
-                        p = 1.0f / (dX * dX + dY * dY), p3 = p * sqrt(p);
+                        p = 1.0f / (dX * dX + dY * dY), p3 = (float)(p * Math.Sqrt(p));
                     m_Power += p;
                     m_PowerX += dX * p3;
                     m_PowerY += dY * p3;
@@ -492,7 +493,7 @@ namespace MifuminSoft.funyan.Core
                     {
                         fr.GetPos(out var objX, out var objY);
                         float dX = objX - m_X, dY = objY - m_Y,
-                            p = 1.0f / (dX * dX + dY * dY), p3 = p * sqrt(p);
+                            p = 1.0f / (dX * dX + dY * dY), p3 = (float)(p * Math.Sqrt(p));
                         m_Power -= p;
                         m_PowerX -= dX * p3;
                         m_PowerY -= dY * p3;
@@ -626,9 +627,9 @@ namespace MifuminSoft.funyan.Core
                 if (m_PowerX >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) AXR = 1;
                 m_DX -= Friction * (m_DX - Wind) * RUNFRICTION;
                 m_DX += Friction * 2.0f * (AXR - AXL);
-                if (AXL && !AXR) m_Direction = f3MapObjectDirection.DIR_LEFT;
-                if (AXR && !AXL) m_Direction = f3MapObjectDirection.DIR_RIGHT;
-                if (!AXL && !AXR) Stop();
+                if (AXL != 0 && AXR == 0) m_Direction = f3MapObjectDirection.DIR_LEFT;
+                if (AXR != 0 && AXL == 0) m_Direction = f3MapObjectDirection.DIR_RIGHT;
+                if (AXL == 0 && AXR == 0) Stop();
                 if (m_PowerY <= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_JUMP)) StartJump();
                 if (m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) Sit();
                 if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_ATTACK)) BreatheIn();
@@ -645,9 +646,9 @@ namespace MifuminSoft.funyan.Core
                 if (m_PowerX >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) AXR = 1;
                 m_DX += WALKACCEL * (AXR - AXL);
                 m_DX -= m_DX * WALKFRICTION;
-                if (AXL & !AXR) m_Direction = f3MapObjectDirection.DIR_LEFT;
-                if (AXR & !AXL) m_Direction = f3MapObjectDirection.DIR_RIGHT;
-                if (!AXL & !AXR) m_Direction = f3MapObjectDirection.DIR_FRONT;
+                if (AXL != 0 && AXR == 0) m_Direction = f3MapObjectDirection.DIR_LEFT;
+                if (AXR != 0 && AXL == 0) m_Direction = f3MapObjectDirection.DIR_RIGHT;
+                if (AXL == 0 && AXR == 0) m_Direction = f3MapObjectDirection.DIR_FRONT;
                 if (!m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) Stop();
                 if (m_PowerY <= 0 && m_pInput.GetKeyPushed((int)F3KEY.F3KEY_JUMP)) StartJump();
                 if (m_pInput.GetKeyPushed((int)F3KEY.F3KEY_ATTACK)) BreatheIn();
@@ -677,8 +678,8 @@ namespace MifuminSoft.funyan.Core
                     if (m_PowerX >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_RIGHT)) AXR = 1;
                     m_DX -= (m_DX - Wind) * JUMPFRICTIONX;
                     m_DX += JUMPACCEL * (AXR - AXL);
-                    if (AXL & !AXR) m_Direction = f3MapObjectDirection.DIR_LEFT;
-                    if (AXR & !AXL) m_Direction = f3MapObjectDirection.DIR_RIGHT;
+                    if (AXL != 0 && AXR == 0) m_Direction = f3MapObjectDirection.DIR_LEFT;
+                    if (AXR != 0 && AXL == 0) m_Direction = f3MapObjectDirection.DIR_RIGHT;
                 }
                 if (m_HitLeft || m_HitRight) m_Direction = f3MapObjectDirection.DIR_FRONT;
                 m_DY += Gravity;

@@ -52,7 +52,7 @@ namespace MifuminSoft.funyan.Core
         }
         private void HitCheck()
         {
-            float mw = m_pParent.GetWidth() * 32, mh = m_pParent.GetHeight() * 32;
+            float mh = m_pParent.GetHeight() * 32;
             int CX = (int)Math.Floor(m_X / 32),
                 CL = (int)Math.Floor((m_X - 14) / 32),
                 CR = (int)Math.Floor((m_X + 14) / 32),
@@ -252,7 +252,7 @@ namespace MifuminSoft.funyan.Core
                 {
                     is_.GetPos(out var objX, out var objY);
                     float dX = objX - m_X, dY = objY - m_Y,
-                        p = 1.0f / (dX * dX + dY * dY), p3 = p * sqrt(p);
+                        p = 1.0f / (dX * dX + dY * dY), p3 = (float)(p * Math.Sqrt(p));
                     m_Power += p;
                     m_PowerX += dX * p3;
                     m_PowerY += dY * p3;
@@ -264,7 +264,7 @@ namespace MifuminSoft.funyan.Core
                     {
                         fr.GetPos(out var objX, out var objY);
                         float dX = objX - m_X, dY = objY - m_Y,
-                            p = 1.0f / (dX * dX + dY * dY), p3 = p * sqrt(p);
+                            p = 1.0f / (dX * dX + dY * dY), p3 = (float)(p * Math.Sqrt(p));
                         m_Power -= p;
                         m_PowerX -= dX * p3;
                         m_PowerY -= dY * p3;
@@ -296,12 +296,11 @@ namespace MifuminSoft.funyan.Core
             {
                 float bd, bananaDistance = 1e10f;
                 int nBanana = 0, nPosition = 0;
-                int cx, cy;
                 foreach (var bn in Cf3MapObjectBanana.All())
                 {
                     if (bn.IsValid())
                     {
-                        bn.GetCPos(out cx, out cy);
+                        bn.GetCPos(out var cx, out var cy);
                         bd = (cx * 32 + 16 - m_X) * (cx * 32 + 16 - m_X) + (cy * 32 + 16 - m_Y) * (cy * 32 + 16 - m_Y);
                         if (bd < bananaDistance) bananaDistance = bd;
                         nBanana++;
@@ -337,7 +336,7 @@ namespace MifuminSoft.funyan.Core
                 if (m_PowerY >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) ddy += 1;
                 if (ddx * ddx + ddy * ddy > FLYACCEL * FLYACCEL)
                 {
-                    float r = FLYACCEL / sqrt(ddx * ddx + ddy * ddy);
+                    float r = (float)(FLYACCEL / Math.Sqrt(ddx * ddx + ddy * ddy));
                     ddx *= r; ddy *= r;
                 }
                 for (int i = m_pInput.GetKeyPressed((int)F3KEY.F3KEY_JUMP) ? 0 : 1; i <= 1; i++)
@@ -360,7 +359,7 @@ namespace MifuminSoft.funyan.Core
                 if (m_PowerY >= 0 && m_pInput.GetKeyPressed((int)F3KEY.F3KEY_DOWN)) ddy += 1;
                 if (ddx * ddx + ddy * ddy > FLYACCEL * FLYACCEL)
                 {
-                    float r = FLYACCEL / sqrt(ddx * ddx + ddy * ddy);
+                    float r = (float)(FLYACCEL / Math.Sqrt(ddx * ddx + ddy * ddy));
                     ddx *= r; ddy *= r;
                 }
                 m_DX -= (m_DX - Wind) * FLYFRICTION;
@@ -406,7 +405,7 @@ namespace MifuminSoft.funyan.Core
             // 速度飽和(めり込み防止)
             if (m_DX * m_DX + m_DY * m_DY > 13 * 13)
             {
-                float r = 13.0f / sqrt(m_DX * m_DX + m_DY * m_DY);
+                float r = (float)(13.0 / Math.Sqrt(m_DX * m_DX + m_DY * m_DY));
                 m_DX *= r; m_DY *= r;
             }
             // 実際の移動+当たり判定

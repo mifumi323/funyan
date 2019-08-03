@@ -59,7 +59,7 @@ namespace MifuminSoft.funyan.Core
                 m_Star[i].x += m_Star[i].dx;
                 m_Star[i].y += m_Star[i].dy;
             }
-            if (!n) Kill();
+            if (n == 0) Kill();
         }
         public static void OnPreDrawAll()
         {
@@ -96,8 +96,8 @@ namespace MifuminSoft.funyan.Core
                 for (int i = 0; i < m_StarNum; i++)
                 {
                     float rad = 2.0f * PI * i / m_StarNum;
-                    m_Star[i].dx = 4.0f * cos(rad) * (0.5 + 0.5 / 4096.0 * CApp.theApp.random(4096));
-                    m_Star[i].dy = 4.0f * sin(rad) * (0.5 + 0.5 / 4096.0 * CApp.theApp.random(4096));
+                    m_Star[i].dx = (float)(4.0 * Math.Cos(rad) * (0.5 + 0.5 / 4096.0 * CApp.theApp.random(4096)));
+                    m_Star[i].dy = (float)(4.0 * Math.Sin(rad) * (0.5 + 0.5 / 4096.0 * CApp.theApp.random(4096)));
                     m_Star[i].x = 0;
                     m_Star[i].y = 0;
                     m_Star[i].f = 0.9f;
@@ -110,7 +110,6 @@ namespace MifuminSoft.funyan.Core
                 m_Star = new tagStar[m_StarNum];
                 for (int i = 0; i < m_StarNum; i++)
                 {
-                    float rad = 2.0f * PI * i / m_StarNum;
                     m_Star[i].dx = 0;
                     m_Star[i].dy = -16.0f * (0.5f + 0.5f / 4096.0f * CApp.theApp.random(4096));
                     m_Star[i].x = 32f * (-0.5f + 1.0f / 4096.0f * CApp.theApp.random(4096));
