@@ -39,145 +39,40 @@ namespace MifuminSoft.funyan.Core
     {
         protected void ClearData()
         {
-            for (map<DWORD, HGLOBAL>::iterator it = m_Data.begin(); it != m_Data.end(); it++) {
-
-        ::GlobalFree((*it).second);
-            }
-            m_Data.clear();
+            // TODO: 一から実装し直したほうがよさそうだし、一度全部消すよ。
+            throw new NotImplementedException();
         }
-        protected void AnalyzeData(BYTE* data)
-        {
-            DWORD NumberOfBytesRead = 0;
-            DWORD size, type;
-            HGLOBAL data2;
-            while (NumberOfBytesRead + 8 <= m_StageHeader.datasize) {
-                size = *(DWORD*)(data + NumberOfBytesRead);
-                NumberOfBytesRead += 4;
-                type = *(DWORD*)(data + NumberOfBytesRead);
-                NumberOfBytesRead += 4;
-                if (size) {
-                    data2 = ::GlobalAlloc(GMEM_FIXED | GMEM_NOCOMPACT, size);
 
-            ::CopyMemory(data2, data + NumberOfBytesRead, size);
-                    m_Data.insert(map < DWORD, HGLOBAL >::value_type(type, data2));
-                }
-                NumberOfBytesRead += size;
-            }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns>0:成功、3:Open失敗</returns>
+        public int Write(string filename)
+        {
+            // TODO: 一から実装し直したほうがよさそうだし、一度全部消すよ。
+            throw new NotImplementedException();
         }
-        protected tagf3StageHeader m_StageHeader;
-        protected map<DWORD, HGLOBAL> m_Data;
-
-        public LRESULT Write(string filename)
+        public void SetStageData(CT dwType, uint dwSize, byte[] lpData)
         {
-            // サイズ計算するのジャー
-            DWORD dwSrcSize = 0;
-            map<DWORD, HGLOBAL>::iterator it;
-            for (it = m_Data.begin(); it != m_Data.end(); it++) {
-                dwSrcSize += 4 + 4 +::GlobalSize((*it).second);
-            }
-            // 書き込むデータを用意する
-            var lpSrcAdr = new byte[dwSrcSize];
-            BYTE* lpPos = lpSrcAdr;
-            for (it = m_Data.begin(); it != m_Data.end(); it++) {
-                DWORD chunksize = ::GlobalSize((*it).second);
-                DWORD chunktype = (*it).first;
-
-        ::CopyMemory(lpPos, &chunksize, 4);
-                lpPos += 4;
-
-        ::CopyMemory(lpPos, &chunktype, 4);
-                lpPos += 4;
-
-        ::CopyMemory(lpPos, (BYTE*)(*it).second, chunksize);
-                lpPos += chunksize;
-            }
-
-            // おもむろに圧縮(←「おもむろに」の使い方間違ってる)
-            BYTE* lpDstAdr = null;
-            CLZSS lzss;
-            DWORD dwDstSize;
-            if (lzss.Encode(lpSrcAdr, lpDstAdr, dwSrcSize, dwDstSize)) {
-                dwDstSize = dwSrcSize;
-                lpDstAdr = lpSrcAdr;
-                lpSrcAdr = new byte[1];
-            }
-
-            // やーとこさ書き込みジャー
-            HANDLE hFile = ::CreateFile(filename.c_str(),
-                GENERIC_WRITE, 0, null, TRUNCATE_EXISTING, FILE_ATTRIBUTE_NORMAL, null
-            );
-            if (hFile == INVALID_HANDLE_VALUE) { // あかんやん！
-                hFile = ::CreateFile(filename.c_str(),
-                    GENERIC_WRITE, 0, null, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, null
-                );
-                if (hFile == INVALID_HANDLE_VALUE) return 3; // Open失敗		
-            }
-            DWORD NumberOfBytesWritten = 0;
-            WriteFile(hFile, (LPVOID)"funya3s1", strlen("funya3s1"), &NumberOfBytesWritten, null);
-            WriteFile(hFile, (LPVOID) & dwSrcSize, sizeof(dwSrcSize), &NumberOfBytesWritten, null);
-            WriteFile(hFile, (LPVOID) & dwDstSize, sizeof(dwDstSize), &NumberOfBytesWritten, null);
-            WriteFile(hFile, (LPVOID)lpDstAdr, dwDstSize, &NumberOfBytesWritten, null);
-            // 例によってクローズ
-            CloseHandle(hFile);
-
-            delete[] lpDstAdr;
-            delete[] lpSrcAdr;
-            return 0;
-        }
-        public void SetStageData(CT dwType, DWORD dwSize, void* lpData)
-        {
-            HGLOBAL hData = ::GlobalAlloc(GMEM_FIXED | GMEM_NOCOMPACT, dwSize);
-
-    ::CopyMemory(hData, lpData, dwSize);
-            m_Data[dwType] = hData;
+            // TODO: 一から実装し直したほうがよさそうだし、一度全部消すよ。
+            throw new NotImplementedException();
         }
         // データを取得。なければNULL
-        public BYTE* GetStageData(CT dwType, DWORD* dwSize = null)
+        public byte[] GetStageData(CT dwType, out uint dwSize)
         {
-            map<DWORD, HGLOBAL>::iterator it = m_Data.find(dwType);
-            if (it != m_Data.end()) {
-                if (dwSize != null) *dwSize = ::GlobalSize((*it).second);
-                return (BYTE*)((*it).second);
-            }
-            return null;
+            // TODO: 一から実装し直したほうがよさそうだし、一度全部消すよ。
+            throw new NotImplementedException();
         }
-        // ステージファイルを読み込みメモリに格納する
-        public LRESULT Read(string filename)
+        /// <summary>
+        /// ステージファイルを読み込みメモリに格納する
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns>0:成功、2:未対応フォーマット(未知のヘッダ検出)、3:圧縮状態違反(サイズが大きくなっている)</returns>
+        public int Read(string filename)
         {
-            ClearData();
-            CFile File;
-            if (File.Read(filename)) return 1;
-
-    ::CopyMemory(&m_StageHeader, File.GetMemory(), sizeof(tagf3StageHeader));
-            {
-                // ステージヘッダチェック
-                char ident[9];
-
-        ::CopyMemory(ident, m_StageHeader.ident, 8);
-                ident[8] = '\0';
-                if (strcmp(ident, "funya3s1")) {
-                    // ふにゃさんのステージちゃうっての
-                    return 2;
-                }
-            }
-            if (m_StageHeader.datasize == m_StageHeader.packsize) {
-                // 無圧縮
-                AnalyzeData((BYTE*)File.GetMemory() + sizeof(tagf3StageHeader));
-            }
-            else if (m_StageHeader.datasize > m_StageHeader.packsize) {
-                // LZSSによる圧縮
-                BYTE* data = (BYTE*)::GlobalAlloc(GMEM_FIXED | GMEM_NOCOMPACT, m_StageHeader.datasize + 1);
-                CLZSS lzss;
-                lzss.Decode((BYTE*)File.GetMemory() + sizeof(tagf3StageHeader), data, m_StageHeader.datasize, false);
-                AnalyzeData(data);
-
-        ::GlobalFree(data);
-            } else {
-                // 膨張してるなんてありえない！！
-                return 3;
-            }
-            // これにて終了
-            return 0;
+            // TODO: 一から実装し直したほうがよさそうだし、一度全部消すよ。
+            throw new NotImplementedException();
         }
         public Cf3StageFile()
         {
@@ -186,6 +81,5 @@ namespace MifuminSoft.funyan.Core
         {
             ClearData();
         }
-
     }
 }
