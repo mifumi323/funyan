@@ -23,7 +23,7 @@ namespace MifuminSoft.funyan.Core
         protected static CDIB32[] m_Graphic = new CDIB32[2];
         protected static bool m_bGraphicInitialize = false;
 
-        public void OnPreDraw()
+        public override void OnPreDraw()
         {
             for (int i = 0; i < m_ParticleCount; i++)
             {
@@ -97,6 +97,5 @@ namespace MifuminSoft.funyan.Core
             m_WindList.Remove(this);
             base.Dispose();
         }
-
     }
 }

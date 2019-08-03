@@ -6,14 +6,14 @@ namespace MifuminSoft.funyan.Core
 {
     public class Cf3MapObjectBanana : Cf3MapObjectBase, IDisposable
     {
-        //	CDIB32* m_Graphic;
         private static HashSet<Cf3MapObjectBanana> m_BananaList = new HashSet<Cf3MapObjectBanana>();
 
-        public void UpdateCPos() { }
+        public override void UpdateCPos() { }
         public static void OnPreDrawAll() { }
         public static void SynergyAll()
         {
-            foreach (var it in m_BananaList) {
+            foreach (var it in m_BananaList)
+            {
                 if (it.IsValid()) it.Synergy();
             }
         }
@@ -26,7 +26,8 @@ namespace MifuminSoft.funyan.Core
             ex = sx + 320 / 32; ey = sy + 224 / 32;
             TL.Saturate(sx, ref ex, m_pParent.GetWidth() - 1);
             TL.Saturate(sy, ref ey, m_pParent.GetHeight() - 1);
-            foreach (var it in m_pParent.GetMapObjects(sx, sy, ex, ey, f3MapObjectType.MOT_BANANA)) {
+            foreach (var it in m_pParent.GetMapObjects(sx, sy, ex, ey, f3MapObjectType.MOT_BANANA))
+            {
                 if (it.IsValid()) it.OnDraw(lp);
             }
         }
@@ -34,17 +35,21 @@ namespace MifuminSoft.funyan.Core
         public void Reaction(Cf3MapObjectBase obj)
         {
             if (!IsValid()) return;
-            switch (obj.GetMapObjectType()) {
-                case f3MapObjectType.MOT_FUNYA: {
+            switch (obj.GetMapObjectType())
+            {
+                case f3MapObjectType.MOT_FUNYA:
+                    {
                         GetCPos(out var cx1, out var cy1);
                         obj.GetCPos(out var cx2, out var cy2);
-                        if (cx1 == cx2 && cy1 == cy2) {
+                        if (cx1 == cx2 && cy1 == cy2)
+                        {
                             m_pParent.m_nGotBanana++;
                             Kill();
                         }
                         break;
                     }
-                default: {
+                default:
+                    {
                         return;
                     }
             }
@@ -52,7 +57,8 @@ namespace MifuminSoft.funyan.Core
         public override void Synergy()
         {
             if (!IsValid()) return;
-            foreach (var it in m_pParent.GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1, f3MapObjectType.MOT_FUNYA)) {
+            foreach (var it in m_pParent.GetMapObjects(m_nCX - 1, m_nCY - 1, m_nCX + 1, m_nCY + 1, f3MapObjectType.MOT_FUNYA))
+            {
                 if (it.IsValid()) Reaction(it);
             }
         }
@@ -75,6 +81,5 @@ namespace MifuminSoft.funyan.Core
             m_BananaList.Remove(this);
             base.Dispose();
         }
-
     }
 }

@@ -13,7 +13,7 @@ namespace MifuminSoft.funyan.Core
         private int m_Size;
         private int m_Delay;
 
-        public void Synergy()
+        public override void Synergy()
         {
             if (m_Delay == 0)
             {
@@ -113,6 +113,5 @@ namespace MifuminSoft.funyan.Core
             m_FireList.Remove(this);
             base.Dispose();
         }
-
     }
 }

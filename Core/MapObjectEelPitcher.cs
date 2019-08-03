@@ -17,7 +17,6 @@ namespace MifuminSoft.funyan.Core
             if (m_pParent.GetHit((int)Math.Floor((m_X + 14) / 32), (int)Math.Floor(m_Y / 32), HIT.HIT_TOP)) d |= 2;
             m_Direction = (d == 1 ? f3MapObjectDirection.DIR_RIGHT : (d == 2 ? f3MapObjectDirection.DIR_LEFT : (CApp.theApp.random(2) != 0 ? f3MapObjectDirection.DIR_LEFT : f3MapObjectDirection.DIR_RIGHT)));
         }
-        //	CDIB32* m_Graphic;
         private static Dictionary<int, Cf3MapObjectEelPitcher> m_EnemyList = new Dictionary<int, Cf3MapObjectEelPitcher>();
 
         private f3MapObjectDirection m_Direction;
@@ -103,7 +102,7 @@ namespace MifuminSoft.funyan.Core
                     }
             }
         }
-        public void Synergy()
+        public override void Synergy()
         {
             if (!IsValid()) return;
             m_bBlinking = false;
@@ -352,6 +351,5 @@ namespace MifuminSoft.funyan.Core
             m_EnemyList.Remove(GetID());
             base.Dispose();
         }
-
     }
 }

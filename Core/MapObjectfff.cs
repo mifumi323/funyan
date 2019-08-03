@@ -133,8 +133,8 @@ namespace MifuminSoft.funyan.Core
         private int m_VOffsetX, m_VOffsetY;
         private int m_VOffsetToX, m_VOffsetToY;
 
-        public bool IsFrozen() { return m_State == f3fffState.FROZEN; }
-        public void Synergy()
+        public override bool IsFrozen() { return m_State == f3fffState.FROZEN; }
+        public override void Synergy()
         {
             if (m_State == f3fffState.DEAD || m_State == f3fffState.SMILE) return;
             m_Power = m_PowerX = m_PowerY = 0.0f;
@@ -441,13 +441,13 @@ namespace MifuminSoft.funyan.Core
                 case f3fffState.DEAD: CX = 13; break;
                 case f3fffState.SMILE: CX = 18; break;
             }
-            var rc = new Rectangle(CX * 32 + 1,CY * 32,30,30);
+            var rc = new Rectangle(CX * 32 + 1, CY * 32, 30, 30);
             var graphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
             var graphic2 = CResourceManager.ResourceManager.Get(RID.RID_MAINICY);
             lp.RotateBlt(m_nPower == 0 ? graphic : graphic2, rc, m_nVX, m_nVY, m_Angle, 65536, 4);
             if (m_Power < -1.0f / 4096.0f)
             {
-                rc = new Rectangle((m_PoseCounter2 < 20 ? 0 : 64) + ((int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1 ? 0 : 128),96,64,32);
+                rc = new Rectangle((m_PoseCounter2 < 20 ? 0 : 64) + ((int)Math.Floor(m_X / 32) < m_pParent.GetWidth() - 1 ? 0 : 128), 96, 64, 32);
                 lp.BltNatural(graphic, m_nVX - 16, m_nVY, rc);
             }
         }

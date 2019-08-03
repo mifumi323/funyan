@@ -86,7 +86,6 @@ namespace MifuminSoft.funyan.Core
             obj.GetPos(out var x, out var y);
             return (x - m_X) * (x - m_X) + (y - m_Y) * (y - m_Y);
         }
-        //	float GetDistance(Cf3MapObjectBase& obj);
         public static void Garbage()
         {
             m_CharaList.RemoveWhere(it => !it.IsValid());
