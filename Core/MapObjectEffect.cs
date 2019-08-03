@@ -132,7 +132,7 @@ namespace MifuminSoft.funyan.Core
         public override void Dispose()
         {
             m_EffectList.Remove(this);
-            DELETEPTR_SAFE(m_Star);
+            m_Star = null;
             base.Dispose();
         }
     }

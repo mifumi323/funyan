@@ -591,7 +591,7 @@ namespace MifuminSoft.funyan.Core
                         z++;
                     }
                 }
-                DELETEPTR_SAFE(windmap);
+                windmap = null;
                 Cf3MapObjectBase.UpdateCPosAll();
             } else {
                 m_MapData[1] = null;
@@ -621,11 +621,11 @@ namespace MifuminSoft.funyan.Core
         {
             KillAllMapObject();
             GarbageMapObject();
-            DELETEPTR_SAFE(m_pObject);
-            DELETEPTR_SAFE(m_Wind);
-            DELETEPTR_SAFE(m_MapData[2]);
-            DELETEPTR_SAFE(m_MapData[1]);
-            DELETEPTR_SAFE(m_MapData[0]);
+            m_pObject = null;
+            m_Wind = null;
+            m_MapData[2] = null;
+            m_MapData[1] = null;
+            m_MapData[0] = null;
             m_MapChip[2].Dispose();
             m_MapChip[1].Dispose();
             m_MapChip[0].Dispose();
