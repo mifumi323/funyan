@@ -558,7 +558,7 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
                 z = 0;
-                float wind;
+                var wind = 0.0f;
                 int dx;
                 for (y = 0; y < m_Height[1]; y++) {
                     for (x = 0; x < m_Width[1]; x++) {
@@ -582,7 +582,6 @@ namespace MifuminSoft.funyan.Core
                         z++;
                     }
                 }
-                windmap = null;
                 Cf3MapObjectBase.UpdateCPosAll();
             } else {
                 m_MapData[1] = null;
