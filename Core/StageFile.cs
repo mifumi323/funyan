@@ -58,6 +58,12 @@ namespace MifuminSoft.funyan.Core
             // TODO: 一から実装し直したほうがよさそうだし、一度全部消すよ。
             throw new NotImplementedException();
         }
+        public void SetStageData(CT dwType, int value)
+        {
+            // TODO: 新規追加したやつ
+            throw new NotImplementedException();
+        }
+
         // データを取得。なければNULL
         public byte[] GetStageData(CT dwType)
         {
