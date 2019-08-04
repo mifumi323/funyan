@@ -122,6 +122,7 @@ namespace MifuminSoft.funyan.Core
         {
             BYTE* buf;
             DWORD s;
+            string text;
             var dib = CDIB32.Create();
             // ステージ内部データを読み込む
             if ((buf = lp.GetStageData(CT.CT_MCD0 | (CT)(level << 24))) != null) {
@@ -130,11 +131,8 @@ namespace MifuminSoft.funyan.Core
                 if (dib.Load(fn2, false) == 0) return dib;
             }
             // 駄目だったそうなのでファイル名から読み込む
-            if ((buf = lp.GetStageData(CT.CT_MCF0 | (CT)(level << 24))) != null) {
-                char fn[256];
-                CopyMemory(fn, buf, s);
-                fn[s] = '\0';
-                if (dib.Load(fn, false) == 0) return dib;
+            if ((text = lp.GetStageDataString(CT.CT_MCF0 | (CT)(level << 24))) != null) {
+                if (dib.Load(text, false) == 0) return dib;
             }
             dib.Load("resource/Cave.bmp", false);
             return dib;
@@ -441,6 +439,7 @@ namespace MifuminSoft.funyan.Core
         public Cf3Map(Cf3StageFile lp, int stage, bool playable = true)
         {
             BYTE* buf;
+            string text;
             DWORD s;
             DWORD bgm[(int)BGMNumber.BGMN_SIZE] = { 0 };
             m_pDIBBuf = CDIB32.Create();
@@ -455,12 +454,8 @@ namespace MifuminSoft.funyan.Core
             m_MainChara = null;
             // タイトル
             m_Title = "";
-            if ((buf = lp.GetStageData(GetChunkType(CT.CT_TL00, stage))) != null) {
-                char tl[256];
-                s = min(s, 255);
-                CopyMemory(tl, buf, s);
-                tl[s] = '\0';
-                m_Title = tl;
+            if ((text = lp.GetStageDataString(GetChunkType(CT.CT_TL00, stage))) != null) {
+                m_Title = text;
             }
             // マップチップ
             m_MapChip[0] = ReadMapChip(lp, 0);

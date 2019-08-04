@@ -64,6 +64,13 @@ namespace MifuminSoft.funyan.Core
             // TODO: 一から実装し直したほうがよさそうだし、一度全部消すよ。
             throw new NotImplementedException();
         }
+
+        public string GetStageDataString(CT dwType)
+        {
+            // TODO: 新規追加したやつ
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// ステージファイルを読み込みメモリに格納する
         /// </summary>
