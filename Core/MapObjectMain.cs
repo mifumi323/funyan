@@ -5,8 +5,8 @@
         public abstract bool GetKeyPushed(int key);
         public abstract bool GetKeyPressed(int key);
 
-        static public Cf3GameInputKey KeyInput { get; } = new Cf3GameInputKey();
-        static public Cf3GameInputReplay ReplayInput { get; } = new Cf3GameInputReplay();
+        public static Cf3GameInputKey KeyInput { get; } = new Cf3GameInputKey();
+        public static Cf3GameInputReplay ReplayInput { get; } = new Cf3GameInputReplay();
     };
 
     public class Cf3GameInputKey : Cf3GameInput

@@ -73,7 +73,6 @@ namespace MifuminSoft.funyan.Core
             if (CApp.theApp.MakeFileName(out m_FileName, "f3r", Cf3Setting.theSetting.m_RecordNumber, true)) {
                 var data = new Cf3StageFile();
                 CT chunk;
-                uint size;
                 byte[] ptr;
                 // キー入力情報をこーんぽたーじゅ(謎)
                 ptr = new byte[m_nSize * 2];
@@ -85,29 +84,29 @@ namespace MifuminSoft.funyan.Core
                 }
                 data.SetStageData(CT.CT_RPLY, ptr);
                 // 必要なステージ情報をコピーする
-                if (ptr = stage.GetStageData(chunk = CT.CT_TITL))
+                if ((ptr = stage.GetStageData(chunk = CT.CT_TITL)) != null)
                     data.SetStageData(chunk, ptr);
-                if (ptr = stage.GetStageData(chunk = CT.CT_HITS))
+                if ((ptr = stage.GetStageData(chunk = CT.CT_HITS)) != null)
                     data.SetStageData(chunk, ptr);
-                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_TL00, map)))
+                if ((ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_TL00, map))) != null)
                     data.SetStageData(chunk, ptr);
-                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M000, map)))
+                if ((ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M000, map))) != null)
                     data.SetStageData(chunk, ptr);
-                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M100, map)))
+                if ((ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M100, map))) != null)
                     data.SetStageData(chunk, ptr);
-                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M200, map)))
+                if ((ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M200, map))) != null)
                     data.SetStageData(chunk, ptr);
-                if (ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (0 << 24)))
+                if ((ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (0 << 24))) != null)
                     data.SetStageData(chunk, ptr);
-                else if (ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (0 << 24)))
+                else if ((ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (0 << 24))) != null)
                     data.SetStageData(chunk, ptr);
-                if (ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (1 << 24)))
+                if ((ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (CT)(1 << 24))) != null)
                     data.SetStageData(chunk, ptr);
-                else if (ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (1 << 24)))
+                else if ((ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (CT)(1 << 24))) != null)
                     data.SetStageData(chunk, ptr);
-                if (ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (2 << 24)))
+                if ((ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (CT)(2 << 24))) != null)
                     data.SetStageData(chunk, ptr);
-                else if (ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (2 << 24)))
+                else if ((ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (CT)(2 << 24))) != null)
                     data.SetStageData(chunk, ptr);
                 // 追加の情報
                 data.SetStageData(CT.CT_STGN, map);
@@ -139,7 +138,6 @@ namespace MifuminSoft.funyan.Core
             m_FileName = filename;
             Reset();
             byte[] ptr;
-            DWORD size;
             m_pPlayerState = new Cf3ReplayPlayerState();
             m_pPlayerState.stage = new Cf3StageFile();
             m_pPlayerState.stage.Read(m_FileName);
@@ -147,7 +145,7 @@ namespace MifuminSoft.funyan.Core
             Cf3Setting.theSetting.m_Gravity = m_pPlayerState.stage.GetStageData(CT.CT_GRVT);
             Cf3Setting.theSetting.m_Hyper = m_pPlayerState.stage.GetStageData(CT.CT_HYPR);
             ptr = m_pPlayerState.stage.GetStageData(CT.CT_RPLY);
-            m_nSize = size >> 1;
+            m_nSize = (uint)ptr.Length >> 1;
             for (int i = 0; i < m_nSize; i++) {
                 m_keyPressed[m_nProgress] = ptr[m_nProgress * 2];
                 m_keyPushed[m_nProgress] = ptr[m_nProgress * 2 + 1];

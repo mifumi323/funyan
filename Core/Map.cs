@@ -121,7 +121,6 @@ namespace MifuminSoft.funyan.Core
         public CDIB32 ReadMapChip(Cf3StageFile lp, int level)
         {
             byte[] buf;
-            DWORD s;
             string text;
             var dib = CDIB32.Create();
             // ステージ内部データを読み込む
@@ -436,10 +435,9 @@ namespace MifuminSoft.funyan.Core
         }
         public Cf3Map(Cf3StageFile lp, int stage, bool playable = true)
         {
-            BYTE* buf;
+            byte[] buf;
             string text;
-            DWORD s;
-            DWORD bgm[(int)BGMNumber.BGMN_SIZE] = { 0 };
+            uint[] bgm = new uint[(int)BGMNumber.BGMN_SIZE];
             m_pDIBBuf = CDIB32.Create();
             m_pDIBBuf.CreateSurface(320, 240);
             m_Stage = (byte)stage;
@@ -478,7 +476,7 @@ namespace MifuminSoft.funyan.Core
             if ((buf = lp.GetStageData(GetChunkType(CT.CT_M100, stage))) != null) {
                 m_Width[1] = *buf;
                 m_Height[1] = *(buf + 1);
-                DWORD stagesize = m_Width[1] * m_Height[1];
+                var stagesize = m_Width[1] * m_Height[1];
                 m_MapData[1] = new byte[stagesize];
                 m_Wind = new float[stagesize];
                 m_pObject = new Cf3MapObjectBase[stagesize];
@@ -599,7 +597,7 @@ namespace MifuminSoft.funyan.Core
                 m_MapData[2] = null;
             }
             // BGM
-            DWORD bgmm = 0;
+            uint bgmm = 0;
             m_BGMNumber = BGMNumber.BGMN_SIRENT;
             for (int i = (int)BGMNumber.BGMN_SIRENT; i < (int)BGMNumber.BGMN_SIZE; i++) {
                 if (bgmm < bgm[i]) {
