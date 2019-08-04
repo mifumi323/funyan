@@ -142,8 +142,8 @@ namespace MifuminSoft.funyan.Core
             m_pPlayerState.stage = new Cf3StageFile();
             m_pPlayerState.stage.Read(m_FileName);
             // シークレットの状態と入力情報も読み込む
-            Cf3Setting.theSetting.m_Gravity = m_pPlayerState.stage.GetStageData(CT.CT_GRVT);
-            Cf3Setting.theSetting.m_Hyper = m_pPlayerState.stage.GetStageData(CT.CT_HYPR);
+            Cf3Setting.theSetting.m_Gravity = m_pPlayerState.stage.GetStageDataInt(CT.CT_GRVT);
+            Cf3Setting.theSetting.m_Hyper = m_pPlayerState.stage.GetStageDataInt(CT.CT_HYPR);
             ptr = m_pPlayerState.stage.GetStageData(CT.CT_RPLY);
             m_nSize = (uint)ptr.Length >> 1;
             for (int i = 0; i < m_nSize; i++) {
@@ -152,8 +152,8 @@ namespace MifuminSoft.funyan.Core
                 Progress();
             }
             // 最後にマップを読み込む(設定を先に反映させる必要がある)
-            ptr = m_pPlayerState.stage.GetStageData(CT.CT_STGN);
-            m_pPlayerState.map = new Cf3Map(m_pPlayerState.stage, ptr ? *ptr : 0);
+            var stage = m_pPlayerState.stage.GetStageDataInt(CT.CT_STGN);
+            m_pPlayerState.map = new Cf3Map(m_pPlayerState.stage, stage);
             Seek();
         }
         public void Replay()
