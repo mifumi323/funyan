@@ -465,23 +465,23 @@ namespace MifuminSoft.funyan.Core
             }
             // マップデータ(下層)
             if ((buf = lp.GetStageData(GetChunkType(CT.CT_M000, stage))) != null) {
-                m_Width[0] = *buf;
-                m_Height[0] = *(buf + 1);
+                m_Width[0] = buf[0];
+                m_Height[0] = buf[1];
                 m_MapData[0] = new byte[m_Width[0] * m_Height[0]];
-                CopyMemory(m_MapData[0], buf + 2, m_Width[0] * m_Height[0]);
+                Array.Copy(buf, 2, m_MapData[0], 0, m_Width[0] * m_Height[0]);
             } else {
                 m_MapData[0] = null;
             }
             // マップデータ(中層)
             if ((buf = lp.GetStageData(GetChunkType(CT.CT_M100, stage))) != null) {
-                m_Width[1] = *buf;
-                m_Height[1] = *(buf + 1);
+                m_Width[1] = buf[0];
+                m_Height[1] = buf[1];
                 var stagesize = m_Width[1] * m_Height[1];
                 m_MapData[1] = new byte[stagesize];
                 m_Wind = new float[stagesize];
                 m_pObject = new Cf3MapObjectBase[stagesize];
                 var windmap = new byte[stagesize];
-                CopyMemory(m_MapData[1], buf + 2, stagesize);
+                Array.Copy(buf, 2, m_MapData[1], 0, stagesize);
                 int x, y, z, n;
                 z = 0;
                 for (y = 0; y < m_Height[1]; y++) {
@@ -589,10 +589,10 @@ namespace MifuminSoft.funyan.Core
             }
             // マップデータ(上層)
             if ((buf = lp.GetStageData(GetChunkType(CT.CT_M200, stage))) != null) {
-                m_Width[2] = *buf;
-                m_Height[2] = *(buf + 1);
+                m_Width[2] = buf[0];
+                m_Height[2] = buf[1];
                 m_MapData[2] = new byte[m_Width[2] * m_Height[2]];
-                CopyMemory(m_MapData[2], buf + 2, m_Width[2] * m_Height[2]);
+                Array.Copy(buf, 2, m_MapData[2], 0, m_Width[2] * m_Height[2]);
             } else {
                 m_MapData[2] = null;
             }
