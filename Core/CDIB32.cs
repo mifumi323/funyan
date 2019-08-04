@@ -12,6 +12,7 @@ namespace MifuminSoft.funyan.Core
         public abstract void CreateSurface(int v1,int v2);
         public abstract void CreateSurface(int v1,int v2,bool v3);
         public abstract int Load(string fn,bool v);
+        public abstract int Load(byte[] buf, bool v);
         #endregion
 
         #region 描画

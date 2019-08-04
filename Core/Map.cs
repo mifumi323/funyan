@@ -120,15 +120,13 @@ namespace MifuminSoft.funyan.Core
         }
         public CDIB32 ReadMapChip(Cf3StageFile lp, int level)
         {
-            BYTE* buf;
+            byte[] buf;
             DWORD s;
             string text;
             var dib = CDIB32.Create();
             // ステージ内部データを読み込む
             if ((buf = lp.GetStageData(CT.CT_MCD0 | (CT)(level << 24))) != null) {
-                char fn2[256];
-            ::wsprintf(fn2, "!%x,%x", buf, s);
-                if (dib.Load(fn2, false) == 0) return dib;
+                if (dib.Load(buf, false) == 0) return dib;
             }
             // 駄目だったそうなのでファイル名から読み込む
             if ((text = lp.GetStageDataString(CT.CT_MCF0 | (CT)(level << 24))) != null) {
