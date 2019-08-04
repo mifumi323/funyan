@@ -201,7 +201,7 @@ namespace MifuminSoft.funyan.Core
             var lpDst = m_pDIBBuf;
             if ((m_nEffect & 1) != 0) {
                 CPlaneTransBlt.MirrorBlt1(lpDst, lpSrc, 0, 0, 128);
-                swap(lpSrc, lpDst);
+                TL.swap(ref lpSrc, ref lpDst);
             }
             if ((m_nEffect & 2) != 0) {
                 CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0, 128);
@@ -421,7 +421,7 @@ namespace MifuminSoft.funyan.Core
             var lpDst = m_pDIBBuf;
             if ((m_nEffect & 1) != 0) {
                 CPlaneTransBlt.MirrorBlt1(lpDst, lpSrc, 0, 0, 128);
-                swap(lpSrc, lpDst);
+                TL.swap(ref lpSrc, ref lpDst);
             }
             if ((m_nEffect & 2) != 0) {
                 CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0, 128);
@@ -430,7 +430,7 @@ namespace MifuminSoft.funyan.Core
             }
             if ((m_nEffect & 4) != 0) {
                 CPlaneTransBlt.FlushBlt1(lpDst, lpSrc, 0, 0, 128);
-                swap(lpSrc, lpDst);
+                TL.swap(ref lpSrc, ref lpDst);
             }
             if (lpDst == lp) lpDst.BltFast(lpSrc, 0, 0);
         }
