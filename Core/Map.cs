@@ -18,7 +18,7 @@ namespace MifuminSoft.funyan.Core
         private CDIB32[] m_MapChip = new CDIB32[3];
         private byte[][] m_MapData = new byte[3][];
         private byte[] m_Width = new byte[3], m_Height = new byte[3];
-        private byte[] m_Hit = new byte[240];
+        private HIT[] m_Hit = new HIT[240];
         private byte m_Stage;
         public int m_nGotBanana;
         private int m_nTotalBanana;
@@ -264,7 +264,7 @@ namespace MifuminSoft.funyan.Core
         public float GetFriction(int x, int y)
         {
             if (x < 0 || m_Width[1] <= x || y < 0 || m_Height[1] <= y) return 0.0f;
-            return m_Friction[m_Hit[GetMapData(1, x, y)] >> 5];
+            return m_Friction[(int)m_Hit[GetMapData(1, x, y)] >> 5];
         }
         public void GetViewPos(ref int x, ref int y, float scrollx = 1.0f, float scrolly = 1.0f)
         {
@@ -358,7 +358,7 @@ namespace MifuminSoft.funyan.Core
                         if (bShowHit) {
                             // 当たり判定表示
                             if (GetHit(x, y, HIT.HIT_TOP)) {
-                                int f = m_Hit[GetMapData(1, x, y)] & ~0x1f;
+                                int f = (byte)m_Hit[GetMapData(1, x, y)] & ~0x1f;
                                 r = new Rectangle(f, 0, 32, 32);
                                 lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
@@ -382,7 +382,7 @@ namespace MifuminSoft.funyan.Core
                     }
                 }
                 if (bShowHit) {
-                    delete pHit;
+                    pHit.Dispose();
                 }
             }
             Cf3MapObjectBanana.OnDrawAll(lp);
@@ -459,10 +459,9 @@ namespace MifuminSoft.funyan.Core
             m_MapChip[1] = ReadMapChip(lp, 1);
             m_MapChip[2] = ReadMapChip(lp, 2);
             // 当たり判定
-            CopyMemory(m_Hit, m_defHit, 240);
+            Array.Copy(m_defHit, m_Hit, 240);
             if ((buf = lp.GetStageData(CT.CT_HITS)) != null) {
-                if (s > 240) s = 240;
-                CopyMemory(m_Hit, buf, s);
+                Array.Copy(buf, m_Hit, Math.Min(buf.Length, 240));
             }
             // マップデータ(下層)
             if ((buf = lp.GetStageData(GetChunkType(CT.CT_M000, stage))) != null) {
