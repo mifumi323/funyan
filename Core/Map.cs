@@ -156,6 +156,7 @@ namespace MifuminSoft.funyan.Core
             float offx = m_ScrollRX - 320 / 2, offy = m_ScrollRY - 224 / 2 - 2;
             TL.Saturate(0.0f, ref offx, m_Width[1] * 32 - 320.0f);
             TL.Saturate(0.0f, ref offy, m_Height[1] * 32 - 224.0f);
+            uint i = 0;
             for (int y = 0; y < 224; y++) {
                 for (int x = 0; x < 320; x++) {
                     fX = x + offx; fY = y + offy;   // GetViewPosとオフセットの掛け方が逆
@@ -176,24 +177,24 @@ namespace MifuminSoft.funyan.Core
                     }
                     if (power > 1.0f / 256.0f) {
                         // 凍りつくゾーン
-                        *pixel = 0x008080;
+                        pixel[i] = 0x008080;
                     }
                     else if (power > 1.0f / 4096.0f) {
                         // パワーアップゾーン
-                        *pixel = 0x00ffff;
+                        pixel[i] = 0x00ffff;
                     }
                     else if (power < -1.0f / 256.0f) {
                         // 致死ゾーン
-                        *pixel = 0x800000;
+                        pixel[i] = 0x800000;
                     }
                     else if (power < -1.0f / 4096.0f) {
                         // 制限ゾーン
-                        *pixel = 0xff0000;
+                        pixel[i] = 0xff0000;
                     } else {
                         // 普通ゾーン
-                        *pixel = 0x000000;
+                        pixel[i] = 0x000000;
                     }
-                    pixel++;
+                    i++;
                 }
             }
             var lpSrc = dib;
