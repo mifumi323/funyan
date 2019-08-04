@@ -1,27 +1,5 @@
 ﻿namespace MifuminSoft.funyan.Core
 {
-    public abstract class Cf3GameInput
-    {
-        public abstract bool GetKeyPushed(int key);
-        public abstract bool GetKeyPressed(int key);
-
-        public static Cf3GameInputKey KeyInput { get; } = new Cf3GameInputKey();
-        public static Cf3GameInputReplay ReplayInput { get; } = new Cf3GameInputReplay();
-    };
-
-    public class Cf3GameInputKey : Cf3GameInput
-    {
-        public override bool GetKeyPushed(int key) { return Cf3Input.f3Input.GetKeyPushed(key); }
-        public override bool GetKeyPressed(int key) { return Cf3Input.f3Input.GetKeyPressed(key); }
-    }
-
-    public class Cf3GameInputReplay : Cf3GameInput
-    {
-        public byte pushed, pressed;
-        public override bool GetKeyPushed(int key) { return 0 != (pushed & (1 << (key - 1))); }
-        public override bool GetKeyPressed(int key) { return 0 != (pressed & (1 << (key - 1))); }
-    }
-
     public abstract class Cf3MapObjectMain : Cf3MapObjectBase
     {
         protected static Cf3GameInput m_pInput = null;

@@ -4,30 +4,6 @@ using System.Drawing;
 
 namespace MifuminSoft.funyan.Core
 {
-    public enum f3MainCharaState
-    {
-        STANDING,
-        RUNNING,
-        WALKING,
-        CHARGING,
-        JUMPING,
-        BREATHEIN,
-        BREATHEOUT,
-        TIRED,
-        DAMAGED,
-        FROZEN,
-        DEAD,
-        SMILING,
-        SLEEPING,
-        BLINKING,
-    }
-
-    public struct f3JumpFunction
-    {
-        public float DY;
-        public float Power;
-    };
-
     public class Cf3MapObjectfunya : Cf3MapObjectMain
     {
         protected const float RUNMAX = 13.0f;
