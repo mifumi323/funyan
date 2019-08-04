@@ -53,13 +53,13 @@ namespace MifuminSoft.funyan.Core
             // TODO: 一から実装し直したほうがよさそうだし、一度全部消すよ。
             throw new NotImplementedException();
         }
-        public void SetStageData(CT dwType, uint dwSize, byte[] lpData)
+        public void SetStageData(CT dwType, byte[] lpData)
         {
             // TODO: 一から実装し直したほうがよさそうだし、一度全部消すよ。
             throw new NotImplementedException();
         }
         // データを取得。なければNULL
-        public byte[] GetStageData(CT dwType, out uint dwSize)
+        public byte[] GetStageData(CT dwType)
         {
             // TODO: 一から実装し直したほうがよさそうだし、一度全部消すよ。
             throw new NotImplementedException();

@@ -83,36 +83,36 @@ namespace MifuminSoft.funyan.Core
                     ptr[m_nProgress * 2 + 1] = m_keyPushed[m_nProgress];
                     Progress();
                 }
-                data.SetStageData(CT.CT_RPLY, m_nSize * 2, ptr);
+                data.SetStageData(CT.CT_RPLY, ptr);
                 // 必要なステージ情報をコピーする
-                if (ptr = stage.GetStageData(chunk = CT.CT_TITL, &size))
-                    data.SetStageData(chunk, size, ptr);
-                if (ptr = stage.GetStageData(chunk = CT.CT_HITS, &size))
-                    data.SetStageData(chunk, size, ptr);
-                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_TL00, map), &size))
-                    data.SetStageData(chunk, size, ptr);
-                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M000, map), &size))
-                    data.SetStageData(chunk, size, ptr);
-                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M100, map), &size))
-                    data.SetStageData(chunk, size, ptr);
-                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M200, map), &size))
-                    data.SetStageData(chunk, size, ptr);
-                if (ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (0 << 24), &size))
-                    data.SetStageData(chunk, size, ptr);
-                else if (ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (0 << 24), &size))
-                    data.SetStageData(chunk, size, ptr);
-                if (ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (1 << 24), &size))
-                    data.SetStageData(chunk, size, ptr);
-                else if (ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (1 << 24), &size))
-                    data.SetStageData(chunk, size, ptr);
-                if (ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (2 << 24), &size))
-                    data.SetStageData(chunk, size, ptr);
-                else if (ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (2 << 24), &size))
-                    data.SetStageData(chunk, size, ptr);
+                if (ptr = stage.GetStageData(chunk = CT.CT_TITL))
+                    data.SetStageData(chunk, ptr);
+                if (ptr = stage.GetStageData(chunk = CT.CT_HITS))
+                    data.SetStageData(chunk, ptr);
+                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_TL00, map)))
+                    data.SetStageData(chunk, ptr);
+                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M000, map)))
+                    data.SetStageData(chunk, ptr);
+                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M100, map)))
+                    data.SetStageData(chunk, ptr);
+                if (ptr = stage.GetStageData(chunk = Cf3Map.GetChunkType(CT.CT_M200, map)))
+                    data.SetStageData(chunk, ptr);
+                if (ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (0 << 24)))
+                    data.SetStageData(chunk, ptr);
+                else if (ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (0 << 24)))
+                    data.SetStageData(chunk, ptr);
+                if (ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (1 << 24)))
+                    data.SetStageData(chunk, ptr);
+                else if (ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (1 << 24)))
+                    data.SetStageData(chunk, ptr);
+                if (ptr = stage.GetStageData(chunk = CT.CT_MCD0 | (2 << 24)))
+                    data.SetStageData(chunk, ptr);
+                else if (ptr = stage.GetStageData(chunk = CT.CT_MCF0 | (2 << 24)))
+                    data.SetStageData(chunk, ptr);
                 // 追加の情報
-                data.SetStageData(CT.CT_STGN, 4, &map);
-                data.SetStageData(CT.CT_GRVT, 4, &Cf3Setting.theSetting.m_Gravity);
-                data.SetStageData(CT.CT_HYPR, 4, &Cf3Setting.theSetting.m_Hyper);
+                data.SetStageData(CT.CT_STGN, map);
+                data.SetStageData(CT.CT_GRVT, Cf3Setting.theSetting.m_Gravity);
+                data.SetStageData(CT.CT_HYPR, Cf3Setting.theSetting.m_Hyper);
                 data.Write(m_FileName);
             }
         }
@@ -144,9 +144,9 @@ namespace MifuminSoft.funyan.Core
             m_pPlayerState.stage = new Cf3StageFile();
             m_pPlayerState.stage.Read(m_FileName);
             // シークレットの状態と入力情報も読み込む
-            Cf3Setting.theSetting.m_Gravity = m_pPlayerState.stage.GetStageData(CT.CT_GRVT, null);
-            Cf3Setting.theSetting.m_Hyper = m_pPlayerState.stage.GetStageData(CT.CT_HYPR, null);
-            ptr = m_pPlayerState.stage.GetStageData(CT.CT_RPLY, &size);
+            Cf3Setting.theSetting.m_Gravity = m_pPlayerState.stage.GetStageData(CT.CT_GRVT);
+            Cf3Setting.theSetting.m_Hyper = m_pPlayerState.stage.GetStageData(CT.CT_HYPR);
+            ptr = m_pPlayerState.stage.GetStageData(CT.CT_RPLY);
             m_nSize = size >> 1;
             for (int i = 0; i < m_nSize; i++) {
                 m_keyPressed[m_nProgress] = ptr[m_nProgress * 2];
@@ -154,7 +154,7 @@ namespace MifuminSoft.funyan.Core
                 Progress();
             }
             // 最後にマップを読み込む(設定を先に反映させる必要がある)
-            ptr = m_pPlayerState.stage.GetStageData(CT.CT_STGN, null);
+            ptr = m_pPlayerState.stage.GetStageData(CT.CT_STGN);
             m_pPlayerState.map = new Cf3Map(m_pPlayerState.stage, ptr ? *ptr : 0);
             Seek();
         }
