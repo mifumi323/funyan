@@ -112,8 +112,8 @@ namespace MifuminSoft.funyan.Core
         public static void swap<T>(ref T a, ref T b)
         {
             var c = a;
-            b = a;
-            a = c;
+            a = b;
+            b = c;
         }
     }
 }
