@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>funyak.CoreTest</AssemblyName>
+    <AssemblyName>funyan.CoreTest</AssemblyName>
 
     <RootNamespace>MifuminSoft.funyan.CoreTest</RootNamespace>
   </PropertyGroup>
