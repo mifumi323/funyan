@@ -85,7 +85,6 @@ namespace MifuminSoft.funyan.Core
         public Cf3MapObjectEffect(float x, float y, int EffectType) : base(f3MapObjectType.MOT_EFFECT)
         {
             m_StarNum = 0;
-            m_Star = null;
             m_nEffectType = EffectType;
             m_EffectList.Add(this);
             SetPos(x, y);
@@ -120,8 +119,7 @@ namespace MifuminSoft.funyan.Core
             }
             else
             {
-                Kill();
-                return;
+                throw new Exception("EffectTypeは0または1のみ対応しています。");
             }
             for (int i = 0; i < m_StarNum; i++)
             {
@@ -131,7 +129,6 @@ namespace MifuminSoft.funyan.Core
         public override void Dispose()
         {
             m_EffectList.Remove(this);
-            m_Star = null;
             base.Dispose();
         }
     }
