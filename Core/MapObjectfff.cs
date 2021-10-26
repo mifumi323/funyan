@@ -129,10 +129,6 @@ namespace MifuminSoft.funyan.Core
 
         private int m_PoseCounter, m_PoseCounter2;
 
-        // 表示位置調整
-        private int m_VOffsetX, m_VOffsetY;
-        private int m_VOffsetToX, m_VOffsetToY;
-
         public override bool IsFrozen() { return m_State == f3fffState.FROZEN; }
         public override void Synergy()
         {
@@ -462,10 +458,6 @@ namespace MifuminSoft.funyan.Core
             m_Power = 0.0f;
             m_PowerX = 0.0f;
             m_PowerY = 0.0f;
-            m_VOffsetX = 0;
-            m_VOffsetY = 0;
-            m_VOffsetToX = 0;
-            m_VOffsetToY = 0;
             m_PoseCounter2 = 0;
             m_State = f3fffState.NORMAL;
             SetPos(nCX * 32 + 16, nCY * 32 + 18);
