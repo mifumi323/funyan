@@ -48,7 +48,7 @@ namespace MifuminSoft.funyan.Core
         private Cf3MapObjectBase[] m_pObject;
         private List<Cf3MapObjectBase> m_NearObject = new List<Cf3MapObjectBase>();
 
-        private Cf3MapObjectMain m_MainChara;
+        private Cf3MapObjectMain? m_MainChara;
 
         private static int m_nEffect = 0;
         private CDIB32 m_pDIBBuf;

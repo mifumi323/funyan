@@ -101,7 +101,7 @@ namespace MifuminSoft.funyan.Core
             m_CharaList.Remove(this);
         }
 
-        public Cf3MapObjectBase m_pNext;
+        public Cf3MapObjectBase? m_pNext;
 
     }
 }
