@@ -6,7 +6,7 @@ namespace MifuminSoft.funyan.Core
     public abstract class CDIB32 : IDisposable
     {
         #region 生成・破棄
-        public static Func<CDIB32> Create { get; set; }
+        public static Func<CDIB32> Create { get; set; } = () => throw new NotImplementedException();
         public abstract void Dispose();
 
         public abstract void CreateSurface(int v1,int v2);
