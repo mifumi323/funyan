@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace MifuminSoft.funyan.Core
 {
@@ -45,7 +46,7 @@ namespace MifuminSoft.funyan.Core
         private float m_ScrollRX, m_ScrollRY;
 
         private float[] m_Wind;
-        private Cf3MapObjectBase[] m_pObject;
+        private Cf3MapObjectBase?[] m_pObject;
         private List<Cf3MapObjectBase> m_NearObject = new List<Cf3MapObjectBase>();
 
         private Cf3MapObjectMain? m_MainChara;
@@ -442,7 +443,7 @@ namespace MifuminSoft.funyan.Core
             Cf3MapObjectBase.SetParent(this);
             m_nGotBanana = m_nTotalBanana = 0;
             m_Wind = null;
-            m_pObject = null;
+            m_pObject = Array.Empty<Cf3MapObjectBase>();
             // キャラ
             m_MainChara = null;
             // タイトル
@@ -607,7 +608,7 @@ namespace MifuminSoft.funyan.Core
         {
             KillAllMapObject();
             GarbageMapObject();
-            m_pObject = null;
+            m_pObject = Array.Empty<Cf3MapObjectBase>();
             m_Wind = null;
             m_MapData[2] = null;
             m_MapData[1] = null;
