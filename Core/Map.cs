@@ -132,6 +132,11 @@ namespace MifuminSoft.funyan.Core
         public static void SetEffect(int effect) { m_nEffect = effect; }
         public void GetMainCharaCPos(out int x, out int y)
         {
+            if (m_MainChara == null)
+            {
+                x = y = 0;
+                return;
+            }
             m_MainChara.GetCPos(out x, out y);
         }
         public int SetMapData(int level, int x, int y, byte data)
@@ -206,7 +211,7 @@ namespace MifuminSoft.funyan.Core
             if (m_Wind == null || x < 0 || m_Width[1] <= x || y < 0 || m_Height[1] <= y) return 0.0f;
             return m_Wind[GetIndex(x, y)];
         }
-        public Cf3MapObjectMain GetMainChara() { return m_MainChara; }
+        public Cf3MapObjectMain? GetMainChara() { return m_MainChara; }
         public BGMNumber GetBGM() { return m_BGMNumber; }
         public static CT GetChunkType(CT type, int stage)
         {
