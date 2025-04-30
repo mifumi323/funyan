@@ -60,7 +60,7 @@ namespace MifuminSoft.funyan.Core
             if (x2 >= m_Width[1]) x2 = m_Width[1] - 1;
             if (y2 >= m_Height[1]) y2 = m_Height[1] - 1;
             m_NearObject.Clear();
-            Cf3MapObjectBase o;
+            Cf3MapObjectBase? o;
             for (int x = x1; x <= x2; x++) {
                 for (int y = y1; y <= y2; y++) {
                     o = m_pObject[GetIndex(x, y)];
