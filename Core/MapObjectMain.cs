@@ -2,7 +2,7 @@
 {
     public abstract class Cf3MapObjectMain : Cf3MapObjectBase
     {
-        protected static Cf3GameInput m_pInput = null;
+        protected static Cf3GameInput m_pInput = Cf3GameInput.NullInput;
 
         public static void SetInput(Cf3GameInput pInput) { m_pInput = pInput; }
         public static Cf3MapObjectMain Create(int x, int y)
