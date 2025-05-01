@@ -26,10 +26,10 @@ namespace MifuminSoft.funyan.Core
                 Cf3Setting.theSetting.m_Gravity = oldgravity;
                 Cf3Setting.theSetting.m_Hyper = oldhyper;
             }
-            public Cf3StageFile stage;
-            public Cf3Map map;
-            public string stagetitle;
-            public string maptitle;
+            public Cf3StageFile? stage;
+            public Cf3Map? map;
+            public string stagetitle = "";
+            public string maptitle = "";
             public int oldgravity;
             public int oldhyper;
         }
@@ -161,11 +161,11 @@ namespace MifuminSoft.funyan.Core
             if (Finished()) return;
             Cf3GameInput.ReplayInput.pressed = m_keyPressed[m_nProgress];
             Cf3GameInput.ReplayInput.pushed = m_keyPushed[m_nProgress];
-            m_pPlayerState.map.OnMove();
-            m_pPlayerState.map.OnPreDraw();
+            m_pPlayerState.map!.OnMove();
+            m_pPlayerState.map!.OnPreDraw();
             Progress();
         }
-        public void OnDraw(CDIB32 lp) { m_pPlayerState.map.OnDraw(lp); }
-        public Cf3Map GetMap() { return m_pPlayerState.map; }
+        public void OnDraw(CDIB32 lp) { m_pPlayerState.map!.OnDraw(lp); }
+        public Cf3Map GetMap() { return m_pPlayerState.map!; }
     }
 }
