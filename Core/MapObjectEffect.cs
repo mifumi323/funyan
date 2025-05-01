@@ -38,7 +38,7 @@ namespace MifuminSoft.funyan.Core
 
         public override void OnDraw(CDIB32 lp)
         {
-            var graphic = CResourceManager.ResourceManager.Get(RID.RID_EFFECT);
+            var graphic = CApp.theApp.ResourceManager.Get(RID.RID_EFFECT);
             for (int i = 0; i < m_StarNum; i++)
             {
                 if (m_Star[i].n != 0)

@@ -9,8 +9,5 @@ namespace MifuminSoft.funyan.Core
         public virtual void Dispose() { Quit(); }
 
         public abstract CDIB32 Get(RID i);
-
-        /// <summary>CResourceManagerの実装を設定・取得します。</summary>
-        public static CResourceManager ResourceManager { get; set; }
     }
 }

@@ -268,7 +268,7 @@ namespace MifuminSoft.funyan.Core
             SetViewPos(-16, -16);
             int height = (int)(m_RootY - m_Y);
             Rectangle rc;
-            var graphic = CResourceManager.ResourceManager.Get(RID.RID_EELPITCHER);
+            var graphic = CApp.theApp.ResourceManager.Get(RID.RID_EELPITCHER);
             if (m_State == f3EelPitcherState.EELLEAF || m_State == f3EelPitcherState.EELFROZEN)
             {
                 int offset1 = (m_State == f3EelPitcherState.EELLEAF ? 0 : 96);

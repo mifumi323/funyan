@@ -437,8 +437,8 @@ namespace MifuminSoft.funyan.Core
                 case f3fffState.SMILE: CX = 18; break;
             }
             var rc = new Rectangle(CX * 32 + 1, CY * 32, 30, 30);
-            var graphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
-            var graphic2 = CResourceManager.ResourceManager.Get(RID.RID_MAINICY);
+            var graphic = CApp.theApp.ResourceManager.Get(RID.RID_MAIN);
+            var graphic2 = CApp.theApp.ResourceManager.Get(RID.RID_MAINICY);
             lp.RotateBlt(m_nPower == 0 ? graphic : graphic2, rc, m_nVX, m_nVY, m_Angle, 65536, 4);
             if (m_Power < -1.0f / 4096.0f)
             {
