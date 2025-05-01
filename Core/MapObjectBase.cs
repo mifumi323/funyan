@@ -17,7 +17,7 @@ namespace MifuminSoft.funyan.Core
         {
             m_nVX = (int)(m_X + offsetx);
             m_nVY = (int)(m_Y + offsety);
-            if (m_pParent != null) m_pParent.GetViewPos(ref m_nVX, ref m_nVY);
+            m_pParent.GetViewPos(ref m_nVX, ref m_nVY);
         }
         //	void KillSimple() { m_bValid = false; }
         protected float m_X, m_Y;
@@ -25,7 +25,7 @@ namespace MifuminSoft.funyan.Core
         //	float			m_nScrollX, m_nScrollY;	// スクロールにどれほど影響されるか(100%固定なので省略)
         protected int m_nCX, m_nCY;
 
-        protected static Cf3Map m_pParent = null;
+        protected static Cf3Map m_pParent = null!; // 親マップ(マップオブジェクトは必ずマップから生成され、その際にマップが代入されるため、使用時の非nullが保証される)
 
         public static int Count() { return m_CharaList.Count; }
         public static void UpdateCPosAll()
