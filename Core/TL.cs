@@ -100,7 +100,7 @@ namespace MifuminSoft.funyan.Core
             }
         }
 
-        public static void DELETE_SAFE<T>(ref T obj) where T : class, IDisposable
+        public static void DELETE_SAFE<T>(ref T? obj) where T : class, IDisposable
         {
             if (obj != null)
             {
