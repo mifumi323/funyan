@@ -8,7 +8,7 @@ namespace MifuminSoft.funyan.Core
     public class Cf3Map : IDisposable
     {
         private CDIB32[] m_MapChip = new CDIB32[3];
-        private byte[][] m_MapData = new byte[3][];
+        private byte[]?[] m_MapData = new byte[3][];
         private byte[] m_Width = new byte[3], m_Height = new byte[3];
         private HIT[] m_Hit = new HIT[240];
         private byte m_Stage;
@@ -143,7 +143,7 @@ namespace MifuminSoft.funyan.Core
         public int SetMapData(int level, int x, int y, byte data)
         {
             if (level < 0 || 2 < level || x < 0 || m_Width[level] <= x || y < 0 || m_Height[level] <= y || data >= 0xf0) return 1;
-            m_MapData[level][x + y * m_Width[level]] = data;
+            m_MapData[level]![x + y * m_Width[level]] = data;
             return 0;
         }
         public void CreateTemparatureMap(CDIB32 dib)
@@ -292,7 +292,7 @@ namespace MifuminSoft.funyan.Core
         public byte GetMapData(int level, int x, int y)
         {
             if (level < 0 || 2 < level || x < 0 || m_Width[level] <= x || y < 0 || m_Height[level] <= y) return 0;
-            return m_MapData[level][GetIndex(level, x, y)];
+            return m_MapData[level]![GetIndex(level, x, y)];
         }
         public bool GetHit(int x, int y, HIT hit)
         {
@@ -323,7 +323,7 @@ namespace MifuminSoft.funyan.Core
                 for (y = sy; y <= ey; y++) {
                     for (x = sx; x <= ex; x++) {
                         z = y * m_Width[0] + x;
-                        r = new Rectangle((m_MapData[0][z] & 0xf) * 32, (m_MapData[0][z] >> 4) * 32, 32, 32);
+                        r = new Rectangle((m_MapData[0]![z] & 0xf) * 32, (m_MapData[0]![z] >> 4) * 32, 32, 32);
                         vx = x * 32; vy = y * 32;
                         GetViewPos(ref vx, ref vy, mx, my);
                         lp.BltFast(m_MapChip[0], vx, vy, r);
@@ -347,7 +347,7 @@ namespace MifuminSoft.funyan.Core
                 for (y = sy; y <= ey; y++) {
                     for (x = sx; x <= ex; x++) {
                         z = y * m_Width[1] + x;
-                        r = new Rectangle((m_MapData[1][z] & 0xf) * 32, (m_MapData[1][z] >> 4) * 32, 32, 32);
+                        r = new Rectangle((m_MapData[1]![z] & 0xf) * 32, (m_MapData[1]![z] >> 4) * 32, 32, 32);
                         vx = x * 32; vy = y * 32;
                         GetViewPos(ref vx, ref vy);
                         if (m_MapData[0] != null) lp.Blt(m_MapChip[1], vx, vy, r);
@@ -407,7 +407,7 @@ namespace MifuminSoft.funyan.Core
                 for (y = sy; y <= ey; y++) {
                     for (x = sx; x <= ex; x++) {
                         z = y * m_Width[2] + x;
-                        r = new Rectangle((m_MapData[2][z] & 0xf) * 32, (m_MapData[2][z] >> 4) * 32, 32, 32);
+                        r = new Rectangle((m_MapData[2]![z] & 0xf) * 32, (m_MapData[2]![z] >> 4) * 32, 32, 32);
                         vx = (int)(x * 32 * mx); vy = (int)(y * 32 * my);
                         GetViewPos(ref vx, ref vy, mx, my);
                         lp.Blt(m_MapChip[2], vx, vy, r);
@@ -484,7 +484,7 @@ namespace MifuminSoft.funyan.Core
                 for (y = 0; y < m_Height[1]; y++) {
                     for (x = 0; x < m_Width[1]; x++) {
                         windmap[z] = 0;
-                        n = m_MapData[1][z];
+                        n = m_MapData[1]![z];
                         if (n >= 0xf0) {
                             if (n == 0xf0) {    // 主人公
                                 if (m_MainChara == null) m_MainChara = Cf3MapObjectMain.Create(x, y);
@@ -546,7 +546,7 @@ namespace MifuminSoft.funyan.Core
                                 new Cf3MapObjectNeedle(x, y, 3);
                                 bgm[(int)BGMNumber.BGMN_GAMENEEDLE] += 4;
                             }
-                            m_MapData[1][z] = 0;
+                            m_MapData[1]![z] = 0;
                         } else {
                             if (GetHit(x, y, HIT.HIT_LEFT)) windmap[z] = 0x4; else windmap[z] = 0;
                             if (GetHit(x, y, HIT.HIT_RIGHT)) windmap[z] |= 0x8;
