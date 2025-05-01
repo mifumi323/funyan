@@ -331,7 +331,7 @@ namespace MifuminSoft.funyan.Core
                 }
             }
             if (m_MapData[1] != null) {
-                CDIB32 pHit = null;
+                CDIB32? pHit = null;
                 if (bShowHit) {
                     pHit = CDIB32.Create();
                     pHit.CreateSurface(384, 32);
@@ -357,29 +357,29 @@ namespace MifuminSoft.funyan.Core
                             if (GetHit(x, y, HIT.HIT_TOP)) {
                                 int f = (byte)m_Hit[GetMapData(1, x, y)] & ~0x1f;
                                 r = new Rectangle(f, 0, 32, 32);
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
+                                lp.BlendBlt(pHit!, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_BOTTOM)) {
                                 r = new Rectangle(256, 0, 32, 32);
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
+                                lp.BlendBlt(pHit!, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_LEFT)) {
                                 r = new Rectangle(288, 0, 32, 32);
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
+                                lp.BlendBlt(pHit!, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_RIGHT)) {
                                 r = new Rectangle(320, 0, 32, 32);
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
+                                lp.BlendBlt(pHit!, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_DEATH)) {
                                 r = new Rectangle(352, 0, 32, 32);
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
+                                lp.BlendBlt(pHit!, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                         }
                     }
                 }
                 if (bShowHit) {
-                    pHit.Dispose();
+                    pHit!.Dispose();
                 }
             }
             Cf3MapObjectBanana.OnDrawAll(lp);
