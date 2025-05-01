@@ -34,7 +34,7 @@ namespace MifuminSoft.funyan.Core
             public int oldhyper;
         }
         protected Cf3ReplayPlayerState? m_pPlayerState;
-        protected string m_FileName;
+        protected string m_FileName = "";
 
         // 共通
         public uint GetSize() { return m_nSize; }
