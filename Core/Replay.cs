@@ -33,7 +33,7 @@ namespace MifuminSoft.funyan.Core
             public int oldgravity;
             public int oldhyper;
         }
-        protected Cf3ReplayPlayerState m_pPlayerState;
+        protected Cf3ReplayPlayerState? m_pPlayerState;
         protected string m_FileName;
 
         // 共通
@@ -161,11 +161,11 @@ namespace MifuminSoft.funyan.Core
             if (Finished()) return;
             Cf3GameInput.ReplayInput.pressed = m_keyPressed[m_nProgress];
             Cf3GameInput.ReplayInput.pushed = m_keyPushed[m_nProgress];
-            m_pPlayerState.map!.OnMove();
-            m_pPlayerState.map!.OnPreDraw();
+            m_pPlayerState!.map!.OnMove();
+            m_pPlayerState!.map!.OnPreDraw();
             Progress();
         }
-        public void OnDraw(CDIB32 lp) { m_pPlayerState.map!.OnDraw(lp); }
-        public Cf3Map GetMap() { return m_pPlayerState.map!; }
+        public void OnDraw(CDIB32 lp) { m_pPlayerState!.map!.OnDraw(lp); }
+        public Cf3Map GetMap() { return m_pPlayerState!.map!; }
     }
 }
