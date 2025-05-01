@@ -45,7 +45,7 @@ namespace MifuminSoft.funyan.Core
         private int m_ScrollX, m_ScrollY;
         private float m_ScrollRX, m_ScrollRY;
 
-        private float[] m_Wind;
+        private float[]? m_Wind;
         private Cf3MapObjectBase?[] m_pObject;
         private List<Cf3MapObjectBase> m_NearObject = new List<Cf3MapObjectBase>();
 
