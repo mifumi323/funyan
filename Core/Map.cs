@@ -616,7 +616,7 @@ namespace MifuminSoft.funyan.Core
             m_MapChip[2].Dispose();
             m_MapChip[1].Dispose();
             m_MapChip[0].Dispose();
-            TL.DELETE_SAFE(ref m_pDIBBuf);
+            m_pDIBBuf.Dispose();
         }
     }
 }
