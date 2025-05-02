@@ -241,9 +241,7 @@ namespace MifuminSoft.funyan.Core
         }
         public void OnPreDraw()
         {
-            if (m_MainChara != null) {
-                m_MainChara.OnPreDraw();
-            }
+            m_MainChara?.OnPreDraw();
             Cf3MapObjectBanana.OnPreDrawAll();
             Cf3MapObjectEelPitcher.OnPreDrawAll();
             Cf3MapObjectGeasprin.OnPreDrawAll();
@@ -254,7 +252,7 @@ namespace MifuminSoft.funyan.Core
             Cf3MapObjectFire.OnPreDrawAll();
             Cf3MapObjectEffect.OnPreDrawAll();
             Cf3MapObjectWind.OnPreDrawAll();
-            if (m_MainChara != null) m_MainChara.GetViewPos(out m_ScrollX, out m_ScrollY);
+            m_MainChara?.GetViewPos(out m_ScrollX, out m_ScrollY);
             m_ScrollRX = (m_ScrollRX + m_ScrollX) / 2;
             m_ScrollRY = (m_ScrollRY + m_ScrollY) / 2;
         }
@@ -272,7 +270,7 @@ namespace MifuminSoft.funyan.Core
         }
         public void OnMove()
         {
-            if (m_MainChara != null) m_MainChara.OnMove();
+            m_MainChara?.OnMove();
             Cf3MapObjectEelPitcher.OnMoveAll();
             Cf3MapObjectGeasprin.OnMoveAll();
             Cf3MapObjectmrframe.OnMoveAll();
@@ -280,7 +278,7 @@ namespace MifuminSoft.funyan.Core
             Cf3MapObjectIce.OnMoveAll();
             Cf3MapObjectFire.OnMoveAll();
             Cf3MapObjectBase.UpdateCPosAll();
-            if (m_MainChara != null) m_MainChara.Synergy();
+            m_MainChara?.Synergy();
             Cf3MapObjectBanana.SynergyAll();
             Cf3MapObjectEelPitcher.SynergyAll();
             Cf3MapObjectGeasprin.SynergyAll();
@@ -384,7 +382,7 @@ namespace MifuminSoft.funyan.Core
             }
             Cf3MapObjectBanana.OnDrawAll(lp);
             Cf3MapObjectmrframe.OnDrawAll(lp);
-            if (m_MainChara != null) m_MainChara.OnDraw(lp);
+            m_MainChara?.OnDraw(lp);
             Cf3MapObjectGeasprin.OnDrawAll(lp);
             Cf3MapObjectNeedle.OnDrawAll(lp);
             Cf3MapObjectEelPitcher.OnDrawAll(lp);
@@ -487,7 +485,7 @@ namespace MifuminSoft.funyan.Core
                         n = m_MapData[1]![z];
                         if (n >= 0xf0) {
                             if (n == 0xf0) {    // 主人公
-                                if (m_MainChara == null) m_MainChara = Cf3MapObjectMain.Create(x, y);
+                                m_MainChara ??= Cf3MapObjectMain.Create(x, y);
                                 bgm[(int)BGMNumber.BGMN_GAMEFUNYA] += 99;
                             }
                             else if (n == 0xf1) {   // バナナ
@@ -602,7 +600,7 @@ namespace MifuminSoft.funyan.Core
                 }
             }
             m_ScrollX = m_ScrollY = 0;
-            if (m_MainChara != null) m_MainChara.GetPos(out m_ScrollRX, out m_ScrollRY);
+            m_MainChara?.GetPos(out m_ScrollRX, out m_ScrollRY);
         }
         public void Dispose()
         {

@@ -138,8 +138,10 @@ namespace MifuminSoft.funyan.Core
             m_FileName = filename;
             Reset();
             byte[] ptr;
-            m_pPlayerState = new Cf3ReplayPlayerState();
-            m_pPlayerState.stage = new Cf3StageFile();
+            m_pPlayerState = new Cf3ReplayPlayerState
+            {
+                stage = new Cf3StageFile()
+            };
             m_pPlayerState.stage.Read(m_FileName);
             // シークレットの状態と入力情報も読み込む
             Cf3Setting.theSetting.m_Gravity = m_pPlayerState.stage.GetStageDataInt(CT.CT_GRVT);
