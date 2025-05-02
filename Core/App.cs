@@ -13,5 +13,6 @@ namespace MifuminSoft.funyan.Core
         public abstract bool MakeFileName(out string filename, string v1, int m_RecordNumber, bool v2);
 
         public abstract CResourceManager ResourceManager { get; }
+        public abstract CPlaneTransBlt PlaneTransBlt { get; }
     }
 }
