@@ -65,7 +65,7 @@ namespace MifuminSoft.funyan.Core
         public override void OnDraw(CDIB32 lp)
         {
             if (!IsValid()) return;
-            var pGraphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
+            var pGraphic = CApp.theApp.ResourceManager.Get(RID.RID_MAIN);
             var rc = new Rectangle(320, 96, 32, 32);
             SetViewPos(-16, -16);
             lp.BltNatural(pGraphic, m_nVX, m_nVY, rc);

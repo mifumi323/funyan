@@ -129,10 +129,6 @@ namespace MifuminSoft.funyan.Core
 
         private int m_PoseCounter, m_PoseCounter2;
 
-        // 表示位置調整
-        private int m_VOffsetX, m_VOffsetY;
-        private int m_VOffsetToX, m_VOffsetToY;
-
         public override bool IsFrozen() { return m_State == f3fffState.FROZEN; }
         public override void Synergy()
         {
@@ -441,8 +437,8 @@ namespace MifuminSoft.funyan.Core
                 case f3fffState.SMILE: CX = 18; break;
             }
             var rc = new Rectangle(CX * 32 + 1, CY * 32, 30, 30);
-            var graphic = CResourceManager.ResourceManager.Get(RID.RID_MAIN);
-            var graphic2 = CResourceManager.ResourceManager.Get(RID.RID_MAINICY);
+            var graphic = CApp.theApp.ResourceManager.Get(RID.RID_MAIN);
+            var graphic2 = CApp.theApp.ResourceManager.Get(RID.RID_MAINICY);
             lp.RotateBlt(m_nPower == 0 ? graphic : graphic2, rc, m_nVX, m_nVY, m_Angle, 65536, 4);
             if (m_Power < -1.0f / 4096.0f)
             {
@@ -462,10 +458,6 @@ namespace MifuminSoft.funyan.Core
             m_Power = 0.0f;
             m_PowerX = 0.0f;
             m_PowerY = 0.0f;
-            m_VOffsetX = 0;
-            m_VOffsetY = 0;
-            m_VOffsetToX = 0;
-            m_VOffsetToY = 0;
             m_PoseCounter2 = 0;
             m_State = f3fffState.NORMAL;
             SetPos(nCX * 32 + 16, nCY * 32 + 18);

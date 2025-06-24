@@ -6,7 +6,7 @@
 
         public Cf3MapObjectIceBase(f3MapObjectType eType) : base(eType)
         {
-            m_Graphic = CResourceManager.ResourceManager.Get(RID.RID_ICEFIRE);
+            m_Graphic = CApp.theApp.ResourceManager.Get(RID.RID_ICEFIRE);
         }
     }
 }

@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace MifuminSoft.funyan.Core
 {
-    [Flags]
-    public enum HIT : byte {
-        HIT_TOP = 0x01,
-        HIT_BOTTOM = 0x02,
-        HIT_LEFT = 0x04,
-        HIT_RIGHT = 0x08,
-        HIT_DEATH = 0x10,
-    }
-
     public class Cf3Map : IDisposable
     {
         private CDIB32[] m_MapChip = new CDIB32[3];
-        private byte[][] m_MapData = new byte[3][];
+        private byte[]?[] m_MapData = new byte[3][];
         private byte[] m_Width = new byte[3], m_Height = new byte[3];
         private HIT[] m_Hit = new HIT[240];
         private byte m_Stage;
@@ -53,11 +45,11 @@ namespace MifuminSoft.funyan.Core
         private int m_ScrollX, m_ScrollY;
         private float m_ScrollRX, m_ScrollRY;
 
-        private float[] m_Wind;
-        private Cf3MapObjectBase[] m_pObject;
+        private float[]? m_Wind;
+        private Cf3MapObjectBase?[] m_pObject;
         private List<Cf3MapObjectBase> m_NearObject = new List<Cf3MapObjectBase>();
 
-        private Cf3MapObjectMain m_MainChara;
+        private Cf3MapObjectMain? m_MainChara;
 
         private static int m_nEffect = 0;
         private CDIB32 m_pDIBBuf;
@@ -69,7 +61,7 @@ namespace MifuminSoft.funyan.Core
             if (x2 >= m_Width[1]) x2 = m_Width[1] - 1;
             if (y2 >= m_Height[1]) y2 = m_Height[1] - 1;
             m_NearObject.Clear();
-            Cf3MapObjectBase o;
+            Cf3MapObjectBase? o;
             for (int x = x1; x <= x2; x++) {
                 for (int y = y1; y <= y2; y++) {
                     o = m_pObject[GetIndex(x, y)];
@@ -141,12 +133,17 @@ namespace MifuminSoft.funyan.Core
         public static void SetEffect(int effect) { m_nEffect = effect; }
         public void GetMainCharaCPos(out int x, out int y)
         {
+            if (m_MainChara == null)
+            {
+                x = y = 0;
+                return;
+            }
             m_MainChara.GetCPos(out x, out y);
         }
         public int SetMapData(int level, int x, int y, byte data)
         {
             if (level < 0 || 2 < level || x < 0 || m_Width[level] <= x || y < 0 || m_Height[level] <= y || data >= 0xf0) return 1;
-            m_MapData[level][x + y * m_Width[level]] = data;
+            m_MapData[level]![x + y * m_Width[level]] = data;
             return 0;
         }
         public void CreateTemparatureMap(CDIB32 dib)
@@ -200,11 +197,11 @@ namespace MifuminSoft.funyan.Core
             var lpSrc = dib;
             var lpDst = m_pDIBBuf;
             if ((m_nEffect & 1) != 0) {
-                CPlaneTransBlt.MirrorBlt1(lpDst, lpSrc, 0, 0, 128);
+                CApp.theApp.PlaneTransBlt.MirrorBlt1(lpDst, lpSrc, 0, 0);
                 TL.swap(ref lpSrc, ref lpDst);
             }
             if ((m_nEffect & 2) != 0) {
-                CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0, 128);
+                CApp.theApp.PlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0);
                 var rc = new Rectangle(0, 16, 320, 224);
                 lpSrc.BltFast(lpDst, 0, 0, rc);
             }
@@ -215,7 +212,7 @@ namespace MifuminSoft.funyan.Core
             if (m_Wind == null || x < 0 || m_Width[1] <= x || y < 0 || m_Height[1] <= y) return 0.0f;
             return m_Wind[GetIndex(x, y)];
         }
-        public Cf3MapObjectMain GetMainChara() { return m_MainChara; }
+        public Cf3MapObjectMain? GetMainChara() { return m_MainChara; }
         public BGMNumber GetBGM() { return m_BGMNumber; }
         public static CT GetChunkType(CT type, int stage)
         {
@@ -244,9 +241,7 @@ namespace MifuminSoft.funyan.Core
         }
         public void OnPreDraw()
         {
-            if (m_MainChara != null) {
-                m_MainChara.OnPreDraw();
-            }
+            m_MainChara?.OnPreDraw();
             Cf3MapObjectBanana.OnPreDrawAll();
             Cf3MapObjectEelPitcher.OnPreDrawAll();
             Cf3MapObjectGeasprin.OnPreDrawAll();
@@ -257,7 +252,7 @@ namespace MifuminSoft.funyan.Core
             Cf3MapObjectFire.OnPreDrawAll();
             Cf3MapObjectEffect.OnPreDrawAll();
             Cf3MapObjectWind.OnPreDrawAll();
-            if (m_MainChara != null) m_MainChara.GetViewPos(out m_ScrollX, out m_ScrollY);
+            m_MainChara?.GetViewPos(out m_ScrollX, out m_ScrollY);
             m_ScrollRX = (m_ScrollRX + m_ScrollX) / 2;
             m_ScrollRY = (m_ScrollRY + m_ScrollY) / 2;
         }
@@ -275,7 +270,7 @@ namespace MifuminSoft.funyan.Core
         }
         public void OnMove()
         {
-            if (m_MainChara != null) m_MainChara.OnMove();
+            m_MainChara?.OnMove();
             Cf3MapObjectEelPitcher.OnMoveAll();
             Cf3MapObjectGeasprin.OnMoveAll();
             Cf3MapObjectmrframe.OnMoveAll();
@@ -283,7 +278,7 @@ namespace MifuminSoft.funyan.Core
             Cf3MapObjectIce.OnMoveAll();
             Cf3MapObjectFire.OnMoveAll();
             Cf3MapObjectBase.UpdateCPosAll();
-            if (m_MainChara != null) m_MainChara.Synergy();
+            m_MainChara?.Synergy();
             Cf3MapObjectBanana.SynergyAll();
             Cf3MapObjectEelPitcher.SynergyAll();
             Cf3MapObjectGeasprin.SynergyAll();
@@ -295,7 +290,7 @@ namespace MifuminSoft.funyan.Core
         public byte GetMapData(int level, int x, int y)
         {
             if (level < 0 || 2 < level || x < 0 || m_Width[level] <= x || y < 0 || m_Height[level] <= y) return 0;
-            return m_MapData[level][GetIndex(level, x, y)];
+            return m_MapData[level]![GetIndex(level, x, y)];
         }
         public bool GetHit(int x, int y, HIT hit)
         {
@@ -326,7 +321,7 @@ namespace MifuminSoft.funyan.Core
                 for (y = sy; y <= ey; y++) {
                     for (x = sx; x <= ex; x++) {
                         z = y * m_Width[0] + x;
-                        r = new Rectangle((m_MapData[0][z] & 0xf) * 32, (m_MapData[0][z] >> 4) * 32, 32, 32);
+                        r = new Rectangle((m_MapData[0]![z] & 0xf) * 32, (m_MapData[0]![z] >> 4) * 32, 32, 32);
                         vx = x * 32; vy = y * 32;
                         GetViewPos(ref vx, ref vy, mx, my);
                         lp.BltFast(m_MapChip[0], vx, vy, r);
@@ -334,11 +329,11 @@ namespace MifuminSoft.funyan.Core
                 }
             }
             if (m_MapData[1] != null) {
-                CDIB32 pHit = null;
+                CDIB32? pHit = null;
                 if (bShowHit) {
                     pHit = CDIB32.Create();
                     pHit.CreateSurface(384, 32);
-                    pHit.BltFast(CResourceManager.ResourceManager.Get(RID.RID_HIT), 0, 0);
+                    pHit.BltFast(CApp.theApp.ResourceManager.Get(RID.RID_HIT), 0, 0);
                     pHit.SubColorFast(CApp.theApp.random(0x1000000));
                 }
                 sx = sy = 0;
@@ -350,7 +345,7 @@ namespace MifuminSoft.funyan.Core
                 for (y = sy; y <= ey; y++) {
                     for (x = sx; x <= ex; x++) {
                         z = y * m_Width[1] + x;
-                        r = new Rectangle((m_MapData[1][z] & 0xf) * 32, (m_MapData[1][z] >> 4) * 32, 32, 32);
+                        r = new Rectangle((m_MapData[1]![z] & 0xf) * 32, (m_MapData[1]![z] >> 4) * 32, 32, 32);
                         vx = x * 32; vy = y * 32;
                         GetViewPos(ref vx, ref vy);
                         if (m_MapData[0] != null) lp.Blt(m_MapChip[1], vx, vy, r);
@@ -360,34 +355,34 @@ namespace MifuminSoft.funyan.Core
                             if (GetHit(x, y, HIT.HIT_TOP)) {
                                 int f = (byte)m_Hit[GetMapData(1, x, y)] & ~0x1f;
                                 r = new Rectangle(f, 0, 32, 32);
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
+                                lp.BlendBlt(pHit!, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_BOTTOM)) {
                                 r = new Rectangle(256, 0, 32, 32);
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
+                                lp.BlendBlt(pHit!, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_LEFT)) {
                                 r = new Rectangle(288, 0, 32, 32);
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
+                                lp.BlendBlt(pHit!, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_RIGHT)) {
                                 r = new Rectangle(320, 0, 32, 32);
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
+                                lp.BlendBlt(pHit!, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                             if (GetHit(x, y, HIT.HIT_DEATH)) {
                                 r = new Rectangle(352, 0, 32, 32);
-                                lp.BlendBlt(pHit, vx, vy, 0x808080, 0x7f7f7f, r);
+                                lp.BlendBlt(pHit!, vx, vy, 0x808080, 0x7f7f7f, r);
                             }
                         }
                     }
                 }
                 if (bShowHit) {
-                    pHit.Dispose();
+                    pHit!.Dispose();
                 }
             }
             Cf3MapObjectBanana.OnDrawAll(lp);
             Cf3MapObjectmrframe.OnDrawAll(lp);
-            if (m_MainChara != null) m_MainChara.OnDraw(lp);
+            m_MainChara?.OnDraw(lp);
             Cf3MapObjectGeasprin.OnDrawAll(lp);
             Cf3MapObjectNeedle.OnDrawAll(lp);
             Cf3MapObjectEelPitcher.OnDrawAll(lp);
@@ -410,7 +405,7 @@ namespace MifuminSoft.funyan.Core
                 for (y = sy; y <= ey; y++) {
                     for (x = sx; x <= ex; x++) {
                         z = y * m_Width[2] + x;
-                        r = new Rectangle((m_MapData[2][z] & 0xf) * 32, (m_MapData[2][z] >> 4) * 32, 32, 32);
+                        r = new Rectangle((m_MapData[2]![z] & 0xf) * 32, (m_MapData[2]![z] >> 4) * 32, 32, 32);
                         vx = (int)(x * 32 * mx); vy = (int)(y * 32 * my);
                         GetViewPos(ref vx, ref vy, mx, my);
                         lp.Blt(m_MapChip[2], vx, vy, r);
@@ -420,16 +415,16 @@ namespace MifuminSoft.funyan.Core
             var lpSrc = lp;
             var lpDst = m_pDIBBuf;
             if ((m_nEffect & 1) != 0) {
-                CPlaneTransBlt.MirrorBlt1(lpDst, lpSrc, 0, 0, 128);
+                CApp.theApp.PlaneTransBlt.MirrorBlt1(lpDst, lpSrc, 0, 0);
                 TL.swap(ref lpSrc, ref lpDst);
             }
             if ((m_nEffect & 2) != 0) {
-                CPlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0, 128);
+                CApp.theApp.PlaneTransBlt.MirrorBlt2(lpDst, lpSrc, 0, 0);
                 var rc = new Rectangle(0, 16, 320, 224);
                 lpSrc.BltFast(lpDst, 0, 0, rc);
             }
             if ((m_nEffect & 4) != 0) {
-                CPlaneTransBlt.FlushBlt1(lpDst, lpSrc, 0, 0, 128);
+                CApp.theApp.PlaneTransBlt.FlushBlt1(lpDst, lpSrc, 0, 0);
                 TL.swap(ref lpSrc, ref lpDst);
             }
             if (lpDst == lp) lpDst.BltFast(lpSrc, 0, 0);
@@ -446,7 +441,7 @@ namespace MifuminSoft.funyan.Core
             Cf3MapObjectBase.SetParent(this);
             m_nGotBanana = m_nTotalBanana = 0;
             m_Wind = null;
-            m_pObject = null;
+            m_pObject = Array.Empty<Cf3MapObjectBase>();
             // キャラ
             m_MainChara = null;
             // タイトル
@@ -487,10 +482,10 @@ namespace MifuminSoft.funyan.Core
                 for (y = 0; y < m_Height[1]; y++) {
                     for (x = 0; x < m_Width[1]; x++) {
                         windmap[z] = 0;
-                        n = m_MapData[1][z];
+                        n = m_MapData[1]![z];
                         if (n >= 0xf0) {
                             if (n == 0xf0) {    // 主人公
-                                if (m_MainChara == null) m_MainChara = Cf3MapObjectMain.Create(x, y);
+                                m_MainChara ??= Cf3MapObjectMain.Create(x, y);
                                 bgm[(int)BGMNumber.BGMN_GAMEFUNYA] += 99;
                             }
                             else if (n == 0xf1) {   // バナナ
@@ -549,7 +544,7 @@ namespace MifuminSoft.funyan.Core
                                 new Cf3MapObjectNeedle(x, y, 3);
                                 bgm[(int)BGMNumber.BGMN_GAMENEEDLE] += 4;
                             }
-                            m_MapData[1][z] = 0;
+                            m_MapData[1]![z] = 0;
                         } else {
                             if (GetHit(x, y, HIT.HIT_LEFT)) windmap[z] = 0x4; else windmap[z] = 0;
                             if (GetHit(x, y, HIT.HIT_RIGHT)) windmap[z] |= 0x8;
@@ -605,13 +600,13 @@ namespace MifuminSoft.funyan.Core
                 }
             }
             m_ScrollX = m_ScrollY = 0;
-            if (m_MainChara != null) m_MainChara.GetPos(out m_ScrollRX, out m_ScrollRY);
+            m_MainChara?.GetPos(out m_ScrollRX, out m_ScrollRY);
         }
         public void Dispose()
         {
             KillAllMapObject();
             GarbageMapObject();
-            m_pObject = null;
+            m_pObject = Array.Empty<Cf3MapObjectBase>();
             m_Wind = null;
             m_MapData[2] = null;
             m_MapData[1] = null;
@@ -619,7 +614,7 @@ namespace MifuminSoft.funyan.Core
             m_MapChip[2].Dispose();
             m_MapChip[1].Dispose();
             m_MapChip[0].Dispose();
-            TL.DELETE_SAFE(ref m_pDIBBuf);
+            m_pDIBBuf.Dispose();
         }
     }
 }

@@ -26,15 +26,15 @@ namespace MifuminSoft.funyan.Core
                 Cf3Setting.theSetting.m_Gravity = oldgravity;
                 Cf3Setting.theSetting.m_Hyper = oldhyper;
             }
-            public Cf3StageFile stage;
-            public Cf3Map map;
-            public string stagetitle;
-            public string maptitle;
+            public Cf3StageFile? stage;
+            public Cf3Map? map;
+            public string stagetitle = "";
+            public string maptitle = "";
             public int oldgravity;
             public int oldhyper;
         }
-        protected Cf3ReplayPlayerState m_pPlayerState;
-        protected string m_FileName;
+        protected Cf3ReplayPlayerState? m_pPlayerState;
+        protected string m_FileName = "";
 
         // 共通
         public uint GetSize() { return m_nSize; }
@@ -138,8 +138,10 @@ namespace MifuminSoft.funyan.Core
             m_FileName = filename;
             Reset();
             byte[] ptr;
-            m_pPlayerState = new Cf3ReplayPlayerState();
-            m_pPlayerState.stage = new Cf3StageFile();
+            m_pPlayerState = new Cf3ReplayPlayerState
+            {
+                stage = new Cf3StageFile()
+            };
             m_pPlayerState.stage.Read(m_FileName);
             // シークレットの状態と入力情報も読み込む
             Cf3Setting.theSetting.m_Gravity = m_pPlayerState.stage.GetStageDataInt(CT.CT_GRVT);
@@ -161,11 +163,11 @@ namespace MifuminSoft.funyan.Core
             if (Finished()) return;
             Cf3GameInput.ReplayInput.pressed = m_keyPressed[m_nProgress];
             Cf3GameInput.ReplayInput.pushed = m_keyPushed[m_nProgress];
-            m_pPlayerState.map.OnMove();
-            m_pPlayerState.map.OnPreDraw();
+            m_pPlayerState!.map!.OnMove();
+            m_pPlayerState!.map!.OnPreDraw();
             Progress();
         }
-        public void OnDraw(CDIB32 lp) { m_pPlayerState.map.OnDraw(lp); }
-        public Cf3Map GetMap() { return m_pPlayerState.map; }
+        public void OnDraw(CDIB32 lp) { m_pPlayerState!.map!.OnDraw(lp); }
+        public Cf3Map GetMap() { return m_pPlayerState!.map!; }
     }
 }
